@@ -1,0 +1,18 @@
+[Unit]
+Description=Hamle Psikoloji CMS API (Spring Boot)
+After=network.target docker.service
+Wants=docker.service
+
+[Service]
+Type=simple
+User=hamle
+Group=hamle
+WorkingDirectory=/opt/hamle/backend
+EnvironmentFile=/opt/hamle/env/backend.env
+ExecStart=/usr/bin/java -Xmx1g -jar /opt/hamle/backend/app.jar
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

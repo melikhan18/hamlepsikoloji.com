@@ -1,0 +1,42 @@
+server:
+  port: ${SERVER_PORT:8081}
+  # Üretimde Nginx arkasında 127.0.0.1'e bağlanır (dışarı kapalı).
+  address: ${SERVER_ADDRESS:0.0.0.0}
+  forward-headers-strategy: framework
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/hamle}
+    username: ${DB_USER:hamle}
+    password: ${DB_PASSWORD:hamle}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 12MB
+
+app:
+  admin:
+    username: ${ADMIN_USERNAME:admin}
+    # Üretimde mutlaka değiştirin (ADMIN_PASSWORD ortam değişkeni).
+    password: ${ADMIN_PASSWORD:admin123}
+  jwt:
+    # En az 32 karakter. Üretimde JWT_SECRET ortam değişkeniyle değiştirin.
+    secret: ${JWT_SECRET:hamle-psikoloji-dev-secret-please-change-32+chars}
+    expiration-minutes: 720
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+  uploads:
+    dir: ${UPLOADS_DIR:uploads}
+    public-base-url: ${UPLOADS_BASE_URL:http://localhost:8081/uploads}
+  revalidate:
+    # Yazı kaydedilince/silinince Next.js'e webhook atılır (on-demand ISR).
+    # url boşsa özellik pasif olur. secret, frontend REVALIDATE_SECRET ile AYNI olmalı.
+    url: ${REVALIDATE_URL:http://localhost:3000/api/revalidate}
+    secret: ${REVALIDATE_SECRET:hamle-revalidate-dev-secret-change-me}

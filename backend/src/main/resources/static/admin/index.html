@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Hamle Psikoloji — Yönetim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <style>
+    :root{
+      --plum:#352a44;--plum2:#2a2036;--plum3:#4c3d63;--cream:#f8f4ee;--paper:#fff;
+      --mint:#e9fff4;--mint2:#d6f5e6;--line:#e8e0d4;--line2:#efe9df;
+      --ink:#241c30;--muted:#6e6878;--terra:#c0763a;--terra-bg:#fbeee1;--danger:#b3261e;
+      --shadow:0 14px 34px -20px rgba(42,32,54,.35);--radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+    .serif{font-family:Fraunces,Georgia,serif}
+    button{font:inherit;cursor:pointer;border:none;border-radius:999px;padding:.6rem 1.15rem;font-weight:600;transition:.15s}
+    button:disabled{opacity:.55;cursor:default}
+    .btn{background:var(--plum);color:#fff}
+    .btn:hover:not(:disabled){background:var(--plum2)}
+    .btn-ghost{background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+    .btn-ghost:hover{border-color:var(--plum3);color:var(--plum)}
+    .btn-danger{background:var(--paper);color:var(--danger);border:1px solid #f0c9c5}
+    .btn-danger:hover{background:#fdecea}
+    .btn-sm{padding:.4rem .75rem;font-size:.83rem}
+    .btn-icon{padding:.4rem;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center}
+    input,textarea,select{width:100%;padding:.62rem .8rem;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit;outline:none;transition:.15s}
+    input:focus,textarea:focus,select:focus{border-color:var(--plum3);box-shadow:0 0 0 3px rgba(76,61,99,.12)}
+    textarea{resize:vertical;line-height:1.6}
+    label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+    .field{margin-bottom:1rem}
+    .card{background:var(--paper);border:1px solid var(--line2);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card-pad{padding:1.3rem}
+    .muted{color:var(--muted)}
+    .tag{display:inline-block;background:var(--mint);color:#15524e;border-radius:999px;padding:.18rem .65rem;font-size:.74rem;font-weight:600}
+
+    /* Layout */
+    .layout{display:flex;min-height:100vh}
+    .sidebar{width:250px;flex-shrink:0;background:var(--plum);color:#e9e3ee;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+    .sb-brand{padding:1.4rem 1.4rem 1rem;display:flex;align-items:center;gap:.6rem}
+    .sb-logo{width:34px;height:34px;border-radius:9px;background:var(--mint);color:var(--plum);display:flex;align-items:center;justify-content:center;font-weight:700;font-family:Fraunces,serif}
+    .sb-brand b{font-family:Fraunces,serif;font-size:1.15rem;color:#fff;line-height:1}
+    .sb-brand span{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:#b9aecb}
+    .sb-nav{padding:.6rem;flex:1;overflow:auto}
+    .sb-item{display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;background:transparent;color:#cfc6dc;border-radius:10px;padding:.65rem .8rem;font-weight:500;margin-bottom:.15rem}
+    .sb-item:hover{background:rgba(255,255,255,.07);color:#fff}
+    .sb-item.active{background:rgba(233,255,244,.14);color:#fff}
+    .sb-item svg{width:18px;height:18px;flex-shrink:0;opacity:.9}
+    .sb-item .soon{margin-left:auto;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.1);padding:.12rem .4rem;border-radius:999px;color:#b9aecb}
+    .sb-item.disabled{opacity:.55;cursor:default}
+    .sb-item.disabled:hover{background:transparent;color:#cfc6dc}
+    .sb-foot{padding:.9rem;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;gap:.5rem;font-size:.85rem}
+    .sb-foot .who{color:#cfc6dc}
+    /* Mobil üst bar + drawer backdrop (varsayılan: masaüstünde gizli) */
+    .mobilebar{display:none;align-items:center;gap:.7rem;padding:.5rem .7rem;background:var(--plum);color:#fff;position:sticky;top:0;z-index:45}
+    .mobilebar .mb-brand{display:flex;align-items:center;gap:.5rem;font-size:1.1rem;color:#fff}
+    .mobilebar .hb{background:rgba(255,255,255,.12);color:#fff;width:40px;height:40px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:10px}
+    .mobilebar .hb svg{width:22px;height:22px}
+    .mobilebar>.btn-sm{margin-left:auto}
+    .sb-close{display:none;background:rgba(255,255,255,.12);color:#fff;margin-left:auto}
+    .sb-backdrop{display:none;position:fixed;inset:0;background:rgba(20,14,30,.5);z-index:55}
+
+    .main{flex:1;min-width:0;display:flex;flex-direction:column}
+    .content{padding:1.6rem 2rem 3rem;max-width:1180px;width:100%;margin:0 auto}
+    .page-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.4rem}
+    .page-head h1{font-family:Fraunces,serif;font-weight:500;font-size:1.9rem;margin:0}
+
+    /* List */
+    .toolbar{display:flex;gap:.6rem;align-items:center;margin-bottom:1rem}
+    .search{position:relative;flex:1;max-width:340px}
+    .search input{padding-left:2.2rem}
+    .search svg{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+    table{width:100%;border-collapse:collapse}
+    th,td{text-align:left;padding:.85rem 1rem;border-bottom:1px solid var(--line2);font-size:.92rem;vertical-align:middle}
+    th{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:#faf7f2}
+    tbody tr:hover{background:#faf8f4}
+    .thumb{width:46px;height:46px;border-radius:9px;object-fit:cover;background:var(--mint);flex-shrink:0}
+    .row-title{display:flex;align-items:center;gap:.8rem}
+    .actions{display:flex;gap:.4rem;justify-content:flex-end}
+    .empty{padding:3rem 1rem;text-align:center;color:var(--muted)}
+
+    /* Editor */
+    .ed-bar{position:sticky;top:0;z-index:20;background:rgba(248,244,238,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line2);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .ed-bar .left{display:flex;align-items:center;gap:.8rem;min-width:0}
+    .ed-bar .save-state{font-size:.8rem;color:var(--muted)}
+    .ed-grid{display:grid;grid-template-columns:1fr 320px;gap:1.6rem;align-items:start}
+    .ed-main .title-in{font-family:Fraunces,serif;font-size:1.9rem;font-weight:500;border:none;padding:.4rem 0;background:transparent}
+    .ed-main .title-in:focus{box-shadow:none}
+    .ed-main .excerpt-in{border:none;background:transparent;padding:.2rem 0;color:var(--muted);font-size:1rem}
+    .ed-main .excerpt-in:focus{box-shadow:none}
+    .divider{height:1px;background:var(--line2);margin:1rem 0 1.3rem}
+    .side-card{margin-bottom:1.1rem}
+    .side-card h3{font-family:Fraunces,serif;font-weight:500;font-size:1.05rem;margin:0 0 .9rem}
+
+    .block{position:relative;background:var(--paper);border:1px solid var(--line2);border-radius:12px;padding:.9rem 1rem;margin-bottom:.7rem;transition:.15s}
+    .block:hover{border-color:var(--line)}
+    .block-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.55rem}
+    .block-kind{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+    .block-ctrls{margin-left:auto;display:flex;gap:.25rem;opacity:0;transition:.15s}
+    .block:hover .block-ctrls{opacity:1}
+    .block textarea,.block input{border:1px solid transparent;background:#faf8f4}
+    .block textarea:focus,.block input:focus{background:#fff;border-color:var(--plum3)}
+    .add-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}
+    .add-btn{background:var(--paper);border:1px dashed var(--line);color:var(--muted);border-radius:999px;padding:.45rem .85rem;font-size:.82rem;font-weight:600;display:inline-flex;gap:.35rem;align-items:center}
+    .add-btn:hover{border-color:var(--plum3);color:var(--plum);border-style:solid}
+    .rt-toolbar{display:flex;gap:.3rem;margin-bottom:.4rem}
+    .rt-btn{background:#faf8f4;border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:.25rem .55rem;font-size:.85rem;line-height:1;min-width:30px;font-weight:600}
+    .rt-btn:hover{border-color:var(--plum3);color:var(--plum)}
+    .insert-bar{height:16px;display:flex;align-items:center;justify-content:center;position:relative}
+    .insert-line{width:100%;display:flex;align-items:center;justify-content:center;color:transparent;font-weight:700;font-size:.8rem}
+    .insert-bar:hover .insert-line{color:var(--plum3)}
+    .insert-bar:hover .insert-line:before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line);z-index:0}
+    .insert-line span{position:relative;z-index:1;background:var(--paper);padding:0 .4rem}
+    .insert-opts{display:flex;gap:.3rem;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.22rem;box-shadow:var(--shadow);z-index:5}
+    .insert-opts button{background:transparent;color:var(--muted);padding:.26rem .6rem;font-size:.77rem;font-weight:600;border-radius:999px}
+    .insert-opts button:hover{background:var(--mint);color:var(--plum)}
+    /* Önizleme */
+    .pv-overlay{position:fixed;inset:0;z-index:60;background:var(--cream);overflow:auto}
+    .pv-bar{position:sticky;top:0;background:rgba(248,244,238,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line2);padding:.8rem 1.4rem;display:flex;align-items:center;gap:1rem}
+    .pv-article{max-width:720px;margin:0 auto;padding:2.4rem 1.4rem 4rem}
+    .pv-date{text-align:center;font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--terra);font-weight:700;margin-bottom:.8rem}
+    .pv-article h1{font-family:Fraunces,serif;font-weight:500;font-size:2.3rem;text-align:center;line-height:1.12;margin:0 0 1.4rem}
+    .pv-cover{width:100%;max-width:420px;display:block;margin:0 auto 2rem;border-radius:16px}
+    .pv-article h2{font-family:Fraunces,serif;font-weight:500;font-size:1.5rem;color:#8a7563;margin:2.2rem 0 .6rem}
+    .pv-article p{line-height:1.9;color:#3a3346;margin:0 0 1.1rem}
+    .pv-article ul{margin:0 0 1.1rem 1.2rem;line-height:1.85}
+    .pv-article a{color:var(--plum);text-decoration:underline}
+    .pv-img{width:100%;border-radius:14px;margin:1.5rem 0}
+
+    .drop{border:1.5px dashed var(--line);border-radius:12px;padding:1rem;text-align:center;color:var(--muted);font-size:.85rem;cursor:pointer;transition:.15s}
+    .drop:hover,.drop.over{border-color:var(--plum3);background:var(--mint)}
+    .img-prev{width:100%;border-radius:10px;margin-top:.6rem;display:block}
+    .img-prev-sm{max-width:160px}
+
+    /* Liste / çift / checkbox alanları (ekip & hizmet editörleri) */
+    .list-row{display:flex;gap:.4rem;align-items:flex-start;margin-bottom:.45rem}
+    .list-row>input,.list-row>textarea{flex:1;min-width:0}
+    .list-ctrls{display:flex;gap:.2rem;flex-shrink:0}
+    .pair-row{border:1px solid var(--line2);border-radius:11px;padding:.75rem;margin-bottom:.6rem;background:#faf8f4}
+    .pair-row>input{margin-bottom:.4rem}
+    .pair-head{display:flex;align-items:center;margin-bottom:.5rem}
+    .checks{display:flex;flex-direction:column;gap:.45rem}
+    .check{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--ink);text-transform:none;letter-spacing:0;font-weight:500;margin:0}
+    .check input[type=checkbox]{width:auto;margin:0;flex-shrink:0}
+    .settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;align-items:start}
+
+    /* Talepler (leads) */
+    .sb-badge{margin-left:auto;background:#d9534f;color:#fff;border-radius:999px;font-size:.62rem;font-weight:700;padding:.08rem .42rem;min-width:18px;text-align:center;line-height:1.55}
+    .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+    .chip{background:var(--paper);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:.35rem .8rem;font-size:.82rem;font-weight:600}
+    .chip.on{background:var(--plum);color:#fff;border-color:var(--plum)}
+    .lead-list{display:flex;flex-direction:column;gap:.7rem}
+    .lead-card{background:var(--paper);border:1px solid var(--line2);border-radius:12px;padding:1rem 1.1rem}
+    .lead-head{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+    .lead-name{display:flex;align-items:center;gap:.5rem;font-size:1.02rem}
+    .lead-date{font-size:.78rem;white-space:nowrap}
+    .lead-meta{margin-top:.35rem;font-size:.88rem;color:var(--muted)}
+    .lead-meta a{color:var(--plum)}
+    .lead-msg{margin:.6rem 0 0;font-size:.92rem;line-height:1.6;white-space:pre-wrap;color:var(--ink)}
+    .lead-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;margin-top:.85rem}
+    .lead-note{display:flex;gap:.4rem;margin-top:.6rem}
+    .lead-note input{flex:1}
+    .lead-st{font-size:.7rem;font-weight:700;padding:.14rem .55rem;border-radius:999px}
+    .st-new{background:#fde6cf;color:#8a5316}
+    .st-contacted{background:#d7e9ff;color:#1f4d8a}
+    .st-closed{background:#dbeadd;color:#2f6b3f}
+
+    /* Toasts */
+    .toasts{position:fixed;top:1rem;right:1rem;z-index:50;display:flex;flex-direction:column;gap:.55rem}
+    .toast{padding:.7rem 1rem;border-radius:11px;box-shadow:var(--shadow);font-size:.88rem;font-weight:500;min-width:220px;color:#fff;animation:slidein .2s ease}
+    .toast.ok{background:#15706a}
+    .toast.err{background:#b3261e}
+    .toast.info{background:var(--plum)}
+    @keyframes slidein{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
+
+    /* Login */
+    .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.4rem;background:linear-gradient(160deg,var(--cream),var(--mint))}
+
+    /* ===== Responsive ===== */
+    /* Tablet: editör sağ paneli alta iner */
+    @media(max-width:880px){
+      .ed-grid{grid-template-columns:1fr}
+      .content{padding:1.3rem 1.4rem 2.6rem}
+      .ed-bar{padding:.8rem 1.4rem}
+    }
+    /* Telefon / küçük tablet: sidebar hamburger ile açılan kayan panel (drawer) olur */
+    @media(max-width:760px){
+      .layout{flex-direction:column;min-height:100dvh}
+      .mobilebar{display:flex}
+      .sb-backdrop{display:block}
+      .sidebar{position:fixed;top:0;left:0;height:100dvh;width:min(82vw,264px);transform:translateX(-100%);transition:transform .22s ease;z-index:60;box-shadow:0 0 44px rgba(20,14,30,.45)}
+      .sidebar.open{transform:none}
+      .sb-close{display:inline-flex}
+      .ed-bar{position:static;padding:.7rem 1rem;flex-wrap:wrap;row-gap:.55rem}
+      .ed-bar>div:last-child{flex-wrap:wrap;justify-content:flex-end}
+      .content{padding:1rem 1rem 2.4rem}
+      .page-head{flex-wrap:wrap;gap:.7rem}
+      .page-head h1{font-size:1.5rem}
+      .btn-icon{width:38px;height:38px}
+      .ed-main .title-in{font-size:1.55rem}
+      /* blok arası ekleme çubuğu dokunmada görünür/dokunulabilir olsun */
+      .insert-bar{height:28px}
+      .insert-line{color:#c7bdd6}
+    }
+    /* Dar telefon: tablo sadeleşir, toast + login sığar */
+    @media(max-width:560px){
+      .col-hide{display:none}
+      th,td{padding:.7rem .6rem;font-size:.86rem}
+      .thumb{width:40px;height:40px}
+      .toolbar{flex-wrap:wrap}
+      .search{max-width:100%}
+      .toasts{left:.7rem;right:.7rem}
+      .toast{min-width:0;width:100%}
+      .ed-bar .save-state{display:none}
+      .rt-btn{min-width:36px;padding:.35rem .6rem}
+      .pv-article{padding:1.6rem 1.1rem 3rem}
+      .pv-article h1{font-size:1.8rem}
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module">
+    import htm from "https://unpkg.com/htm@3.1.1/dist/htm.module.js";
+    const html = htm.bind(React.createElement);
+    const { useState, useEffect, useRef, useCallback } = React;
+    const API = window.location.origin;
+
+    /* ---------- helpers ---------- */
+    function authHeaders(extra) {
+      const t = localStorage.getItem("token");
+      const h = Object.assign({}, extra || {});
+      if (t) h["Authorization"] = "Bearer " + t;
+      return h;
+    }
+    async function api(path, opts) {
+      opts = opts || {};
+      const headers = authHeaders(opts.headers);
+      if (opts.body && !(opts.body instanceof FormData)) headers["Content-Type"] = "application/json; charset=utf-8";
+      const res = await fetch(API + path, Object.assign({}, opts, { headers }));
+      if (res.status === 401) { localStorage.removeItem("token"); location.reload(); }
+      return res;
+    }
+    async function uploadFile(file) {
+      const fd = new FormData(); fd.append("file", file);
+      const res = await api("/api/admin/uploads", { method: "POST", body: fd });
+      if (!res.ok) throw new Error("upload");
+      return (await res.json()).url;
+    }
+    const TR = { "ç":"c","ğ":"g","ı":"i","ö":"o","ş":"s","ü":"u","İ":"i","Ç":"c","Ğ":"g","Ö":"o","Ş":"s","Ü":"u" };
+    function slugify(s) {
+      return (s || "").replace(/[çğıöşüİÇĞÖŞÜ]/g, c => TR[c] || c).toLowerCase()
+        .normalize("NFD").replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    }
+    const ICONS = ["leaf","screen","heart","child","person","spark","sun"];
+    const KIND_LABEL = { p: "Paragraf", h2: "Ara başlık", ul: "Madde listesi", image: "Görsel" };
+
+    function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+    function inlineMd(s){
+      let t = esc(s);
+      t = t.replace(/\*\*([^*]+?)\*\*/g, "<strong>$1</strong>");
+      t = t.replace(/\*([^*]+?)\*/g, "<em>$1</em>");
+      t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      return t;
+    }
+    function mdToHtml(s){ return inlineMd(s).replace(/\n/g, "<br/>"); }
+
+    function blocksFromApi(content) {
+      return (content || []).map(b => {
+        if (b.h2 != null) return { kind: "h2", value: b.h2 };
+        if (b.ul != null) return { kind: "ul", value: (b.ul || []).join("\n") };
+        if (b.image != null) return { kind: "image", value: b.image };
+        return { kind: "p", value: b.p || "" };
+      });
+    }
+    function blocksToApi(blocks) {
+      return blocks.map(b => {
+        if (b.kind === "h2") return { h2: b.value };
+        if (b.kind === "ul") return { ul: b.value.split("\n").map(s => s.trim()).filter(Boolean) };
+        if (b.kind === "image") return { image: b.value };
+        return { p: b.value };
+      });
+    }
+    function readingTime(f, blocks) {
+      const txt = (f.excerpt || "") + " " + blocks.map(b => b.value).join(" ");
+      const words = txt.trim().split(/\s+/).filter(Boolean).length;
+      return Math.max(1, Math.round(words / 180));
+    }
+    const autoGrow = e => { const el = e.target; el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; };
+
+    /* ---------- icons ---------- */
+    const Ic = {
+      blog: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>`,
+      team: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><path d="M16 6a3 3 0 0 1 0 6M21 20c0-2-1-4-3-4.5"/></svg>`,
+      services: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>`,
+      faq: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7M12 17h.01"/></svg>`,
+      settings: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4 12H1M23 12h-3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>`,
+      search: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>`,
+      back: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>`,
+      up: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 15l6-6 6 6"/></svg>`,
+      down: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>`,
+      trash: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></svg>`,
+      menu: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`,
+      close: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
+      inbox: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 13h4l1.5 3h5L16 13h4"/><path d="M4 13V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7"/><path d="M4 13v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>`,
+    };
+
+    /* ---------- Toasts ---------- */
+    function useToasts() {
+      const [items, setItems] = useState([]);
+      const push = useCallback((type, msg) => {
+        const id = Math.random().toString(36).slice(2);
+        setItems(x => x.concat([{ id, type, msg }]));
+        setTimeout(() => setItems(x => x.filter(t => t.id !== id)), 3500);
+      }, []);
+      const node = html`<div class="toasts">${items.map(t => html`<div key=${t.id} class="toast ${t.type}">${t.msg}</div>`)}</div>`;
+      return [push, node];
+    }
+
+    /* ---------- Login ---------- */
+    function Login({ onLogin, toast }) {
+      const [u, setU] = useState("admin"); const [p, setP] = useState(""); const [busy, setBusy] = useState(false);
+      async function submit(e) {
+        e.preventDefault(); setBusy(true);
+        try {
+          const res = await fetch(API + "/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: u, password: p }) });
+          if (!res.ok) { toast("err", "Kullanıcı adı veya şifre hatalı."); setBusy(false); return; }
+          localStorage.setItem("token", (await res.json()).token); onLogin();
+        } catch { toast("err", "Bağlantı hatası."); setBusy(false); }
+      }
+      return html`<div class="login"><form class="card card-pad" style=${{ width: "min(370px, 100%)" }} onSubmit=${submit}>
+        <div style=${{ display: "flex", alignItems: "center", gap: ".6rem", marginBottom: "1.3rem" }}>
+          <div class="sb-logo">H</div>
+          <div><div class="serif" style=${{ fontSize: "1.2rem" }}>Hamle Psikoloji</div><div class="muted" style=${{ fontSize: ".72rem", letterSpacing: ".18em", textTransform: "uppercase" }}>Yönetim Paneli</div></div>
+        </div>
+        <div class="field"><label>Kullanıcı adı</label><input value=${u} onChange=${e => setU(e.target.value)} /></div>
+        <div class="field"><label>Şifre</label><input type="password" value=${p} autoFocus onChange=${e => setP(e.target.value)} /></div>
+        <button class="btn" style=${{ width: "100%", marginTop: ".3rem" }} disabled=${busy}>${busy ? "Giriş yapılıyor…" : "Giriş yap"}</button>
+      </form></div>`;
+    }
+
+    /* ---------- Sidebar ---------- */
+    function Sidebar({ active, onSelect, onLogout, open, onClose, leadCount }) {
+      const items = [
+        { key: "blog", label: "Blog", icon: Ic.blog, on: true },
+        { key: "leads", label: "Talepler", icon: Ic.inbox, on: true, badge: leadCount },
+        { key: "team", label: "Ekip", icon: Ic.team, on: true },
+        { key: "services", label: "Hizmetler", icon: Ic.services, on: true },
+        { key: "faq", label: "S.S.S.", icon: Ic.faq, on: true },
+        { key: "settings", label: "Ayarlar", icon: Ic.settings, on: true },
+      ];
+      return html`<aside class="sidebar ${open ? "open" : ""}">
+        <div class="sb-brand"><div class="sb-logo">H</div><div><b>Hamle</b><br/><span>Psikoloji</span></div>
+          <button class="sb-close btn-icon" onClick=${onClose} aria-label="Menüyü kapat">${Ic.close}</button></div>
+        <nav class="sb-nav">
+          ${items.map(it => html`<button key=${it.key} class="sb-item ${active === it.key ? "active" : ""} ${it.on ? "" : "disabled"}" disabled=${!it.on} onClick=${it.on ? () => onSelect(it.key) : undefined}>
+            ${it.icon}<span>${it.label}</span>${!it.on && html`<span class="soon">yakında</span>`}${it.badge ? html`<span class="sb-badge">${it.badge}</span>` : ""}
+          </button>`)}
+        </nav>
+        <div class="sb-foot"><span class="who">admin</span><button class="btn-ghost btn-sm" onClick=${onLogout}>Çıkış</button></div>
+      </aside>`;
+    }
+
+    /* ---------- Blog list ---------- */
+    function BlogList({ onNew, onEdit, toast }) {
+      const [posts, setPosts] = useState(null); const [q, setQ] = useState("");
+      async function load() { const res = await api("/api/admin/posts"); if (res.ok) setPosts(await res.json()); else toast("err", "Yazılar yüklenemedi."); }
+      useEffect(() => { load(); }, []);
+      async function del(p) {
+        if (!confirm(`"${p.title}" silinsin mi?`)) return;
+        const res = await api("/api/admin/posts/" + p.id, { method: "DELETE" });
+        if (res.ok) { toast("ok", "Yazı silindi."); load(); } else toast("err", "Silinemedi.");
+      }
+      const filtered = (posts || []).filter(p => (p.title + " " + (p.category || "")).toLowerCase().includes(q.toLowerCase()));
+      return html`<div>
+        <div class="page-head"><h1>Blog yazıları</h1><button class="btn" onClick=${onNew}>+ Yeni yazı</button></div>
+        <div class="toolbar"><div class="search">${Ic.search}<input placeholder="Ara…" value=${q} onChange=${e => setQ(e.target.value)} /></div>
+          <span class="muted" style=${{ fontSize: ".85rem" }}>${posts ? filtered.length + " yazı" : ""}</span></div>
+        <div class="card" style=${{ overflow: "hidden" }}>
+          ${posts === null ? html`<div class="empty">Yükleniyor…</div>`
+            : filtered.length === 0 ? html`<div class="empty">${q ? "Eşleşen yazı yok." : "Henüz yazı yok. Sağ üstten yeni yazı ekleyin."}</div>`
+            : html`<table><thead><tr><th>Başlık</th><th class="col-hide">Kategori</th><th class="col-hide">Tarih</th><th></th></tr></thead><tbody>
+              ${filtered.map(p => html`<tr key=${p.id}>
+                <td><div class="row-title">${p.cover ? html`<img class="thumb" src=${p.cover} alt="" />` : html`<div class="thumb"></div>`}<div><b>${p.title}</b><div class="muted" style=${{ fontSize: ".8rem" }}>/${p.slug}</div></div></div></td>
+                <td class="col-hide">${p.category ? html`<span class="tag">${p.category}</span>` : ""}</td>
+                <td class="col-hide muted">${p.date || ""}</td>
+                <td><div class="actions"><button class="btn-ghost btn-sm" onClick=${() => onEdit(p)}>Düzenle</button><button class="btn-danger btn-sm" onClick=${() => del(p)}>Sil</button></div></td>
+              </tr>`)}
+            </tbody></table>`}
+        </div>
+      </div>`;
+    }
+
+    /* ---------- Image drop ---------- */
+    function ImageInput({ value, onChange, toast, small }) {
+      const [over, setOver] = useState(false); const inp = useRef();
+      async function handle(file) { if (!file) return; try { onChange(await uploadFile(file)); toast("ok", "Görsel yüklendi."); } catch { toast("err", "Görsel yüklenemedi."); } }
+      return html`<div>
+        <div class="drop ${over ? "over" : ""}" onClick=${() => inp.current.click()}
+          onDragOver=${e => { e.preventDefault(); setOver(true); }} onDragLeave=${() => setOver(false)}
+          onDrop=${e => { e.preventDefault(); setOver(false); handle(e.dataTransfer.files[0]); }}>
+          ${value ? "Değiştirmek için tıklayın / bırakın" : "Görsel yükleyin — tıklayın veya sürükleyin"}
+        </div>
+        <input ref=${inp} type="file" accept="image/*" style=${{ display: "none" }} onChange=${e => handle(e.target.files[0])} />
+        <input style=${{ marginTop: ".5rem", fontSize: ".82rem" }} value=${value || ""} onChange=${e => onChange(e.target.value)} placeholder="veya URL yapıştırın" />
+        ${value && html`<img class="img-prev ${small ? "img-prev-sm" : ""}" src=${value} alt="" />`}
+      </div>`;
+    }
+
+    /* ---------- Rich text (paragraf) ---------- */
+    function RichText({ value, onChange, placeholder }) {
+      const ref = useRef();
+      const grow = () => { const el = ref.current; if (el) { el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; } };
+      useEffect(() => { grow(); }, []);
+      function wrap(mark, ph) {
+        const el = ref.current; const s = el.selectionStart, e = el.selectionEnd;
+        const sel = value.slice(s, e) || ph;
+        const next = value.slice(0, s) + mark + sel + mark + value.slice(e);
+        onChange(next);
+        requestAnimationFrame(() => { el.focus(); const p = s + mark.length; el.setSelectionRange(p, p + sel.length); grow(); });
+      }
+      function link() {
+        const el = ref.current; const s = el.selectionStart, e = el.selectionEnd;
+        const url = prompt("Bağlantı adresi (https://…)"); if (!url) return;
+        const sel = value.slice(s, e) || "bağlantı";
+        onChange(value.slice(0, s) + "[" + sel + "](" + url + ")" + value.slice(e));
+        requestAnimationFrame(grow);
+      }
+      return html`<div>
+        <div class="rt-toolbar">
+          <button type="button" class="rt-btn" title="Kalın" onMouseDown=${e => { e.preventDefault(); wrap("**", "kalın"); }}><b>B</b></button>
+          <button type="button" class="rt-btn" title="İtalik" onMouseDown=${e => { e.preventDefault(); wrap("*", "italik"); }}><i>I</i></button>
+          <button type="button" class="rt-btn" title="Bağlantı" onMouseDown=${e => { e.preventDefault(); link(); }}>🔗</button>
+        </div>
+        <textarea ref=${ref} rows="3" value=${value} onInput=${grow} onChange=${e => onChange(e.target.value)} placeholder=${placeholder}></textarea>
+      </div>`;
+    }
+
+    /* ---------- Blok arası ekleme ---------- */
+    function InsertBar({ onInsert }) {
+      const [open, setOpen] = useState(false);
+      const pick = (k) => { setOpen(false); onInsert(k); };
+      return html`<div class="insert-bar" onMouseEnter=${() => setOpen(true)} onMouseLeave=${() => setOpen(false)}>
+        ${open
+          ? html`<div class="insert-opts">
+              <button onClick=${() => pick("p")}>Paragraf</button>
+              <button onClick=${() => pick("h2")}>Başlık</button>
+              <button onClick=${() => pick("ul")}>Liste</button>
+              <button onClick=${() => pick("image")}>Görsel</button>
+            </div>`
+          : html`<div class="insert-line" onClick=${() => setOpen(true)}><span>+</span></div>`}
+      </div>`;
+    }
+
+    /* ---------- Önizleme ---------- */
+    function Preview({ f, blocks, onClose }) {
+      return html`<div class="pv-overlay">
+        <div class="pv-bar"><button class="btn-ghost btn-sm" onClick=${onClose}>← Düzenlemeye dön</button><b class="serif">Önizleme</b></div>
+        <article class="pv-article">
+          <div class="pv-date">${f.date}${f.category ? " · " + f.category : ""}</div>
+          <h1>${f.title || "Başlık"}</h1>
+          ${f.cover && html`<img class="pv-cover" src=${f.cover} alt="" />`}
+          ${blocks.map((b, i) =>
+            b.kind === "h2" ? html`<h2 key=${i}>${b.value}</h2>`
+              : b.kind === "ul" ? html`<ul key=${i}>${b.value.split("\n").map(s => s.trim()).filter(Boolean).map((li, j) => html`<li key=${j} dangerouslySetInnerHTML=${{ __html: inlineMd(li) }}></li>`)}</ul>`
+              : b.kind === "image" ? (b.value ? html`<img key=${i} class="pv-img" src=${b.value} alt="" />` : null)
+              : html`<p key=${i} dangerouslySetInnerHTML=${{ __html: mdToHtml(b.value) }}></p>`)}
+        </article>
+      </div>`;
+    }
+
+    /* ---------- Blog editor ---------- */
+    function BlogEditor({ post, onDone, onCancel, toast }) {
+      const draftKey = "hamle:draft:" + (post ? post.id : "new");
+      const init = () => {
+        if (!post) { try { const d = JSON.parse(localStorage.getItem(draftKey)); if (d && d.f) return d; } catch {} }
+        return {
+          f: { slug: post?.slug || "", title: post?.title || "", excerpt: post?.excerpt || "",
+               date: post?.date || new Date().toISOString().slice(0, 10), category: post?.category || "",
+               icon: post?.icon || "leaf", cover: post?.cover || "", authorSlug: post?.authorSlug || "" },
+          blocks: blocksFromApi(post?.content),
+        };
+      };
+      const initial = init();
+      const [f, setF] = useState(initial.f);
+      const [blocks, setBlocks] = useState(initial.blocks);
+      const [slugTouched, setSlugTouched] = useState(!!post || !!initial.f.slug);
+      const [busy, setBusy] = useState(false);
+      const [saved, setSaved] = useState("");
+      const [preview, setPreview] = useState(false);
+      const set = (k, v) => setF(s => Object.assign({}, s, { [k]: v }));
+
+      // başlık -> slug otomatik
+      useEffect(() => { if (!slugTouched) setF(s => Object.assign({}, s, { slug: slugify(s.title) })); }, [f.title, slugTouched]);
+
+      // taslak otomatik kaydet
+      useEffect(() => {
+        const id = setTimeout(() => {
+          localStorage.setItem(draftKey, JSON.stringify({ f, blocks }));
+          const d = new Date(); setSaved(`Taslak kaydedildi · ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`);
+        }, 800);
+        return () => clearTimeout(id);
+      }, [f, blocks]);
+
+      function addBlock(kind) { setBlocks(b => b.concat([{ kind, value: "" }])); }
+      function insertBlock(index, kind) { setBlocks(b => { const a = b.slice(); a.splice(index, 0, { kind, value: "" }); return a; }); }
+      function updBlock(i, v) { setBlocks(b => b.map((x, j) => j === i ? Object.assign({}, x, { value: v }) : x)); }
+      function moveBlock(i, d) { setBlocks(b => { const a = b.slice(); const j = i + d; if (j < 0 || j >= a.length) return a; [a[i], a[j]] = [a[j], a[i]]; return a; }); }
+      function delBlock(i) { setBlocks(b => b.filter((_, j) => j !== i)); }
+
+      async function save(close) {
+        if (!f.title.trim() || !f.slug.trim()) { toast("err", "Başlık ve slug zorunlu."); return; }
+        setBusy(true);
+        const body = JSON.stringify(Object.assign({}, f, { content: blocksToApi(blocks) }));
+        const res = post ? await api("/api/admin/posts/" + post.id, { method: "PUT", body }) : await api("/api/admin/posts", { method: "POST", body });
+        setBusy(false);
+        if (res.ok) { localStorage.removeItem(draftKey); toast("ok", post ? "Yazı güncellendi." : "Yazı oluşturuldu."); onDone(); }
+        else { const e = await res.json().catch(() => ({})); toast("err", "Kaydedilemedi. " + (e.message || "Alanları kontrol edin.")); }
+      }
+
+      const autoGrow = e => { e.target.style.height = "auto"; e.target.style.height = e.target.scrollHeight + "px"; };
+
+      return html`<div>
+        ${preview && html`<${Preview} f=${f} blocks=${blocks} onClose=${() => setPreview(false)} />`}
+        <div class="ed-bar">
+          <div class="left"><button class="btn-ghost btn-icon" onClick=${onCancel} title="Geri">${Ic.back}</button>
+            <div style=${{ minWidth: 0 }}><div class="serif" style=${{ fontSize: "1.05rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>${post ? "Yazıyı düzenle" : "Yeni yazı"}</div>
+              <div class="save-state">${saved || "Değişiklikler otomatik taslağa alınır"}</div></div></div>
+          <div style=${{ display: "flex", gap: ".5rem" }}>
+            <button class="btn-ghost" onClick=${() => setPreview(true)}>Önizle</button>
+            <button class="btn-ghost" onClick=${() => save(false)} disabled=${busy}>Kaydet</button>
+            <button class="btn" onClick=${() => save(true)} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet & kapat"}</button>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="ed-grid">
+            <div class="ed-main card card-pad">
+              <input class="title-in" placeholder="Yazı başlığı" value=${f.title} onChange=${e => set("title", e.target.value)} />
+              <textarea class="excerpt-in" rows="2" placeholder="Kısa özet (liste ve SEO için)" value=${f.excerpt} onInput=${autoGrow} onChange=${e => set("excerpt", e.target.value)}></textarea>
+              <div class="divider"></div>
+
+              ${blocks.length === 0 && html`<div class="muted" style=${{ padding: ".5rem 0 1rem" }}>İçerik ekleyerek başlayın ↓</div>`}
+              ${blocks.map((b, i) => html`<${React.Fragment} key=${i}>
+                ${i === 0 && html`<${InsertBar} onInsert=${k => insertBlock(0, k)} />`}
+                <div class="block">
+                  <div class="block-head"><span class="block-kind">${KIND_LABEL[b.kind]}</span>
+                    <div class="block-ctrls">
+                      <button class="btn-ghost btn-icon" onClick=${() => moveBlock(i, -1)} title="Yukarı">${Ic.up}</button>
+                      <button class="btn-ghost btn-icon" onClick=${() => moveBlock(i, 1)} title="Aşağı">${Ic.down}</button>
+                      <button class="btn-danger btn-icon" onClick=${() => delBlock(i)} title="Sil">${Ic.trash}</button>
+                    </div></div>
+                  ${b.kind === "h2" ? html`<input value=${b.value} onChange=${e => updBlock(i, e.target.value)} placeholder="Ara başlık" />`
+                    : b.kind === "ul" ? html`<textarea rows="3" value=${b.value} onInput=${autoGrow} onChange=${e => updBlock(i, e.target.value)} placeholder="Her satır bir madde (kalın için **metin**)"></textarea>`
+                    : b.kind === "image" ? html`<${ImageInput} value=${b.value} onChange=${v => updBlock(i, v)} toast=${toast} small=${true} />`
+                    : html`<${RichText} value=${b.value} onChange=${v => updBlock(i, v)} placeholder="Paragraf metni… (**kalın**, *italik*, [bağlantı](url))" />`}
+                </div>
+                <${InsertBar} onInsert=${k => insertBlock(i + 1, k)} />
+              </${React.Fragment}>`)}
+
+              <div class="add-row">
+                <button class="add-btn" onClick=${() => addBlock("p")}>+ Paragraf</button>
+                <button class="add-btn" onClick=${() => addBlock("h2")}>+ Ara başlık</button>
+                <button class="add-btn" onClick=${() => addBlock("ul")}>+ Liste</button>
+                <button class="add-btn" onClick=${() => addBlock("image")}>+ Görsel</button>
+              </div>
+            </div>
+
+            <div class="ed-side">
+              <div class="card card-pad side-card">
+                <h3>Yayın</h3>
+                <div class="field"><label>Slug (URL)</label><input value=${f.slug} onChange=${e => { setSlugTouched(true); set("slug", e.target.value); }} placeholder="otomatik" /></div>
+                <div class="field"><label>Kategori</label><input value=${f.category} onChange=${e => set("category", e.target.value)} placeholder="Kaygı, İlişkiler…" /></div>
+                <div class="field"><label>Tarih</label><input type="date" value=${f.date} onChange=${e => set("date", e.target.value)} /></div>
+                <div class="field"><label>Hover ikonu</label><select value=${f.icon} onChange=${e => set("icon", e.target.value)}>${ICONS.map(i => html`<option key=${i} value=${i}>${i}</option>`)}</select></div>
+                <div class="field" style=${{ margin: 0 }}><label>Yazar slug</label><input value=${f.authorSlug} onChange=${e => set("authorSlug", e.target.value)} placeholder="uzman-bir" /></div>
+                <div class="muted" style=${{ fontSize: ".8rem", marginTop: ".8rem" }}>≈ ${readingTime(f, blocks)} dk okuma</div>
+              </div>
+              <div class="card card-pad side-card">
+                <h3>Kapak görseli</h3>
+                <${ImageInput} value=${f.cover} onChange=${v => set("cover", v)} toast=${toast} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ---------- Ortak alan bileşenleri ---------- */
+    function ListField({ label, items, onChange, placeholder, multiline }) {
+      const arr = items || [];
+      const upd = (i, v) => onChange(arr.map((x, j) => j === i ? v : x));
+      const add = () => onChange(arr.concat([""]));
+      const del = (i) => onChange(arr.filter((_, j) => j !== i));
+      const move = (i, d) => { const a = arr.slice(); const j = i + d; if (j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; onChange(a); };
+      return html`<div class="field">
+        ${label && html`<label>${label}</label>`}
+        ${arr.map((v, i) => html`<div key=${i} class="list-row">
+          ${multiline
+            ? html`<textarea rows="2" value=${v} onInput=${autoGrow} onChange=${e => upd(i, e.target.value)} placeholder=${placeholder}></textarea>`
+            : html`<input value=${v} onChange=${e => upd(i, e.target.value)} placeholder=${placeholder} />`}
+          <div class="list-ctrls">
+            <button class="btn-ghost btn-icon" onClick=${() => move(i, -1)} title="Yukarı">${Ic.up}</button>
+            <button class="btn-ghost btn-icon" onClick=${() => move(i, 1)} title="Aşağı">${Ic.down}</button>
+            <button class="btn-danger btn-icon" onClick=${() => del(i)} title="Sil">${Ic.trash}</button>
+          </div>
+        </div>`)}
+        <button class="add-btn" onClick=${add}>+ ${placeholder || "Satır"} ekle</button>
+      </div>`;
+    }
+
+    function PairListField({ label, items, onChange, k1, k2, ph1, ph2 }) {
+      const arr = items || [];
+      const upd = (i, key, v) => onChange(arr.map((x, j) => j === i ? Object.assign({}, x, { [key]: v }) : x));
+      const add = () => onChange(arr.concat([{ [k1]: "", [k2]: "" }]));
+      const del = (i) => onChange(arr.filter((_, j) => j !== i));
+      const move = (i, d) => { const a = arr.slice(); const j = i + d; if (j < 0 || j >= a.length) return; [a[i], a[j]] = [a[j], a[i]]; onChange(a); };
+      return html`<div class="field">
+        ${label && html`<label>${label}</label>`}
+        ${arr.map((it, i) => html`<div key=${i} class="pair-row">
+          <div class="pair-head"><span class="block-kind">#${i + 1}</span>
+            <div class="block-ctrls" style=${{ opacity: 1, marginLeft: "auto" }}>
+              <button class="btn-ghost btn-icon" onClick=${() => move(i, -1)} title="Yukarı">${Ic.up}</button>
+              <button class="btn-ghost btn-icon" onClick=${() => move(i, 1)} title="Aşağı">${Ic.down}</button>
+              <button class="btn-danger btn-icon" onClick=${() => del(i)} title="Sil">${Ic.trash}</button>
+            </div></div>
+          <input value=${it[k1] || ""} onChange=${e => upd(i, k1, e.target.value)} placeholder=${ph1} />
+          <textarea rows="2" value=${it[k2] || ""} onInput=${autoGrow} onChange=${e => upd(i, k2, e.target.value)} placeholder=${ph2}></textarea>
+        </div>`)}
+        <button class="add-btn" onClick=${add}>+ ekle</button>
+      </div>`;
+    }
+
+    function ServiceChecks({ services, selected, onChange }) {
+      const sel = selected || [];
+      const toggle = (slug) => onChange(sel.includes(slug) ? sel.filter(s => s !== slug) : sel.concat([slug]));
+      if (!services || !services.length) return html`<div class="muted" style=${{ fontSize: ".82rem" }}>Önce hizmet ekleyin; sonra buradan eşleyebilirsiniz.</div>`;
+      return html`<div class="checks">
+        ${services.map(s => html`<label key=${s.slug} class="check">
+          <input type="checkbox" checked=${sel.includes(s.slug)} onChange=${() => toggle(s.slug)} /> ${s.shortTitle || s.title}
+        </label>`)}
+      </div>`;
+    }
+
+    /* ---------- Ekip (uzmanlar) ---------- */
+    function ExpertList({ onNew, onEdit, toast }) {
+      const [items, setItems] = useState(null); const [q, setQ] = useState("");
+      async function load() { const res = await api("/api/admin/experts"); if (res.ok) setItems(await res.json()); else toast("err", "Uzmanlar yüklenemedi."); }
+      useEffect(() => { load(); }, []);
+      async function del(x) {
+        if (!confirm(`"${x.name}" silinsin mi?`)) return;
+        const res = await api("/api/admin/experts/" + x.id, { method: "DELETE" });
+        if (res.ok) { toast("ok", "Uzman silindi."); load(); } else toast("err", "Silinemedi.");
+      }
+      const filtered = (items || []).filter(x => (x.name + " " + (x.title || "")).toLowerCase().includes(q.toLowerCase()));
+      return html`<div>
+        <div class="page-head"><h1>Ekip</h1><button class="btn" onClick=${onNew}>+ Yeni uzman</button></div>
+        <div class="toolbar"><div class="search">${Ic.search}<input placeholder="Ara…" value=${q} onChange=${e => setQ(e.target.value)} /></div>
+          <span class="muted" style=${{ fontSize: ".85rem" }}>${items ? filtered.length + " uzman" : ""}</span></div>
+        <div class="card" style=${{ overflow: "hidden" }}>
+          ${items === null ? html`<div class="empty">Yükleniyor…</div>`
+            : filtered.length === 0 ? html`<div class="empty">${q ? "Eşleşen uzman yok." : "Henüz uzman yok. Sağ üstten yeni uzman ekleyin."}</div>`
+            : html`<table><thead><tr><th>Uzman</th><th class="col-hide">Unvan</th><th></th></tr></thead><tbody>
+              ${filtered.map(x => html`<tr key=${x.id}>
+                <td><div class="row-title">${x.photo ? html`<img class="thumb" src=${x.photo} alt="" />` : html`<div class="thumb"></div>`}<div><b>${x.name}</b><div class="muted" style=${{ fontSize: ".8rem" }}>/${x.slug}</div></div></div></td>
+                <td class="col-hide muted">${x.title || ""}</td>
+                <td><div class="actions"><button class="btn-ghost btn-sm" onClick=${() => onEdit(x)}>Düzenle</button><button class="btn-danger btn-sm" onClick=${() => del(x)}>Sil</button></div></td>
+              </tr>`)}
+            </tbody></table>`}
+        </div>
+      </div>`;
+    }
+
+    function ExpertEditor({ item, onDone, onCancel, toast }) {
+      const [f, setF] = useState({
+        slug: item?.slug || "", name: item?.name || "", title: item?.title || "", credentials: item?.credentials || "",
+        photo: item?.photo || "", approach: item?.approach || "", sortOrder: item?.sortOrder ?? 0,
+        specialties: item?.specialties || [], methods: item?.methods || [], serviceSlugs: item?.serviceSlugs || [],
+        education: item?.education || [], bio: item?.bio || [],
+      });
+      const [slugTouched, setSlugTouched] = useState(!!item);
+      const [busy, setBusy] = useState(false);
+      const [services, setServices] = useState([]);
+      const set = (k, v) => setF(s => Object.assign({}, s, { [k]: v }));
+      useEffect(() => { if (!slugTouched) setF(s => Object.assign({}, s, { slug: slugify(s.name) })); }, [f.name, slugTouched]);
+      useEffect(() => { (async () => { const res = await api("/api/services"); if (res.ok) setServices(await res.json()); })(); }, []);
+      async function save() {
+        if (!f.name.trim() || !f.slug.trim()) { toast("err", "Ad ve slug zorunlu."); return; }
+        setBusy(true);
+        const body = JSON.stringify(f);
+        const res = item ? await api("/api/admin/experts/" + item.id, { method: "PUT", body }) : await api("/api/admin/experts", { method: "POST", body });
+        setBusy(false);
+        if (res.ok) { toast("ok", item ? "Uzman güncellendi." : "Uzman oluşturuldu."); onDone(); }
+        else { const e = await res.json().catch(() => ({})); toast("err", "Kaydedilemedi. " + (e.message || "")); }
+      }
+      return html`<div>
+        <div class="ed-bar">
+          <div class="left"><button class="btn-ghost btn-icon" onClick=${onCancel} title="Geri">${Ic.back}</button>
+            <div style=${{ minWidth: 0 }}><div class="serif" style=${{ fontSize: "1.05rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>${item ? "Uzmanı düzenle" : "Yeni uzman"}</div></div></div>
+          <div style=${{ display: "flex", gap: ".5rem" }}>
+            <button class="btn" onClick=${save} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet"}</button>
+          </div>
+        </div>
+        <div class="content"><div class="ed-grid">
+          <div class="ed-main card card-pad">
+            <input class="title-in" placeholder="Ad Soyad" value=${f.name} onChange=${e => set("name", e.target.value)} />
+            <div class="field" style=${{ marginTop: ".7rem" }}><label>Unvan</label><input value=${f.title} onChange=${e => set("title", e.target.value)} placeholder="Uzman Klinik Psikolog" /></div>
+            <div class="field"><label>Kısa nitelik (kartta görünür)</label><input value=${f.credentials} onChange=${e => set("credentials", e.target.value)} placeholder="Klinik Psikolog · Yetişkin & Çift Terapisi" /></div>
+            <div class="field"><label>Yaklaşım (kartta öne çıkan cümle)</label><textarea rows="2" value=${f.approach} onInput=${autoGrow} onChange=${e => set("approach", e.target.value)} placeholder="Kısa, kişisel yaklaşım cümlesi"></textarea></div>
+            <div class="divider"></div>
+            <${ListField} label="Biyografi (her satır bir paragraf)" items=${f.bio} onChange=${v => set("bio", v)} placeholder="Paragraf" multiline=${true} />
+            <${ListField} label="Uzmanlık alanları" items=${f.specialties} onChange=${v => set("specialties", v)} placeholder="Alan" />
+            <${ListField} label="Kullandığı yöntemler" items=${f.methods} onChange=${v => set("methods", v)} placeholder="Yöntem" />
+            <${ListField} label="Eğitim & sertifikalar" items=${f.education} onChange=${v => set("education", v)} placeholder="Eğitim" />
+          </div>
+          <div class="ed-side">
+            <div class="card card-pad side-card"><h3>Yayın</h3>
+              <div class="field"><label>Slug (URL)</label><input value=${f.slug} onChange=${e => { setSlugTouched(true); set("slug", e.target.value); }} placeholder="otomatik" /></div>
+              <div class="field" style=${{ margin: 0 }}><label>Sıra (küçük önce)</label><input type="number" value=${f.sortOrder} onChange=${e => set("sortOrder", parseInt(e.target.value || "0", 10))} /></div>
+            </div>
+            <div class="card card-pad side-card"><h3>Fotoğraf</h3>
+              <${ImageInput} value=${f.photo} onChange=${v => set("photo", v)} toast=${toast} /></div>
+            <div class="card card-pad side-card"><h3>İlgili hizmetler</h3>
+              <${ServiceChecks} services=${services} selected=${f.serviceSlugs} onChange=${v => set("serviceSlugs", v)} /></div>
+          </div>
+        </div></div>
+      </div>`;
+    }
+
+    /* ---------- Hizmetler ---------- */
+    const SERVICE_ICONS = ["person", "heart", "child", "screen"];
+    const SERVICE_ILLOS = ["individual", "couples", "child", "online"];
+    function ServiceList({ onNew, onEdit, toast }) {
+      const [items, setItems] = useState(null); const [q, setQ] = useState("");
+      async function load() { const res = await api("/api/admin/services"); if (res.ok) setItems(await res.json()); else toast("err", "Hizmetler yüklenemedi."); }
+      useEffect(() => { load(); }, []);
+      async function del(x) {
+        if (!confirm(`"${x.title}" silinsin mi?`)) return;
+        const res = await api("/api/admin/services/" + x.id, { method: "DELETE" });
+        if (res.ok) { toast("ok", "Hizmet silindi."); load(); } else toast("err", "Silinemedi.");
+      }
+      const filtered = (items || []).filter(x => (x.title + " " + (x.shortTitle || "")).toLowerCase().includes(q.toLowerCase()));
+      return html`<div>
+        <div class="page-head"><h1>Hizmetler</h1><button class="btn" onClick=${onNew}>+ Yeni hizmet</button></div>
+        <div class="toolbar"><div class="search">${Ic.search}<input placeholder="Ara…" value=${q} onChange=${e => setQ(e.target.value)} /></div>
+          <span class="muted" style=${{ fontSize: ".85rem" }}>${items ? filtered.length + " hizmet" : ""}</span></div>
+        <div class="card" style=${{ overflow: "hidden" }}>
+          ${items === null ? html`<div class="empty">Yükleniyor…</div>`
+            : filtered.length === 0 ? html`<div class="empty">${q ? "Eşleşen hizmet yok." : "Henüz hizmet yok. Sağ üstten yeni hizmet ekleyin."}</div>`
+            : html`<table><thead><tr><th>Hizmet</th><th class="col-hide">İkon</th><th></th></tr></thead><tbody>
+              ${filtered.map(x => html`<tr key=${x.id}>
+                <td><div><b>${x.title}</b><div class="muted" style=${{ fontSize: ".8rem" }}>/${x.slug}</div></div></td>
+                <td class="col-hide muted">${x.icon || ""}</td>
+                <td><div class="actions"><button class="btn-ghost btn-sm" onClick=${() => onEdit(x)}>Düzenle</button><button class="btn-danger btn-sm" onClick=${() => del(x)}>Sil</button></div></td>
+              </tr>`)}
+            </tbody></table>`}
+        </div>
+      </div>`;
+    }
+
+    function ServiceEditor({ item, onDone, onCancel, toast }) {
+      const [f, setF] = useState({
+        slug: item?.slug || "", title: item?.title || "", shortTitle: item?.shortTitle || "", tagline: item?.tagline || "",
+        summary: item?.summary || "", pitch: item?.pitch || "", icon: item?.icon || "person", illo: item?.illo || "individual",
+        sortOrder: item?.sortOrder ?? 0, forWho: item?.forWho || [], process: item?.process || [], faqs: item?.faqs || [],
+      });
+      const [slugTouched, setSlugTouched] = useState(!!item);
+      const [busy, setBusy] = useState(false);
+      const set = (k, v) => setF(s => Object.assign({}, s, { [k]: v }));
+      useEffect(() => { if (!slugTouched) setF(s => Object.assign({}, s, { slug: slugify(s.title) })); }, [f.title, slugTouched]);
+      async function save() {
+        if (!f.title.trim() || !f.slug.trim()) { toast("err", "Başlık ve slug zorunlu."); return; }
+        setBusy(true);
+        const body = JSON.stringify(f);
+        const res = item ? await api("/api/admin/services/" + item.id, { method: "PUT", body }) : await api("/api/admin/services", { method: "POST", body });
+        setBusy(false);
+        if (res.ok) { toast("ok", item ? "Hizmet güncellendi." : "Hizmet oluşturuldu."); onDone(); }
+        else { const e = await res.json().catch(() => ({})); toast("err", "Kaydedilemedi. " + (e.message || "")); }
+      }
+      return html`<div>
+        <div class="ed-bar">
+          <div class="left"><button class="btn-ghost btn-icon" onClick=${onCancel} title="Geri">${Ic.back}</button>
+            <div style=${{ minWidth: 0 }}><div class="serif" style=${{ fontSize: "1.05rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>${item ? "Hizmeti düzenle" : "Yeni hizmet"}</div></div></div>
+          <div style=${{ display: "flex", gap: ".5rem" }}>
+            <button class="btn" onClick=${save} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet"}</button>
+          </div>
+        </div>
+        <div class="content"><div class="ed-grid">
+          <div class="ed-main card card-pad">
+            <input class="title-in" placeholder="Hizmet başlığı" value=${f.title} onChange=${e => set("title", e.target.value)} />
+            <div class="field" style=${{ marginTop: ".7rem" }}><label>Kısa başlık</label><input value=${f.shortTitle} onChange=${e => set("shortTitle", e.target.value)} placeholder="Bireysel Terapi" /></div>
+            <div class="field"><label>Slogan (tagline)</label><input value=${f.tagline} onChange=${e => set("tagline", e.target.value)} placeholder="Kısa, çekici bir cümle" /></div>
+            <div class="field"><label>Kart tanıtımı (pitch)</label><textarea rows="2" value=${f.pitch} onInput=${autoGrow} onChange=${e => set("pitch", e.target.value)} placeholder="Hizmet kartında görünen kısa tanıtım"></textarea></div>
+            <div class="field"><label>Özet (detay sayfası girişi)</label><textarea rows="3" value=${f.summary} onInput=${autoGrow} onChange=${e => set("summary", e.target.value)} placeholder="Hizmetin ayrıntılı özeti"></textarea></div>
+            <div class="divider"></div>
+            <${ListField} label="Kimler için uygun?" items=${f.forWho} onChange=${v => set("forWho", v)} placeholder="Madde" />
+            <${PairListField} label="Süreç adımları" items=${f.process} onChange=${v => set("process", v)} k1="title" k2="desc" ph1="Adım başlığı" ph2="Adım açıklaması" />
+            <${PairListField} label="Sık sorulan sorular" items=${f.faqs} onChange=${v => set("faqs", v)} k1="q" k2="a" ph1="Soru" ph2="Cevap" />
+          </div>
+          <div class="ed-side">
+            <div class="card card-pad side-card"><h3>Yayın</h3>
+              <div class="field"><label>Slug (URL)</label><input value=${f.slug} onChange=${e => { setSlugTouched(true); set("slug", e.target.value); }} placeholder="otomatik" /></div>
+              <div class="field" style=${{ margin: 0 }}><label>Sıra (küçük önce)</label><input type="number" value=${f.sortOrder} onChange=${e => set("sortOrder", parseInt(e.target.value || "0", 10))} /></div>
+            </div>
+            <div class="card card-pad side-card"><h3>Görünüm</h3>
+              <div class="field"><label>İkon</label><select value=${f.icon} onChange=${e => set("icon", e.target.value)}>${SERVICE_ICONS.map(i => html`<option key=${i} value=${i}>${i}</option>`)}</select></div>
+              <div class="field" style=${{ margin: 0 }}><label>İllüstrasyon</label><select value=${f.illo} onChange=${e => set("illo", e.target.value)}>${SERVICE_ILLOS.map(i => html`<option key=${i} value=${i}>${i}</option>`)}</select></div>
+            </div>
+          </div>
+        </div></div>
+      </div>`;
+    }
+
+    /* ---------- S.S.S. ---------- */
+    function FaqList({ onNew, onEdit, toast }) {
+      const [items, setItems] = useState(null); const [q, setQ] = useState("");
+      async function load() { const res = await api("/api/admin/faq-groups"); if (res.ok) setItems(await res.json()); else toast("err", "S.S.S. yüklenemedi."); }
+      useEffect(() => { load(); }, []);
+      async function del(x) {
+        if (!confirm(`"${x.title}" grubu silinsin mi?`)) return;
+        const res = await api("/api/admin/faq-groups/" + x.id, { method: "DELETE" });
+        if (res.ok) { toast("ok", "Grup silindi."); load(); } else toast("err", "Silinemedi.");
+      }
+      const filtered = (items || []).filter(x => (x.title || "").toLowerCase().includes(q.toLowerCase()));
+      return html`<div>
+        <div class="page-head"><h1>S.S.S.</h1><button class="btn" onClick=${onNew}>+ Yeni grup</button></div>
+        <div class="toolbar"><div class="search">${Ic.search}<input placeholder="Ara…" value=${q} onChange=${e => setQ(e.target.value)} /></div>
+          <span class="muted" style=${{ fontSize: ".85rem" }}>${items ? filtered.length + " grup" : ""}</span></div>
+        <div class="card" style=${{ overflow: "hidden" }}>
+          ${items === null ? html`<div class="empty">Yükleniyor…</div>`
+            : filtered.length === 0 ? html`<div class="empty">${q ? "Eşleşen grup yok." : "Henüz S.S.S. grubu yok. Sağ üstten ekleyin."}</div>`
+            : html`<table><thead><tr><th>Grup</th><th class="col-hide">Soru sayısı</th><th></th></tr></thead><tbody>
+              ${filtered.map(x => html`<tr key=${x.id}>
+                <td><div><b>${x.title}</b><div class="muted" style=${{ fontSize: ".8rem" }}>#${x.slug}</div></div></td>
+                <td class="col-hide muted">${(x.items || []).length} soru</td>
+                <td><div class="actions"><button class="btn-ghost btn-sm" onClick=${() => onEdit(x)}>Düzenle</button><button class="btn-danger btn-sm" onClick=${() => del(x)}>Sil</button></div></td>
+              </tr>`)}
+            </tbody></table>`}
+        </div>
+      </div>`;
+    }
+
+    function FaqEditor({ item, onDone, onCancel, toast }) {
+      const [f, setF] = useState({
+        slug: item?.slug || "", title: item?.title || "", sortOrder: item?.sortOrder ?? 0, items: item?.items || [],
+      });
+      const [slugTouched, setSlugTouched] = useState(!!item);
+      const [busy, setBusy] = useState(false);
+      const set = (k, v) => setF(s => Object.assign({}, s, { [k]: v }));
+      useEffect(() => { if (!slugTouched) setF(s => Object.assign({}, s, { slug: slugify(s.title) })); }, [f.title, slugTouched]);
+      async function save() {
+        if (!f.title.trim() || !f.slug.trim()) { toast("err", "Başlık ve slug zorunlu."); return; }
+        setBusy(true);
+        const body = JSON.stringify(f);
+        const res = item ? await api("/api/admin/faq-groups/" + item.id, { method: "PUT", body }) : await api("/api/admin/faq-groups", { method: "POST", body });
+        setBusy(false);
+        if (res.ok) { toast("ok", item ? "Grup güncellendi." : "Grup oluşturuldu."); onDone(); }
+        else { const e = await res.json().catch(() => ({})); toast("err", "Kaydedilemedi. " + (e.message || "")); }
+      }
+      return html`<div>
+        <div class="ed-bar">
+          <div class="left"><button class="btn-ghost btn-icon" onClick=${onCancel} title="Geri">${Ic.back}</button>
+            <div style=${{ minWidth: 0 }}><div class="serif" style=${{ fontSize: "1.05rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>${item ? "Grubu düzenle" : "Yeni S.S.S. grubu"}</div></div></div>
+          <div style=${{ display: "flex", gap: ".5rem" }}>
+            <button class="btn" onClick=${save} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet"}</button>
+          </div>
+        </div>
+        <div class="content"><div class="ed-grid">
+          <div class="ed-main card card-pad">
+            <input class="title-in" placeholder="Grup başlığı (ör. Terapi)" value=${f.title} onChange=${e => set("title", e.target.value)} />
+            <div class="divider"></div>
+            <${PairListField} label="Sorular ve cevaplar" items=${f.items} onChange=${v => set("items", v)} k1="q" k2="a" ph1="Soru" ph2="Cevap" />
+          </div>
+          <div class="ed-side">
+            <div class="card card-pad side-card"><h3>Yayın</h3>
+              <div class="field"><label>Slug (sayfa içi anchor)</label><input value=${f.slug} onChange=${e => { setSlugTouched(true); set("slug", e.target.value); }} placeholder="otomatik" /></div>
+              <div class="field" style=${{ margin: 0 }}><label>Sıra (küçük önce)</label><input type="number" value=${f.sortOrder} onChange=${e => set("sortOrder", parseInt(e.target.value || "0", 10))} /></div>
+            </div>
+          </div>
+        </div></div>
+      </div>`;
+    }
+
+    /* ---------- Ayarlar (tekil) ---------- */
+    function SettingsForm({ toast }) {
+      const [f, setF] = useState(null);
+      const [busy, setBusy] = useState(false);
+      useEffect(() => { (async () => { const res = await api("/api/admin/settings"); if (res.ok) setF(await res.json()); else toast("err", "Ayarlar yüklenemedi."); })(); }, []);
+      const set = (k, v) => setF(s => Object.assign({}, s, { [k]: v }));
+      async function save() {
+        setBusy(true);
+        const res = await api("/api/admin/settings", { method: "PUT", body: JSON.stringify(f) });
+        setBusy(false);
+        if (res.ok) { setF(await res.json()); toast("ok", "Ayarlar kaydedildi."); }
+        else toast("err", "Kaydedilemedi.");
+      }
+      if (!f) return html`<div class="empty">Yükleniyor…</div>`;
+      const F = (label, key, ph) => html`<div class="field"><label>${label}</label><input value=${f[key] || ""} onChange=${e => set(key, e.target.value)} placeholder=${ph || ""} /></div>`;
+      return html`<div>
+        <div class="page-head"><h1>Ayarlar</h1><button class="btn" onClick=${save} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet"}</button></div>
+        <div class="settings-grid">
+          <div class="card card-pad side-card"><h3>İletişim</h3>
+            ${F("Telefon (görünen)", "phoneDisplay", "+90 (212) 000 00 00")}
+            ${F("Telefon (tel: linki)", "phone", "+902120000000")}
+            ${F("WhatsApp (ülke kodu + numara)", "whatsapp", "905000000000")}
+            ${F("E-posta", "email", "info@hamlepsikoloji.com")}
+            ${F("Çalışma saatleri", "hours", "Pazartesi–Cumartesi 09:00–20:00")}
+          </div>
+          <div class="card card-pad side-card"><h3>Adres</h3>
+            ${F("Sokak / cadde", "addressStreet")}
+            ${F("İlçe", "addressDistrict")}
+            ${F("Şehir", "addressCity")}
+            ${F("Posta kodu", "addressPostalCode")}
+            ${F("Ülke kodu", "addressCountry", "TR")}
+            ${F("Harita araması (Google Maps)", "mapsQuery", "Hamle Psikoloji Kadıköy İstanbul")}
+          </div>
+          <div class="card card-pad side-card"><h3>Sosyal medya</h3>
+            ${F("Instagram URL", "socialInstagram")}
+            ${F("LinkedIn URL", "socialLinkedin")}
+            ${F("YouTube URL", "socialYoutube")}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ---------- Talepler (leads) ---------- */
+    const LEAD_ST = { new: "Yeni", contacted: "Arandı", closed: "Kapandı" };
+
+    function LeadCard({ x, onStatus, onNote, onDel }) {
+      const [note, setNote] = useState(x.note || "");
+      const wa = x.phone ? "https://wa.me/" + x.phone.replace(/[^0-9]/g, "") : null;
+      const when = (x.createdAt || "").slice(0, 16).replace("T", " ");
+      return html`<div class="lead-card">
+        <div class="lead-head">
+          <div class="lead-name"><b>${x.name}</b> <span class="lead-st st-${x.status}">${LEAD_ST[x.status] || x.status}</span></div>
+          <span class="muted lead-date">${when}</span>
+        </div>
+        <div class="lead-meta">
+          <a href="tel:${x.phone}">${x.phone}</a>
+          ${x.service ? html`<span> · ${x.service}</span>` : ""}
+          ${x.email ? html`<span> · ${x.email}</span>` : ""}
+        </div>
+        ${x.message ? html`<p class="lead-msg">${x.message}</p>` : ""}
+        <div class="lead-actions">
+          <a class="btn-ghost btn-sm" href="tel:${x.phone}">Ara</a>
+          ${wa ? html`<a class="btn-ghost btn-sm" href=${wa} target="_blank" rel="noopener">WhatsApp</a>` : ""}
+          ${["new", "contacted", "closed"].map(s => html`<button key=${s} class="btn-sm ${x.status === s ? "btn" : "btn-ghost"}" onClick=${() => onStatus(s)}>${LEAD_ST[s]}</button>`)}
+          <button class="btn-danger btn-sm" onClick=${onDel}>Sil</button>
+        </div>
+        <div class="lead-note">
+          <input placeholder="Özel not (opsiyonel)" value=${note} onChange=${e => setNote(e.target.value)} />
+          <button class="btn-ghost btn-sm" onClick=${() => onNote(note)}>Notu kaydet</button>
+        </div>
+      </div>`;
+    }
+
+    function LeadsList({ toast, onCountChange }) {
+      const [items, setItems] = useState(null);
+      const [filter, setFilter] = useState("all");
+      async function load() {
+        const res = await api("/api/admin/leads");
+        if (res.ok) { setItems(await res.json()); if (onCountChange) onCountChange(); }
+        else toast("err", "Talepler yüklenemedi.");
+      }
+      useEffect(() => { load(); }, []);
+      async function patch(x, body) {
+        const res = await api("/api/admin/leads/" + x.id, { method: "PATCH", body: JSON.stringify(body) });
+        if (res.ok) { load(); } else toast("err", "Güncellenemedi.");
+      }
+      async function del(x) {
+        if (!confirm(`"${x.name}" talebi silinsin mi?`)) return;
+        const res = await api("/api/admin/leads/" + x.id, { method: "DELETE" });
+        if (res.ok) { toast("ok", "Talep silindi."); load(); } else toast("err", "Silinemedi.");
+      }
+      const all = items || [];
+      const counts = { all: all.length, new: 0, contacted: 0, closed: 0 };
+      all.forEach(x => { counts[x.status] = (counts[x.status] || 0) + 1; });
+      const filtered = all.filter(x => filter === "all" || x.status === filter);
+      const chips = [["all", "Tümü"], ["new", "Yeni"], ["contacted", "Arandı"], ["closed", "Kapandı"]];
+      return html`<div>
+        <div class="page-head"><h1>Talepler</h1></div>
+        <div class="chips">
+          ${chips.map(([k, label]) => html`<button key=${k} class="chip ${filter === k ? "on" : ""}" onClick=${() => setFilter(k)}>${label} (${counts[k] || 0})</button>`)}
+        </div>
+        ${items === null ? html`<div class="empty">Yükleniyor…</div>`
+          : filtered.length === 0 ? html`<div class="empty">${filter === "all" ? "Henüz talep yok. Formdan gelen talepler burada listelenir." : "Bu durumda talep yok."}</div>`
+          : html`<div class="lead-list">
+              ${filtered.map(x => html`<${LeadCard} key=${x.id} x=${x} onStatus=${s => patch(x, { status: s })} onNote=${n => patch(x, { note: n })} onDel=${() => del(x)} />`)}
+            </div>`}
+      </div>`;
+    }
+
+    /* ---------- App ---------- */
+    function App() {
+      const [authed, setAuthed] = useState(!!localStorage.getItem("token"));
+      const [section, setSection] = useState("blog");
+      const [view, setView] = useState({ name: "list" });
+      const [navOpen, setNavOpen] = useState(false);
+      const [leadCount, setLeadCount] = useState(0);
+      const [toast, toastNode] = useToasts();
+      const refreshLeadCount = useCallback(async () => {
+        try {
+          const res = await api("/api/admin/leads/count");
+          if (res.ok) { const d = await res.json(); setLeadCount(d.new || 0); }
+        } catch {}
+      }, []);
+      useEffect(() => { if (localStorage.getItem("token")) refreshLeadCount(); }, [refreshLeadCount]);
+      if (!authed) return html`<div>${toastNode}<${Login} onLogin=${() => setAuthed(true)} toast=${toast} /></div>`;
+      function logout() { localStorage.removeItem("token"); setAuthed(false); }
+      function selectSection(key) { setSection(key); setView({ name: "list" }); setNavOpen(false); }
+
+      const onNew = () => setView({ name: "edit", item: null });
+      const onEdit = (x) => setView({ name: "edit", item: x });
+      const toList = () => setView({ name: "list" });
+      const listProps = { toast, onNew, onEdit };
+      const editing = view.name === "edit";
+
+      const lists = {
+        blog: html`<${BlogList} ...${listProps} />`,
+        team: html`<${ExpertList} ...${listProps} />`,
+        services: html`<${ServiceList} ...${listProps} />`,
+        faq: html`<${FaqList} ...${listProps} />`,
+      };
+      const editors = {
+        blog: html`<${BlogEditor} post=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
+        team: html`<${ExpertEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
+        services: html`<${ServiceEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
+        faq: html`<${FaqEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
+      };
+
+      let body;
+      if (section === "settings") body = html`<div class="content"><${SettingsForm} toast=${toast} /></div>`;
+      else if (section === "leads") body = html`<div class="content"><${LeadsList} toast=${toast} onCountChange=${refreshLeadCount} /></div>`;
+      else if (editing) body = editors[section];
+      else body = html`<div class="content">${lists[section]}</div>`;
+
+      return html`<div>
+        ${toastNode}
+        <div class="layout">
+          <div class="mobilebar">
+            <button class="hb" onClick=${() => setNavOpen(true)} aria-label="Menüyü aç">${Ic.menu}</button>
+            <div class="mb-brand"><div class="sb-logo">H</div><b class="serif">Hamle</b></div>
+            <button class="btn-ghost btn-sm" onClick=${logout}>Çıkış</button>
+          </div>
+          ${navOpen && html`<div class="sb-backdrop" onClick=${() => setNavOpen(false)}></div>`}
+          <${Sidebar} active=${section} onSelect=${selectSection} onLogout=${logout} open=${navOpen} onClose=${() => setNavOpen(false)} leadCount=${leadCount} />
+          <div class="main">${body}</div>
+        </div>
+      </div>`;
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(html`<${App} />`);
+  </script>
+</body>
+</html>

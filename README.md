@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hamle Psikoloji — Web Sitesi
 
-## Getting Started
+İstanbul merkezli psikoloji kliniği için kurumsal web sitesi. **Next.js 16 (App Router) + Tailwind CSS v4**. Maksimum SEO ve sade kullanıcı deneyimi hedeflenmiştir. Yol haritası için bkz. [ROADMAP.md](./ROADMAP.md).
 
-First, run the development server:
+## Çalıştırma
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev      # geliştirme sunucusu (http://localhost:3000)
+npm run build    # production build
+npm start        # production sunucusu
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Proje yapısı
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+  app/                 Sayfalar (App Router)
+    page.tsx           Ana sayfa
+    hizmetler/         Hizmet hub + [slug] detay
+    ekibimiz/          Ekip listesi + [slug] uzman profili
+    blog/              Blog listesi + [slug] yazı
+    hakkimizda, sss, iletisim, kvkk, gizlilik, cerez-politikasi
+    sitemap.ts, robots.ts, opengraph-image.tsx, icon.svg
+  components/          Header, Footer, Cards, ui, ContactForm, JsonLd, Logo ...
+  data/                İÇERİK — services.ts, team.ts, posts.ts, faq.ts
+  lib/                 site.ts (genel ayarlar), schema.ts (JSON-LD)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## İçeriği nereden düzenlersiniz?
 
-## Learn More
+| Ne | Dosya |
+|----|-------|
+| İletişim, adres, telefon, sosyal medya | `src/lib/site.ts` |
+| Hizmetler (4 alan) | `src/data/services.ts` |
+| Uzmanlar (şu an 2 placeholder) | `src/data/team.ts` |
+| Blog yazıları | `src/data/posts.ts` |
+| Genel S.S.S. | `src/data/faq.ts` |
+| Marka renkleri / fontlar | `src/app/globals.css` |
+| Logo | `src/components/Logo.tsx` + `src/app/icon.svg` |
 
-To learn more about Next.js, take a look at the following resources:
+## `[PLACEHOLDER]` doldurulacaklar
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/lib/site.ts` → telefon, adres, e-posta, harita konumu (geo), sosyal medya
+- `src/data/team.ts` → gerçek uzman adı, unvan, biyografi, eğitim, fotoğraf
+- Uzman fotoğrafları: şu an baş harf avatarı kullanılıyor (`Avatar.tsx`). Gerçek foto eklenince `next/image`'a geçilebilir.
+- Yasal metinler (KVKK/Gizlilik/Çerez) hukuk danışmanı onayından geçmeli.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## SEO özeti (kurulu olanlar)
 
-## Deploy on Vercel
+- Tüm sayfalar statik prerender (hızlı LCP)
+- Sayfa bazlı `title` / `description` / canonical
+- JSON-LD: MedicalBusiness/Psychologist, BreadcrumbList, FAQPage, Person, Article
+- `sitemap.xml` + `robots.txt` otomatik
+- OpenGraph görseli otomatik üretiliyor (`opengraph-image.tsx`)
+- `lang="tr"`, semantik başlık hiyerarşisi, mobil öncelikli
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Sonraki adımlar (yapılacaklar)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **İçerik:** Gerçek uzman bilgileri, fotoğraflar, iletişim/adres.
+2. **Form backend:** `ContactForm.tsx` şu an WhatsApp'a yönlendiriyor. Kalıcı çözüm için bir API route + e-posta servisi (Resend) veya Formspree.
+3. **Headless CMS (Sanity):** `data/*` dosyalarındaki içerik Sanity şemalarına taşınarak panelden yönetilebilir hale getirilir.
+4. **Analytics:** GA4 / Plausible + Google Search Console + Google Business Profile.
+5. **Deploy:** Vercel (önerilen) — domain bağlanır, `site.url` zaten production'a göre ayarlı.
+```

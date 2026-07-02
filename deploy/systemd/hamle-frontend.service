@@ -1,0 +1,16 @@
+[Unit]
+Description=Hamle Psikoloji Web (Next.js)
+After=network.target hamle-backend.service
+
+[Service]
+Type=simple
+User=hamle
+Group=hamle
+WorkingDirectory=/opt/hamle/app
+EnvironmentFile=/opt/hamle/env/frontend.env
+ExecStart=/usr/bin/npm run start
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

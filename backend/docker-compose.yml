@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: hamle-postgres
+    environment:
+      POSTGRES_DB: hamle
+      POSTGRES_USER: hamle
+      POSTGRES_PASSWORD: hamle
+    ports:
+      - "5433:5432"
+    volumes:
+      - hamle-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hamle -d hamle"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  hamle-pgdata:
