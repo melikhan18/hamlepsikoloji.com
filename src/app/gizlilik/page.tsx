@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
+import { getLegalDoc } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Gizlilik Politikası",
@@ -8,17 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/gizlilik" },
 };
 
-export default function Page() {
-  return (
-    <LegalPage
-      title="Gizlilik Politikası"
-      slug="gizlilik"
-      intro="Bu gizlilik politikası, web sitemizi kullanırken bilgilerinizin nasıl toplandığını, kullanıldığını ve korunduğunu açıklar."
-      sections={[
-        { h: "Toplanan bilgiler", p: "İletişim formu aracılığıyla paylaştığınız bilgiler ve site kullanımına ilişkin anonim analitik veriler toplanabilir." },
-        { h: "Bilgilerin kullanımı", p: "Bilgileriniz yalnızca size hizmet sunmak, taleplerinizi yanıtlamak ve siteyi iyileştirmek için kullanılır; üçüncü taraflarla pazarlama amacıyla paylaşılmaz." },
-        { h: "Görüşme gizliliği", p: "Terapi görüşmelerinizin içeriği meslek etiği ve gizlilik ilkeleri kapsamında korunur." },
-      ]}
-    />
-  );
+export default async function Page() {
+  const doc = await getLegalDoc("gizlilik");
+  return <LegalPage title={doc.title} slug={doc.slug} intro={doc.intro} sections={doc.sections} />;
 }

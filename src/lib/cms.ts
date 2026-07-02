@@ -4,6 +4,7 @@ import { posts as localPosts, type Post } from "@/data/posts";
 import { team as localTeam, type Expert } from "@/data/team";
 import { services as localServices, type Service } from "@/data/services";
 import { faqGroups as localFaqGroups, type FaqGroup } from "@/data/faq";
+import { legalDocs as localLegalDocs, type LegalDoc } from "@/data/legal";
 import { site } from "@/lib/site";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081";
@@ -101,6 +102,17 @@ export async function getFaqGroups(): Promise<FaqGroup[]> {
     /* fall through */
   }
   return localFaqGroups;
+}
+
+/* ===== Hukuki metinler ===== */
+export async function getLegalDoc(slug: string): Promise<LegalDoc> {
+  try {
+    const res = await fetch(`${API}/api/legal-docs/${slug}`, OPTS);
+    if (res.ok) return (await res.json()) as LegalDoc;
+  } catch {
+    /* fall through */
+  }
+  return localLegalDocs.find((d) => d.slug === slug) ?? localLegalDocs[0];
 }
 
 /* ===== Site ayarları (tekil) ===== */

@@ -311,6 +311,7 @@
       menu: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`,
       close: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
       inbox: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 13h4l1.5 3h5L16 13h4"/><path d="M4 13V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7"/><path d="M4 13v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>`,
+      doc: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>`,
     };
 
     /* ---------- Toasts ---------- */
@@ -355,6 +356,7 @@
         { key: "team", label: "Ekip", icon: Ic.team, on: true },
         { key: "services", label: "Hizmetler", icon: Ic.services, on: true },
         { key: "faq", label: "S.S.S.", icon: Ic.faq, on: true },
+        { key: "legal", label: "Belgeler", icon: Ic.doc, on: true },
         { key: "settings", label: "Ayarlar", icon: Ic.settings, on: true },
       ];
       return html`<aside class="sidebar ${open ? "open" : ""}">
@@ -998,6 +1000,68 @@
       </div>`;
     }
 
+    /* ---------- Hukuki metinler (Belgeler) ---------- */
+    function LegalList({ onEdit, toast }) {
+      const [items, setItems] = useState(null);
+      async function load() { const res = await api("/api/admin/legal-docs"); if (res.ok) setItems(await res.json()); else toast("err", "Belgeler yüklenemedi."); }
+      useEffect(() => { load(); }, []);
+      return html`<div>
+        <div class="page-head"><h1>Belgeler</h1></div>
+        <p class="muted" style=${{ fontSize: ".88rem", margin: "-.6rem 0 1rem" }}>Hukuki metinler (sabit sayfalar) — yalnızca düzenlenir.</p>
+        <div class="card" style=${{ overflow: "hidden" }}>
+          ${items === null ? html`<div class="empty">Yükleniyor…</div>`
+            : items.length === 0 ? html`<div class="empty">Belge bulunamadı.</div>`
+            : html`<table><thead><tr><th>Belge</th><th class="col-hide">Bölüm</th><th></th></tr></thead><tbody>
+              ${items.map(x => html`<tr key=${x.id}>
+                <td><div><b>${x.title}</b><div class="muted" style=${{ fontSize: ".8rem" }}>/${x.slug}</div></div></td>
+                <td class="col-hide muted">${(x.sections || []).length} bölüm</td>
+                <td><div class="actions"><button class="btn-ghost btn-sm" onClick=${() => onEdit(x)}>Düzenle</button></div></td>
+              </tr>`)}
+            </tbody></table>`}
+        </div>
+      </div>`;
+    }
+
+    function LegalEditor({ item, onDone, onCancel, toast }) {
+      const [f, setF] = useState({
+        title: item?.title || "", intro: item?.intro || "", sections: item?.sections || [],
+      });
+      const [busy, setBusy] = useState(false);
+      const set = (k, v) => setF(s => Object.assign({}, s, { [k]: v }));
+      async function save() {
+        if (!f.title.trim()) { toast("err", "Başlık zorunlu."); return; }
+        setBusy(true);
+        const res = await api("/api/admin/legal-docs/" + item.id, { method: "PUT", body: JSON.stringify(f) });
+        setBusy(false);
+        if (res.ok) { toast("ok", "Belge güncellendi."); onDone(); }
+        else { const e = await res.json().catch(() => ({})); toast("err", "Kaydedilemedi. " + (e.message || "")); }
+      }
+      return html`<div>
+        <div class="ed-bar">
+          <div class="left"><button class="btn-ghost btn-icon" onClick=${onCancel} title="Geri">${Ic.back}</button>
+            <div style=${{ minWidth: 0 }}><div class="serif" style=${{ fontSize: "1.05rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>${item ? item.title : "Belge"}</div>
+              <div class="save-state">/${item ? item.slug : ""} · slug sabittir</div></div></div>
+          <div style=${{ display: "flex", gap: ".5rem" }}>
+            <button class="btn" onClick=${save} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet"}</button>
+          </div>
+        </div>
+        <div class="content"><div class="ed-grid">
+          <div class="ed-main card card-pad">
+            <input class="title-in" placeholder="Belge başlığı" value=${f.title} onChange=${e => set("title", e.target.value)} />
+            <textarea class="excerpt-in" rows="2" placeholder="Giriş paragrafı" value=${f.intro} onInput=${autoGrow} onChange=${e => set("intro", e.target.value)}></textarea>
+            <div class="divider"></div>
+            <${PairListField} label="Bölümler" items=${f.sections} onChange=${v => set("sections", v)} k1="h" k2="p" ph1="Bölüm başlığı" ph2="Bölüm metni" />
+          </div>
+          <div class="ed-side">
+            <div class="card card-pad side-card"><h3>Bilgi</h3>
+              <div class="field" style=${{ margin: 0 }}><label>Slug (sabit)</label><input value=${item ? item.slug : ""} disabled /></div>
+              <div class="muted" style=${{ fontSize: ".8rem", marginTop: ".7rem" }}>Bu sayfanın adresi değiştirilemez. İçeriği düzenleyip kaydedin.</div>
+            </div>
+          </div>
+        </div></div>
+      </div>`;
+    }
+
     /* ---------- App ---------- */
     function App() {
       const [authed, setAuthed] = useState(!!localStorage.getItem("token"));
@@ -1028,12 +1092,14 @@
         team: html`<${ExpertList} ...${listProps} />`,
         services: html`<${ServiceList} ...${listProps} />`,
         faq: html`<${FaqList} ...${listProps} />`,
+        legal: html`<${LegalList} toast=${toast} onEdit=${onEdit} />`,
       };
       const editors = {
         blog: html`<${BlogEditor} post=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
         team: html`<${ExpertEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
         services: html`<${ServiceEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
         faq: html`<${FaqEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
+        legal: html`<${LegalEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
       };
 
       let body;

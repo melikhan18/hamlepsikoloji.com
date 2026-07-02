@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
+import { getLegalDoc } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "KVKK Aydınlatma Metni",
@@ -9,17 +10,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function Page() {
-  return (
-    <LegalPage
-      title="KVKK Aydınlatma Metni"
-      slug="kvkk"
-      intro="6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında, veri sorumlusu sıfatıyla kişisel verilerinizin işlenmesine ilişkin sizi bilgilendirmek isteriz."
-      sections={[
-        { h: "İşlenen veriler", p: "Ad-soyad, iletişim bilgileri ve randevu talebinizle paylaştığınız bilgiler, yalnızca hizmet sunumu amacıyla işlenir." },
-        { h: "İşleme amaçları", p: "Verileriniz; randevu oluşturma, iletişim kurma ve hizmetin yürütülmesi amaçlarıyla işlenir." },
-        { h: "Haklarınız", p: "KVKK madde 11 kapsamında verilerinize erişme, düzeltme, silme ve işlenmesine itiraz etme haklarına sahipsiniz." },
-      ]}
-    />
-  );
+export default async function Page() {
+  const doc = await getLegalDoc("kvkk");
+  return <LegalPage title={doc.title} slug={doc.slug} intro={doc.intro} sections={doc.sections} />;
 }

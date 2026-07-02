@@ -108,7 +108,7 @@ Certbot 443 bloklarını ve HTTP→HTTPS yönlendirmesini otomatik ekler.
 `https://api.hamlepsikoloji.com/admin` → admin girişi (env'deki kullanıcı/şifre):
 - **Ayarlar**: gerçek telefon, e-posta, adres, WhatsApp, harita, saatler, sosyal medya.
 - **Ekip**: gerçek uzman bilgileri + fotoğraf.
-- **Legal metinler**: hukuk danışmanı onaylı sürümlerle güncelle.
+- **Belgeler** (KVKK / Gizlilik / Çerez): admin panelden düzenlenebilir — hukuk danışmanı onaylı sürümlerle güncelle.
 
 ---
 

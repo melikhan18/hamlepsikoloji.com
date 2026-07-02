@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
+import { getLegalDoc } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Çerez Politikası",
@@ -8,17 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/cerez-politikasi" },
 };
 
-export default function Page() {
-  return (
-    <LegalPage
-      title="Çerez Politikası"
-      slug="cerez-politikasi"
-      intro="Web sitemiz, deneyiminizi iyileştirmek ve site kullanımını analiz etmek için çerezler kullanabilir."
-      sections={[
-        { h: "Çerez nedir?", p: "Çerezler, ziyaret ettiğiniz sitelerin cihazınıza kaydettiği küçük metin dosyalarıdır." },
-        { h: "Kullandığımız çerezler", p: "Zorunlu çerezler sitenin çalışması için gereklidir; analitik çerezler ise ziyaretçi davranışını anonim olarak ölçmemize yardımcı olur." },
-        { h: "Çerez tercihleri", p: "Tarayıcı ayarlarınızdan çerezleri her zaman yönetebilir veya silebilirsiniz." },
-      ]}
-    />
-  );
+export default async function Page() {
+  const doc = await getLegalDoc("cerez-politikasi");
+  return <LegalPage title={doc.title} slug={doc.slug} intro={doc.intro} sections={doc.sections} />;
 }
