@@ -42,16 +42,18 @@ export async function generateMetadata({
   if (!post) return {};
   const author = post.authorSlug ? await getExpert(post.authorSlug) : undefined;
   const cover = u(post.cover, 1200);
+  const metaTitle = post.seoTitle || post.title;
+  const metaDesc = post.seoDescription || post.excerpt;
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: metaTitle,
+    description: metaDesc,
     alternates: { canonical: `/blog/${post.slug}` },
     authors: author ? [{ name: author.name, url: `${site.url}/ekibimiz/${author.slug}` }] : undefined,
     openGraph: {
       type: "article",
       url: `/blog/${post.slug}`,
-      title: post.title,
-      description: post.excerpt,
+      title: metaTitle,
+      description: metaDesc,
       publishedTime: post.date,
       modifiedTime: post.date,
       authors: author ? [author.name] : undefined,

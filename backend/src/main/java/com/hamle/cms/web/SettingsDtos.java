@@ -17,6 +17,15 @@ public class SettingsDtos {
             String mapsQuery,
             String socialInstagram,
             String socialLinkedin,
-            String socialYoutube
+            String socialYoutube,
+            String siteTitle,
+            String metaDescription,
+            String keywords,
+            String googleVerification,
+            String ga4Id,
+            String gtmId,
+            String geoLat,
+            String geoLng,
+            String areaServed
     ) {}
 }

@@ -20,7 +20,9 @@ public class ExpertDtos {
             List<String> serviceSlugs,
             List<String> education,
             List<String> bio,
-            Integer sortOrder
+            Integer sortOrder,
+            String seoTitle,
+            String seoDescription
     ) {}
 
     /** Admin oluşturma/güncelleme isteği. */
@@ -36,6 +38,8 @@ public class ExpertDtos {
             List<String> serviceSlugs,
             List<String> education,
             List<String> bio,
-            Integer sortOrder
+            Integer sortOrder,
+            String seoTitle,
+            String seoDescription
     ) {}
 }

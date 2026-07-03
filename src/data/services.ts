@@ -13,6 +13,8 @@ export type Service = {
   illo: "individual" | "couples" | "child" | "online";
   // hizmet kartında gösterilen kısa tanıtım
   pitch: string;
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
 export const services: Service[] = [

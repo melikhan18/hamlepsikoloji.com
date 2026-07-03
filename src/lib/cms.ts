@@ -122,6 +122,9 @@ type SettingsApi = {
   addressPostalCode?: string; addressCountry?: string;
   hours?: string; mapsQuery?: string;
   socialInstagram?: string; socialLinkedin?: string; socialYoutube?: string;
+  siteTitle?: string; metaDescription?: string; keywords?: string;
+  googleVerification?: string; ga4Id?: string; gtmId?: string;
+  geoLat?: string; geoLng?: string; areaServed?: string;
 };
 
 function mergeSettings(d: SettingsApi): typeof site {
@@ -149,6 +152,19 @@ function mergeSettings(d: SettingsApi): typeof site {
       linkedin: d.socialLinkedin ?? site.social.linkedin,
       youtube: d.socialYoutube ?? site.social.youtube,
     },
+    // SEO & Analytics — boşsa site.ts varsayılanına düşer
+    seoTitle: d.siteTitle || site.seoTitle,
+    description: d.metaDescription || site.description,
+    keywords: d.keywords || site.keywords,
+    googleVerification: d.googleVerification || site.googleVerification,
+    ga4Id: d.ga4Id || site.ga4Id,
+    gtmId: d.gtmId || site.gtmId,
+    // Yerel SEO — geo string olarak gelir, sayıya çevrilir
+    geo: {
+      lat: d.geoLat && !isNaN(Number(d.geoLat)) ? Number(d.geoLat) : site.geo.lat,
+      lng: d.geoLng && !isNaN(Number(d.geoLng)) ? Number(d.geoLng) : site.geo.lng,
+    },
+    areaServed: d.areaServed || site.areaServed,
   };
 }
 

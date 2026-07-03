@@ -18,6 +18,8 @@ public class PostDtos {
             String icon,
             String cover,
             String authorSlug,
+            String seoTitle,
+            String seoDescription,
             List<ContentBlock> content
     ) {}
 
@@ -31,6 +33,8 @@ public class PostDtos {
             String icon,
             String cover,
             String authorSlug,
+            String seoTitle,
+            String seoDescription,
             List<ContentBlock> content
     ) {}
 }

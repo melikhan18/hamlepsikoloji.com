@@ -43,6 +43,12 @@ public class Service {
 
     private String illo; // individual | couples | child | online
 
+    @Column(name = "seo_title")
+    private String seoTitle;
+
+    @Column(name = "seo_description", columnDefinition = "text")
+    private String seoDescription;
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "for_who", columnDefinition = "jsonb")
     private List<String> forWho = new ArrayList<>();

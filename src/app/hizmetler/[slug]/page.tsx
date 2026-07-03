@@ -21,15 +21,17 @@ export async function generateMetadata({
   const { slug } = await params;
   const service = await getService(slug);
   if (!service) return {};
+  const metaTitle = service.seoTitle || `${service.title} — ${service.tagline}`;
+  const metaDesc = service.seoDescription || service.summary.slice(0, 155);
   return {
-    title: `${service.title} — ${service.tagline}`,
-    description: service.summary.slice(0, 155),
+    title: metaTitle,
+    description: metaDesc,
     alternates: { canonical: `/hizmetler/${service.slug}` },
     openGraph: {
       type: "website",
       url: `/hizmetler/${service.slug}`,
-      title: `${service.title} | ${site.name}`,
-      description: service.summary.slice(0, 155),
+      title: service.seoTitle || `${service.title} | ${site.name}`,
+      description: metaDesc,
     },
   };
 }

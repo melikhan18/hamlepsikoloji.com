@@ -34,6 +34,30 @@ public class SiteSettings {
     private String socialLinkedin;
     private String socialYoutube;
 
+    // Genel SEO
+    @Column(name = "site_title")
+    private String siteTitle;
+    @Column(name = "meta_description", columnDefinition = "text")
+    private String metaDescription;
+    @Column(columnDefinition = "text")
+    private String keywords;
+
+    // Analytics & doğrulama
+    @Column(name = "google_verification")
+    private String googleVerification;
+    @Column(name = "ga4_id")
+    private String ga4Id;
+    @Column(name = "gtm_id")
+    private String gtmId;
+
+    // Yerel SEO (konum) — string olarak saklanır, şemada sayıya çevrilir
+    @Column(name = "geo_lat")
+    private String geoLat;
+    @Column(name = "geo_lng")
+    private String geoLng;
+    @Column(name = "area_served")
+    private String areaServed;
+
     @Column(name = "updated_at")
     private Instant updatedAt;
 

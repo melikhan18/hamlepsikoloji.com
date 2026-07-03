@@ -34,7 +34,10 @@ export function organizationSchema(s: typeof site = site) {
       latitude: s.geo.lat,
       longitude: s.geo.lng,
     },
-    areaServed: { "@type": "City", name: "İstanbul" },
+    areaServed: [
+      ...(s.areaServed ? [{ "@type": "AdministrativeArea", name: s.areaServed }] : []),
+      { "@type": "City", name: s.address.city },
+    ],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",

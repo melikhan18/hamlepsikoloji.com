@@ -22,6 +22,8 @@ public class PostMapper {
                 p.getIcon(),
                 p.getCoverUrl(),
                 p.getAuthorSlug(),
+                p.getSeoTitle(),
+                p.getSeoDescription(),
                 p.getContent() != null ? p.getContent() : new ArrayList<>()
         );
     }
@@ -36,6 +38,8 @@ public class PostMapper {
         p.setIcon(req.icon());
         p.setCoverUrl(req.cover());
         p.setAuthorSlug(req.authorSlug());
+        p.setSeoTitle(req.seoTitle());
+        p.setSeoDescription(req.seoDescription());
         List<ContentBlock> content = req.content() != null ? req.content() : new ArrayList<>();
         p.setContent(content);
     }

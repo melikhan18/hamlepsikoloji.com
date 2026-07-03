@@ -150,6 +150,22 @@
     .check{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--ink);text-transform:none;letter-spacing:0;font-weight:500;margin:0}
     .check input[type=checkbox]{width:auto;margin:0;flex-shrink:0}
     .settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;align-items:start}
+    /* Ayarlar — ferah, bölümlü düzen */
+    .set-wrap{max-width:720px;margin:0 auto}
+    .set-section{background:var(--paper);border:1px solid var(--line2);border-radius:14px;box-shadow:var(--shadow);padding:1.3rem 1.4rem;margin-bottom:1.1rem}
+    .set-section > div > .field:last-child{margin-bottom:0}
+    .set-head{margin-bottom:1.1rem;padding-bottom:.85rem;border-bottom:1px solid var(--line2)}
+    .set-head h3{font-family:Fraunces,serif;font-weight:500;font-size:1.12rem;margin:0;color:var(--ink)}
+    .set-head p{margin:.25rem 0 0;font-size:.82rem;color:var(--muted)}
+    .set-row{display:grid;grid-template-columns:1fr 1fr;gap:0 1rem}
+    .set-note{font-size:.78rem;color:var(--muted);background:#faf7f2;border-radius:8px;padding:.55rem .75rem;margin-top:.4rem}
+    .set-foot{display:flex;justify-content:flex-end;margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--line2)}
+    /* Ayarlar üst menü (sekmeler) */
+    .set-tabs{display:flex;gap:.1rem;flex-wrap:wrap;margin-bottom:1.2rem;border-bottom:1px solid var(--line2)}
+    .set-tab{background:transparent;border:none;border-bottom:2px solid transparent;border-radius:0;color:var(--muted);padding:.6rem .9rem;font-weight:600;font-size:.9rem;margin-bottom:-1px}
+    .set-tab:hover:not(:disabled){background:transparent;color:var(--ink)}
+    .set-tab.on{color:var(--plum);border-bottom-color:var(--plum)}
+    @media(max-width:560px){.set-row{grid-template-columns:1fr}.set-tab{padding:.55rem .7rem;font-size:.85rem}}
 
     /* Talepler (leads) */
     .sb-badge{margin-left:auto;background:#d9534f;color:#fff;border-radius:999px;font-size:.62rem;font-weight:700;padding:.08rem .42rem;min-width:18px;text-align:center;line-height:1.55}
@@ -312,6 +328,7 @@
       close: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
       inbox: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 13h4l1.5 3h5L16 13h4"/><path d="M4 13V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7"/><path d="M4 13v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>`,
       doc: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>`,
+      seo: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4v16h16"/><path d="M7 14l4-4 3 3 5-6"/></svg>`,
     };
 
     /* ---------- Toasts ---------- */
@@ -357,6 +374,7 @@
         { key: "services", label: "Hizmetler", icon: Ic.services, on: true },
         { key: "faq", label: "S.S.S.", icon: Ic.faq, on: true },
         { key: "legal", label: "Belgeler", icon: Ic.doc, on: true },
+        { key: "seo", label: "SEO", icon: Ic.seo, on: true },
         { key: "settings", label: "Ayarlar", icon: Ic.settings, on: true },
       ];
       return html`<aside class="sidebar ${open ? "open" : ""}">
@@ -487,7 +505,8 @@
         return {
           f: { slug: post?.slug || "", title: post?.title || "", excerpt: post?.excerpt || "",
                date: post?.date || new Date().toISOString().slice(0, 10), category: post?.category || "",
-               icon: post?.icon || "leaf", cover: post?.cover || "", authorSlug: post?.authorSlug || "" },
+               icon: post?.icon || "leaf", cover: post?.cover || "", authorSlug: post?.authorSlug || "",
+               seoTitle: post?.seoTitle || "", seoDescription: post?.seoDescription || "" },
           blocks: blocksFromApi(post?.content),
         };
       };
@@ -590,6 +609,11 @@
                 <h3>Kapak görseli</h3>
                 <${ImageInput} value=${f.cover} onChange=${v => set("cover", v)} toast=${toast} />
               </div>
+              <div class="card card-pad side-card">
+                <h3>SEO (opsiyonel)</h3>
+                <div class="field"><label>Özel SEO başlığı</label><input value=${f.seoTitle} onChange=${e => set("seoTitle", e.target.value)} placeholder="Boşsa yazı başlığı kullanılır" /></div>
+                <div class="field" style=${{ margin: 0 }}><label>Özel meta açıklaması</label><textarea rows="2" value=${f.seoDescription} onInput=${autoGrow} onChange=${e => set("seoDescription", e.target.value)} placeholder="Boşsa özet kullanılır (150–160 karakter)"></textarea></div>
+              </div>
             </div>
           </div>
         </div>
@@ -687,6 +711,7 @@
         photo: item?.photo || "", approach: item?.approach || "", sortOrder: item?.sortOrder ?? 0,
         specialties: item?.specialties || [], methods: item?.methods || [], serviceSlugs: item?.serviceSlugs || [],
         education: item?.education || [], bio: item?.bio || [],
+        seoTitle: item?.seoTitle || "", seoDescription: item?.seoDescription || "",
       });
       const [slugTouched, setSlugTouched] = useState(!!item);
       const [busy, setBusy] = useState(false);
@@ -732,6 +757,10 @@
               <${ImageInput} value=${f.photo} onChange=${v => set("photo", v)} toast=${toast} /></div>
             <div class="card card-pad side-card"><h3>İlgili hizmetler</h3>
               <${ServiceChecks} services=${services} selected=${f.serviceSlugs} onChange=${v => set("serviceSlugs", v)} /></div>
+            <div class="card card-pad side-card"><h3>SEO (opsiyonel)</h3>
+              <div class="field"><label>Özel SEO başlığı</label><input value=${f.seoTitle} onChange=${e => set("seoTitle", e.target.value)} placeholder="Boşsa ad + unvan" /></div>
+              <div class="field" style=${{ margin: 0 }}><label>Özel meta açıklaması</label><textarea rows="2" value=${f.seoDescription} onInput=${autoGrow} onChange=${e => set("seoDescription", e.target.value)} placeholder="Boşsa otomatik açıklama"></textarea></div>
+            </div>
           </div>
         </div></div>
       </div>`;
@@ -773,6 +802,7 @@
         slug: item?.slug || "", title: item?.title || "", shortTitle: item?.shortTitle || "", tagline: item?.tagline || "",
         summary: item?.summary || "", pitch: item?.pitch || "", icon: item?.icon || "person", illo: item?.illo || "individual",
         sortOrder: item?.sortOrder ?? 0, forWho: item?.forWho || [], process: item?.process || [], faqs: item?.faqs || [],
+        seoTitle: item?.seoTitle || "", seoDescription: item?.seoDescription || "",
       });
       const [slugTouched, setSlugTouched] = useState(!!item);
       const [busy, setBusy] = useState(false);
@@ -815,6 +845,10 @@
             <div class="card card-pad side-card"><h3>Görünüm</h3>
               <div class="field"><label>İkon</label><select value=${f.icon} onChange=${e => set("icon", e.target.value)}>${SERVICE_ICONS.map(i => html`<option key=${i} value=${i}>${i}</option>`)}</select></div>
               <div class="field" style=${{ margin: 0 }}><label>İllüstrasyon</label><select value=${f.illo} onChange=${e => set("illo", e.target.value)}>${SERVICE_ILLOS.map(i => html`<option key=${i} value=${i}>${i}</option>`)}</select></div>
+            </div>
+            <div class="card card-pad side-card"><h3>SEO (opsiyonel)</h3>
+              <div class="field"><label>Özel SEO başlığı</label><input value=${f.seoTitle} onChange=${e => set("seoTitle", e.target.value)} placeholder="Boşsa başlık + slogan" /></div>
+              <div class="field" style=${{ margin: 0 }}><label>Özel meta açıklaması</label><textarea rows="2" value=${f.seoDescription} onInput=${autoGrow} onChange=${e => set("seoDescription", e.target.value)} placeholder="Boşsa özet kullanılır"></textarea></div>
             </div>
           </div>
         </div></div>
@@ -895,6 +929,7 @@
     function SettingsForm({ toast }) {
       const [f, setF] = useState(null);
       const [busy, setBusy] = useState(false);
+      const [tab, setTab] = useState("contact");
       useEffect(() => { (async () => { const res = await api("/api/admin/settings"); if (res.ok) setF(await res.json()); else toast("err", "Ayarlar yüklenemedi."); })(); }, []);
       const set = (k, v) => setF(s => Object.assign({}, s, { [k]: v }));
       async function save() {
@@ -906,29 +941,93 @@
       }
       if (!f) return html`<div class="empty">Yükleniyor…</div>`;
       const F = (label, key, ph) => html`<div class="field"><label>${label}</label><input value=${f[key] || ""} onChange=${e => set(key, e.target.value)} placeholder=${ph || ""} /></div>`;
-      return html`<div>
-        <div class="page-head"><h1>Ayarlar</h1><button class="btn" onClick=${save} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet"}</button></div>
-        <div class="settings-grid">
-          <div class="card card-pad side-card"><h3>İletişim</h3>
-            ${F("Telefon (görünen)", "phoneDisplay", "+90 (212) 000 00 00")}
-            ${F("Telefon (tel: linki)", "phone", "+902120000000")}
-            ${F("WhatsApp (ülke kodu + numara)", "whatsapp", "905000000000")}
-            ${F("E-posta", "email", "info@hamlepsikoloji.com")}
-            ${F("Çalışma saatleri", "hours", "Pazartesi–Cumartesi 09:00–20:00")}
-          </div>
-          <div class="card card-pad side-card"><h3>Adres</h3>
-            ${F("Sokak / cadde", "addressStreet")}
-            ${F("İlçe", "addressDistrict")}
-            ${F("Şehir", "addressCity")}
-            ${F("Posta kodu", "addressPostalCode")}
-            ${F("Ülke kodu", "addressCountry", "TR")}
-            ${F("Harita araması (Google Maps)", "mapsQuery", "Hamle Psikoloji Kadıköy İstanbul")}
-          </div>
-          <div class="card card-pad side-card"><h3>Sosyal medya</h3>
-            ${F("Instagram URL", "socialInstagram")}
-            ${F("LinkedIn URL", "socialLinkedin")}
-            ${F("YouTube URL", "socialYoutube")}
-          </div>
+      const TA = (label, key, ph) => html`<div class="field"><label>${label}</label><textarea rows="2" value=${f[key] || ""} onInput=${autoGrow} onChange=${e => set(key, e.target.value)} placeholder=${ph || ""}></textarea></div>`;
+      const TABS = [
+        { key: "contact", label: "İletişim", title: "İletişim", sub: "Sitenin altbilgisinde ve iletişim sayfasında görünür." },
+        { key: "address", label: "Adres", title: "Adres & konum", sub: "Google Maps ve yapısal veri (yerel SEO) için kullanılır." },
+        { key: "social", label: "Sosyal", title: "Sosyal medya", sub: "Boş bırakılan hesaplar sitede gösterilmez." },
+      ];
+      const active = TABS.find(t => t.key === tab) || TABS[0];
+      const bodies = {
+        contact: html`<div>
+          <div class="set-row">${F("Telefon (görünen)", "phoneDisplay", "+90 (212) 000 00 00")}${F("Telefon (tel: linki)", "phone", "+902120000000")}</div>
+          <div class="set-row">${F("WhatsApp (ülke kodu + numara)", "whatsapp", "905000000000")}${F("E-posta", "email", "info@hamlepsikoloji.com")}</div>
+          ${F("Çalışma saatleri", "hours", "Pazartesi–Cumartesi 09:00–20:00")}
+        </div>`,
+        address: html`<div>
+          ${F("Sokak / cadde", "addressStreet")}
+          <div class="set-row">${F("İlçe", "addressDistrict")}${F("Şehir", "addressCity")}</div>
+          <div class="set-row">${F("Posta kodu", "addressPostalCode")}${F("Ülke kodu", "addressCountry", "TR")}</div>
+          ${F("Harita araması (Google Maps)", "mapsQuery", "Hamle Psikoloji Kadıköy İstanbul")}
+        </div>`,
+        social: html`<div>
+          ${F("Instagram URL", "socialInstagram")}
+          ${F("LinkedIn URL", "socialLinkedin")}
+          ${F("YouTube URL", "socialYoutube")}
+        </div>`,
+      };
+      return html`<div class="set-wrap">
+        <div class="page-head"><h1>Ayarlar</h1></div>
+        <div class="set-tabs">
+          ${TABS.map(t => html`<button key=${t.key} class="set-tab ${tab === t.key ? "on" : ""}" onClick=${() => setTab(t.key)}>${t.label}</button>`)}
+        </div>
+        <div class="set-section">
+          <div class="set-head"><h3>${active.title}</h3><p>${active.sub}</p></div>
+          ${bodies[tab]}
+          <div class="set-foot"><button class="btn" onClick=${save} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet"}</button></div>
+        </div>
+      </div>`;
+    }
+
+    /* ---------- SEO ---------- */
+    function SeoForm({ toast }) {
+      const [f, setF] = useState(null);
+      const [busy, setBusy] = useState(false);
+      const [tab, setTab] = useState("meta");
+      useEffect(() => { (async () => { const res = await api("/api/admin/settings"); if (res.ok) setF(await res.json()); else toast("err", "SEO ayarları yüklenemedi."); })(); }, []);
+      const set = (k, v) => setF(s => Object.assign({}, s, { [k]: v }));
+      async function save() {
+        setBusy(true);
+        const res = await api("/api/admin/settings", { method: "PUT", body: JSON.stringify(f) });
+        setBusy(false);
+        if (res.ok) { setF(await res.json()); toast("ok", "SEO ayarları kaydedildi."); }
+        else toast("err", "Kaydedilemedi.");
+      }
+      if (!f) return html`<div class="empty">Yükleniyor…</div>`;
+      const F = (label, key, ph) => html`<div class="field"><label>${label}</label><input value=${f[key] || ""} onChange=${e => set(key, e.target.value)} placeholder=${ph || ""} /></div>`;
+      const TA = (label, key, ph) => html`<div class="field"><label>${label}</label><textarea rows="2" value=${f[key] || ""} onInput=${autoGrow} onChange=${e => set(key, e.target.value)} placeholder=${ph || ""}></textarea></div>`;
+      const TABS = [
+        { key: "meta", label: "Genel meta", title: "Genel meta", sub: "Ana sayfa başlığı ve varsayılan meta bilgileri." },
+        { key: "local", label: "Yerel SEO", title: "Yerel SEO (konum)", sub: "Google harita paketi ve yapısal veri için konum sinyalleri." },
+        { key: "analytics", label: "Analytics", title: "Analytics & doğrulama", sub: "Kod girmeden Google araçlarını bağlayın." },
+      ];
+      const active = TABS.find(t => t.key === tab) || TABS[0];
+      const bodies = {
+        meta: html`<div>
+          ${F("Site başlığı (ana sayfa)", "siteTitle", "Hamle Psikoloji — Üsküdar Psikolog…")}
+          ${TA("Varsayılan meta açıklaması", "metaDescription", "150–160 karakterlik özet")}
+          ${TA("Anahtar kelimeler (virgülle)", "keywords", "üsküdar psikolog, psikolog üsküdar, …")}
+        </div>`,
+        local: html`<div>
+          ${F("Öne çıkan hizmet bölgesi (ilçe)", "areaServed", "Üsküdar")}
+          <div class="set-row">${F("Konum enlemi (lat)", "geoLat", "41.0225")}${F("Konum boylamı (lng)", "geoLng", "29.0169")}</div>
+          <div class="set-note">Koordinatı, Google Maps'te ofisine sağ tıklayıp alabilirsin. Sokak/ilçe adresi "Ayarlar → Adres" bölümündedir.</div>
+        </div>`,
+        analytics: html`<div>
+          ${F("Google site doğrulama kodu", "googleVerification", "google-site-verification içeriği")}
+          <div class="set-row">${F("Google Analytics 4", "ga4Id", "G-XXXXXXXXXX")}${F("Google Tag Manager", "gtmId", "GTM-XXXXXXX")}</div>
+          <div class="set-note">Analytics çerezi kullanırsanız KVKK için çerez onay banner'ı önerilir.</div>
+        </div>`,
+      };
+      return html`<div class="set-wrap">
+        <div class="page-head"><h1>SEO</h1></div>
+        <div class="set-tabs">
+          ${TABS.map(t => html`<button key=${t.key} class="set-tab ${tab === t.key ? "on" : ""}" onClick=${() => setTab(t.key)}>${t.label}</button>`)}
+        </div>
+        <div class="set-section">
+          <div class="set-head"><h3>${active.title}</h3><p>${active.sub}</p></div>
+          ${bodies[tab]}
+          <div class="set-foot"><button class="btn" onClick=${save} disabled=${busy}>${busy ? "Kaydediliyor…" : "Kaydet"}</button></div>
         </div>
       </div>`;
     }
@@ -1104,6 +1203,7 @@
 
       let body;
       if (section === "settings") body = html`<div class="content"><${SettingsForm} toast=${toast} /></div>`;
+      else if (section === "seo") body = html`<div class="content"><${SeoForm} toast=${toast} /></div>`;
       else if (section === "leads") body = html`<div class="content"><${LeadsList} toast=${toast} onCountChange=${refreshLeadCount} /></div>`;
       else if (editing) body = editors[section];
       else body = html`<div class="content">${lists[section]}</div>`;

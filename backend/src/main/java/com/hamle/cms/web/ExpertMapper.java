@@ -18,7 +18,8 @@ public class ExpertMapper {
                 e.getId(), e.getSlug(), e.getName(), e.getTitle(), e.getCredentials(),
                 e.getPhoto(), e.getApproach(),
                 nn(e.getSpecialties()), nn(e.getMethods()), nn(e.getServiceSlugs()),
-                nn(e.getEducation()), nn(e.getBio()), e.getSortOrder()
+                nn(e.getEducation()), nn(e.getBio()), e.getSortOrder(),
+                e.getSeoTitle(), e.getSeoDescription()
         );
     }
 
@@ -35,5 +36,7 @@ public class ExpertMapper {
         e.setEducation(nn(r.education()));
         e.setBio(nn(r.bio()));
         e.setSortOrder(r.sortOrder() != null ? r.sortOrder() : 0);
+        e.setSeoTitle(r.seoTitle());
+        e.setSeoDescription(r.seoDescription());
     }
 }

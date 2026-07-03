@@ -10,6 +10,8 @@ export type Expert = {
   education: string[];
   bio: string[]; // paragraflar
   approach: string; // kısa, kişisel yaklaşım cümlesi (kartta öne çıkar)
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
 // [PLACEHOLDER] — Gerçek uzman bilgileri, fotoğraflar ve biyografilerle güncelleyin.

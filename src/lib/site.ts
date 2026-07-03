@@ -7,7 +7,7 @@ export const site = {
   url: "https://hamlepsikoloji.com",
   tagline: "İyi oluşa doğru ilk hamle",
   description:
-    "Hamle Psikoloji, İstanbul'da bireysel terapi, çift & aile terapisi, çocuk & ergen danışmanlığı ve online terapi hizmetleri sunan uzman psikoloji merkezidir.",
+    "Hamle Psikoloji, İstanbul Üsküdar'da bireysel terapi, çift & aile terapisi, çocuk & ergen danışmanlığı ve online terapi hizmetleri sunan uzman psikoloji merkezidir.",
 
   // İletişim — [PLACEHOLDER]
   phoneDisplay: "+90 (212) 000 00 00",
@@ -15,19 +15,19 @@ export const site = {
   whatsapp: "905000000000", // ülke kodu + numara, başında + ve boşluk olmadan
   email: "info@hamlepsikoloji.com",
 
-  // Adres — [PLACEHOLDER]
+  // Adres — [PLACEHOLDER] gerçek adresi panelden (Ayarlar) girin
   address: {
-    street: "Caferağa Mah. Örnek Cad. No: 1, Kat 3",
-    district: "Kadıköy",
+    street: "Mimar Sinan Mah. Örnek Cad. No: 1, Kat 3",
+    district: "Üsküdar",
     city: "İstanbul",
-    postalCode: "34710",
+    postalCode: "34664",
     country: "TR",
     get full() {
       return `${this.street}, ${this.district}/${this.city}`;
     },
   },
-  geo: { lat: 40.9901, lng: 29.0277 }, // [PLACEHOLDER] gerçek konum
-  mapsQuery: "Hamle Psikoloji Kadıköy İstanbul",
+  geo: { lat: 41.0225, lng: 29.0169 }, // [PLACEHOLDER] Üsküdar — gerçek ofis konumuyla güncelleyin
+  mapsQuery: "Hamle Psikoloji Üsküdar İstanbul",
   hours: "Pazartesi–Cumartesi 09:00–20:00",
 
   // Sosyal medya — [PLACEHOLDER]
@@ -36,6 +36,15 @@ export const site = {
     linkedin: "https://www.linkedin.com/company/hamlepsikoloji",
     youtube: "",
   },
+
+  // SEO & Analytics varsayılanları — SEO panelinden geçersiz kılınabilir
+  areaServed: "Üsküdar", // öne çıkan hizmet bölgesi (ilçe)
+  seoTitle: "Hamle Psikoloji — Üsküdar Psikolog & Psikolojik Danışmanlık",
+  keywords:
+    "üsküdar psikolog, psikolog üsküdar, üsküdar psikolojik danışmanlık, üsküdar terapi, psikolog istanbul, online terapi, çift terapisi, bireysel terapi, çocuk psikoloğu, Hamle Psikoloji",
+  googleVerification: "",
+  ga4Id: "",
+  gtmId: "",
 };
 
 export const nav = [

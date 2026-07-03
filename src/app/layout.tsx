@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -21,50 +22,47 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} — İstanbul Psikolog & Psikolojik Danışmanlık`,
-    template: `%s | ${site.name}`,
-  },
-  description: site.description,
-  applicationName: site.name,
-  keywords: [
-    "psikolog istanbul",
-    "online terapi",
-    "psikolojik danışmanlık",
-    "çift terapisi",
-    "bireysel terapi",
-    "çocuk psikoloğu",
-    "Hamle Psikoloji",
-  ],
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "tr_TR",
-    url: site.url,
-    siteName: site.name,
-    title: `${site.name} — İstanbul Psikolog & Psikolojik Danışmanlık`,
-    description: site.description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: site.name,
-    description: site.description,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSettings();
+  const keywords = (s.keywords || "").split(",").map((k) => k.trim()).filter(Boolean);
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: s.seoTitle,
+      template: `%s | ${site.name}`,
+    },
+    description: s.description,
+    applicationName: site.name,
+    keywords,
+    alternates: { canonical: "/" },
+    openGraph: {
+      type: "website",
+      locale: "tr_TR",
+      url: site.url,
+      siteName: site.name,
+      title: s.seoTitle,
+      description: s.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: site.name,
+      description: s.description,
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
     },
-  },
-  manifest: "/manifest.webmanifest",
-};
+    manifest: "/manifest.webmanifest",
+    verification: s.googleVerification ? { google: s.googleVerification } : undefined,
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#352a44",
@@ -73,14 +71,51 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSettings();
+  const { ga4Id, gtmId } = settings;
+
   return (
     <html lang="tr" className={`${inter.variable} ${fraunces.variable}`}>
       <body className="flex min-h-screen flex-col">
+        {/* Google Tag Manager (noscript) */}
+        {gtmId && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
+
         <JsonLd data={[organizationSchema(settings), websiteSchema(settings)]} />
         <Header whatsapp={settings.whatsapp} />
         <main className="flex-1 pt-[88px] lg:pt-[96px]">{children}</main>
         <Footer settings={settings} />
         <WhatsAppButton whatsapp={settings.whatsapp} />
+
+        {/* Google Tag Manager */}
+        {gtmId && (
+          <Script id="gtm" strategy="afterInteractive">
+            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
+          </Script>
+        )}
+
+        {/* Google Analytics 4 */}
+        {ga4Id && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${ga4Id}');`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );

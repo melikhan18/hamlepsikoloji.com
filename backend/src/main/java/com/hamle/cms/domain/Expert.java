@@ -38,6 +38,12 @@ public class Expert {
     @Column(columnDefinition = "text")
     private String approach;
 
+    @Column(name = "seo_title")
+    private String seoTitle;
+
+    @Column(name = "seo_description", columnDefinition = "text")
+    private String seoDescription;
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<String> specialties = new ArrayList<>();

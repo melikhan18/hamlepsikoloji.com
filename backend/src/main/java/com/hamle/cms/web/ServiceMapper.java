@@ -17,7 +17,8 @@ public class ServiceMapper {
         return new ServiceDtos.ServiceResponse(
                 s.getId(), s.getSlug(), s.getTitle(), s.getShortTitle(), s.getTagline(),
                 s.getSummary(), s.getPitch(), s.getIcon(), s.getIllo(),
-                nn(s.getForWho()), nn(s.getProcess()), nn(s.getFaqs()), s.getSortOrder()
+                nn(s.getForWho()), nn(s.getProcess()), nn(s.getFaqs()), s.getSortOrder(),
+                s.getSeoTitle(), s.getSeoDescription()
         );
     }
 
@@ -34,5 +35,7 @@ public class ServiceMapper {
         s.setProcess(nn(r.process()));
         s.setFaqs(nn(r.faqs()));
         s.setSortOrder(r.sortOrder() != null ? r.sortOrder() : 0);
+        s.setSeoTitle(r.seoTitle());
+        s.setSeoDescription(r.seoDescription());
     }
 }

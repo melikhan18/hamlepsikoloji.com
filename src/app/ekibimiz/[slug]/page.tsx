@@ -21,15 +21,19 @@ export async function generateMetadata({
   const { slug } = await params;
   const expert = await getExpert(slug);
   if (!expert) return {};
+  const metaTitle = expert.seoTitle || `${expert.name} — ${expert.title}`;
+  const metaDesc =
+    expert.seoDescription ||
+    `${expert.name}, ${expert.credentials}. Uzmanlık: ${expert.specialties.slice(0, 3).join(", ")}. İstanbul'da yüz yüze ve online danışmanlık.`;
   return {
-    title: `${expert.name} — ${expert.title}`,
-    description: `${expert.name}, ${expert.credentials}. Uzmanlık: ${expert.specialties.slice(0, 3).join(", ")}. İstanbul'da yüz yüze ve online danışmanlık.`,
+    title: metaTitle,
+    description: metaDesc,
     alternates: { canonical: `/ekibimiz/${expert.slug}` },
     openGraph: {
       type: "profile",
       url: `/ekibimiz/${expert.slug}`,
-      title: `${expert.name} — ${expert.title}`,
-      description: `${expert.name}, ${expert.credentials}.`,
+      title: metaTitle,
+      description: metaDesc,
       ...(expert.photo ? { images: [{ url: expert.photo, alt: expert.name }] } : {}),
     },
   };

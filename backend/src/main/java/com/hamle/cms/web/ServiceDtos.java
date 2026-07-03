@@ -22,7 +22,9 @@ public class ServiceDtos {
             List<String> forWho,
             List<ProcessStep> process,
             List<Faq> faqs,
-            Integer sortOrder
+            Integer sortOrder,
+            String seoTitle,
+            String seoDescription
     ) {}
 
     /** Admin oluşturma/güncelleme isteği. */
@@ -38,6 +40,8 @@ public class ServiceDtos {
             List<String> forWho,
             List<ProcessStep> process,
             List<Faq> faqs,
-            Integer sortOrder
+            Integer sortOrder,
+            String seoTitle,
+            String seoDescription
     ) {}
 }

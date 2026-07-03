@@ -43,6 +43,12 @@ public class Post {
     @Column(name = "author_slug")
     private String authorSlug;
 
+    @Column(name = "seo_title")
+    private String seoTitle;
+
+    @Column(name = "seo_description", columnDefinition = "text")
+    private String seoDescription;
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<ContentBlock> content = new ArrayList<>();

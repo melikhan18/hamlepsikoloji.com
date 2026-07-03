@@ -9,6 +9,8 @@ export type Post = {
   cover: string; // Unsplash foto id'si (u() ile boyutlandırılır)
   icon: "leaf" | "screen" | "heart" | "child" | "person" | "spark" | "sun"; // hover ikonu
   content: Block[];
+  seoTitle?: string; // opsiyonel SEO başlığı (boşsa title kullanılır)
+  seoDescription?: string; // opsiyonel meta açıklaması (boşsa excerpt kullanılır)
 };
 
 // [PLACEHOLDER] taslak yazılar — SEO için başlangıç içerikleri. Düzenleyip çoğaltabilirsiniz.
