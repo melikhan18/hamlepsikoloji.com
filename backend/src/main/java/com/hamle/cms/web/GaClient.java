@@ -76,7 +76,8 @@ public class GaClient {
         Instant now = Instant.now();
         String assertion = Jwts.builder()
                 .issuer(email)
-                .audience().add("https://oauth2.googleapis.com/token").and()
+                // Google, aud'u dizi değil düz metin bekler — single() şart.
+                .audience().single("https://oauth2.googleapis.com/token")
                 .claim("scope", "https://www.googleapis.com/auth/analytics.readonly")
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plusSeconds(3600)))
