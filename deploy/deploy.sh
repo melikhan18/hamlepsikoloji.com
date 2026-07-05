@@ -26,7 +26,10 @@ export API_URL_INTERNAL="${API_URL_INTERNAL:-http://localhost:8081}"
 
 echo "==> [2/5] Backend derleniyor (jar)"
 ( cd backend && mvn -q -DskipTests clean package )
-cp backend/target/*.jar "$BACKEND_JAR"
+# Atomik değişim: çalışan sürecin jar'ının ÜZERİNE yazma (cp) NoClassDefFoundError
+# fırlatır; mv ile eski süreç restart'a kadar eski dosyayı sorunsuz kullanır.
+cp backend/target/*.jar "$BACKEND_JAR.new"
+mv -f "$BACKEND_JAR.new" "$BACKEND_JAR"
 
 echo "==> [3/5] Backend başlatılıyor ve sağlık bekleniyor"
 sudo systemctl restart hamle-backend
