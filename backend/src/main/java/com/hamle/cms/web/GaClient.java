@@ -61,8 +61,7 @@ public class GaClient {
                 .build();
         HttpResponse<String> res = http.send(req, HttpResponse.BodyHandlers.ofString());
         if (res.statusCode() != 200) {
-            throw new IllegalStateException("GA raporu alınamadı (" + res.statusCode() + "): "
-                    + res.body().substring(0, Math.min(300, res.body().length())));
+            throw new IllegalStateException("GA raporu alınamadı (" + res.statusCode() + "): " + oneLine(res.body()));
         }
         return om.readTree(res.body());
     }
@@ -93,13 +92,18 @@ public class GaClient {
                 .build();
         HttpResponse<String> res = http.send(req, HttpResponse.BodyHandlers.ofString());
         if (res.statusCode() != 200) {
-            throw new IllegalStateException("GA erişim jetonu alınamadı: "
-                    + res.body().substring(0, Math.min(300, res.body().length())));
+            throw new IllegalStateException("GA erişim jetonu alınamadı: " + oneLine(res.body()));
         }
         JsonNode tok = om.readTree(res.body());
         token = tok.get("access_token").asText();
         tokenExp = now.plusSeconds(tok.path("expires_in").asLong(3600));
         return token;
+    }
+
+    /** Hata gövdesini log'da kesilmemesi için tek satıra indirir. */
+    private static String oneLine(String s) {
+        String t = (s == null ? "" : s).replaceAll("\\s+", " ").trim();
+        return t.substring(0, Math.min(400, t.length()));
     }
 
     private static PrivateKey parsePem(String pem) throws Exception {
