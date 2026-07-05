@@ -8,7 +8,10 @@ import { legalDocs as localLegalDocs, type LegalDoc } from "@/data/legal";
 import { siteImageDefaults } from "@/lib/images";
 import { site } from "@/lib/site";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081";
+// Sunucu tarafı (build + SSR/ISR) istekleri için iç adres tercih edilir:
+// üretimde API_URL_INTERNAL=http://localhost:8081 → Cloudflare/hairpin'e takılmaz, hızlıdır.
+// Tarayıcı tarafı (ContactForm) NEXT_PUBLIC_API_URL kullanmaya devam eder.
+const API = process.env.API_URL_INTERNAL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081";
 // Yedek zaman aşımı. Anında tazeleme /api/revalidate webhook'u ile yapılır;
 // bu değer yalnızca webhook çalışmazsa en fazla ne kadar beklendiğini belirler.
 const REVALIDATE = 300;
