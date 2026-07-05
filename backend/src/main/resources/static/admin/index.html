@@ -30,7 +30,8 @@
     .btn-danger{background:var(--paper);color:var(--danger);border:1px solid #f0c9c5}
     .btn-danger:hover{background:#fdecea}
     .btn-sm{padding:.4rem .75rem;font-size:.83rem}
-    .btn-icon{padding:.4rem;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center}
+    .btn-icon{padding:.4rem;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+    .btn-icon svg{width:18px;height:18px;flex-shrink:0}
     input,textarea,select{width:100%;padding:.62rem .8rem;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit;outline:none;transition:.15s}
     input:focus,textarea:focus,select:focus{border-color:var(--plum3);box-shadow:0 0 0 3px rgba(76,61,99,.12)}
     textarea{resize:vertical;line-height:1.6}
@@ -105,6 +106,8 @@
     .block-kind{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
     .block-ctrls{margin-left:auto;display:flex;gap:.25rem;opacity:0;transition:.15s}
     .block:hover .block-ctrls{opacity:1}
+    /* Dokunmatik cihazlarda hover yok — kontroller her zaman görünsün */
+    @media (hover: none){.block-ctrls{opacity:1}}
     .block textarea,.block input{border:1px solid transparent;background:#faf8f4}
     .block textarea:focus,.block input:focus{background:#fff;border-color:var(--plum3)}
     .add-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}
