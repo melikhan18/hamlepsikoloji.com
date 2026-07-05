@@ -25,7 +25,9 @@ echo "==> [2/4] Backend derleniyor (jar)"
 cp backend/target/*.jar "$BACKEND_JAR"
 
 echo "==> [3/4] Frontend derleniyor"
-npm ci
+# NODE_ENV=production env'den yüklendiği için devDependency'ler (tailwind, typescript)
+# atlanmasın diye --include=dev şart — bunlar build için gerekli.
+npm ci --include=dev
 npm run build
 
 echo "==> [4/4] Servisler yeniden başlatılıyor"
