@@ -5,16 +5,17 @@ import { ServiceCard, FeaturedExpertCard } from "@/components/Cards";
 import { PostCarousel } from "@/components/PostCarousel";
 import { Illustration } from "@/components/Illustrations";
 import { Testimonials } from "@/components/Testimonials";
-import { getPosts, getServices, getExperts } from "@/lib/cms";
+import { getPosts, getServices, getExperts, getSiteImages } from "@/lib/cms";
 import { benefits, focusGroups, expectations, aboutIntro, aboutAccordion } from "@/data/home";
 import { Icon } from "@/components/Icon";
 import { Accordion } from "@/components/Accordion";
-import { img, u } from "@/lib/images";
+import { u } from "@/lib/images";
 
 export default async function HomePage() {
   const recentPosts = (await getPosts()).slice(0, 8);
   const services = await getServices();
   const team = await getExperts();
+  const siteImg = await getSiteImages();
   return (
     <>
       {/* ===== HERO ===== */}
@@ -22,7 +23,7 @@ export default async function HomePage() {
         {/* Tam-bleed görsel — mobilde tüm arka plan, masaüstünde sağ yarı */}
         <div className="pointer-events-none absolute inset-0 lg:left-auto lg:right-0 lg:w-[55%]">
           <Image
-            src={u(img.heroMain, 1600)}
+            src={u(siteImg.homeHero, 1600)}
             alt="Hamle Psikoloji — uzman psikolojik danışmanlık"
             fill
             priority
@@ -179,7 +180,7 @@ export default async function HomePage() {
           {/* Sol: görsel — sabit yükseklik + sticky → akordeon açılınca oynamaz */}
           <div className="relative h-72 w-full overflow-hidden sm:h-96 lg:sticky lg:top-0 lg:h-screen">
             <Image
-              src={u(img.about, 1400)}
+              src={u(siteImg.homeAbout, 1400)}
               alt="Hamle Psikoloji — güvenli ve sıcak danışmanlık ortamı"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

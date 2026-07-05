@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/lib/site";
-import { img, u } from "@/lib/images";
+import { u } from "@/lib/images";
+import { getSiteImages } from "@/lib/cms";
 
 export function Container({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <div className={`mx-auto max-w-[96rem] px-5 sm:px-8 lg:px-14 ${className}`}>{children}</div>;
@@ -116,7 +117,7 @@ export function Breadcrumbs({ items }: { items: { name: string; url: string }[] 
   );
 }
 
-export function CTABanner({
+export async function CTABanner({
   title = (
     <>
       Hemen arayın ya da <em>ön görüşme</em> planlayın
@@ -125,10 +126,11 @@ export function CTABanner({
 }: {
   title?: React.ReactNode;
 }) {
+  const siteImg = await getSiteImages();
   return (
     <section className="bg-cream px-3 py-6 sm:px-4 sm:py-10">
       <div className="relative h-[26rem] w-full overflow-hidden rounded-[2rem] sm:h-[28rem]">
-        <Image src={u(img.about, 1600)} alt="" fill sizes="100vw" className="object-cover" />
+        <Image src={u(siteImg.ctaBanner, 1600)} alt="" fill sizes="100vw" className="object-cover" />
         {/* yumuşak krem geçişleri — metin okunurluğu + kenarlarda silikleşme */}
         <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/45 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-cream/80 to-transparent" />

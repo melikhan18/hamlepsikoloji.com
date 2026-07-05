@@ -3,8 +3,8 @@ import Image from "next/image";
 import { Container, SectionHeading, Breadcrumbs, CTABanner, Button } from "@/components/ui";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema } from "@/lib/schema";
-import { getServices } from "@/lib/cms";
-import { img, u } from "@/lib/images";
+import { getServices, getSiteImages } from "@/lib/cms";
+import { u } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Hakkımızda",
@@ -59,6 +59,7 @@ function Starburst() {
 
 export default async function AboutPage() {
   const services = await getServices();
+  const siteImg = await getSiteImages();
   return (
     <>
       <Container className="py-10">
@@ -123,7 +124,7 @@ export default async function AboutPage() {
           <div className="relative mx-auto max-w-md">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] [mask-image:linear-gradient(to_top,transparent_0%,#000_22%)] [-webkit-mask-image:linear-gradient(to_top,transparent_0%,#000_22%)]">
               <Image
-                src={u(img.about, 1000)}
+                src={u(siteImg.aboutTop, 1000)}
                 alt="Hamle Psikoloji — danışmanlık ortamı"
                 fill
                 sizes="(max-width: 1024px) 100vw, 460px"
@@ -162,7 +163,7 @@ export default async function AboutPage() {
           <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[1.5rem] lg:max-w-md">
               <Image
-                src={u("photo-1521791136064-7986c2920216", 900)}
+                src={u(siteImg.aboutSecond, 900)}
                 alt="Birlikte — Hamle Psikoloji"
                 fill
                 sizes="(max-width: 1024px) 100vw, 600px"

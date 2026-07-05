@@ -12,18 +12,15 @@ export const u = (id: string, w = 1200, h?: number) => {
 
 export const img = {
   heroMain: "photo-1506126613408-eca07ce68773", // sakinlik / nefes
-  heroSecondary: "photo-1518495973542-4542c06a5843", // doğa, ışık
   about: "photo-1551836022-deb4988cc6c0", // terapi/danışmanlık seansı — destekleyici görüşme
-  cta: "photo-1469571486292-0ba58a3f068b", // destek / huzur
-  service: {
-    "bireysel-terapi": "photo-1559757148-5c350d0d3c56",
-    "cift-ve-aile-terapisi": "photo-1516589178581-6cd7833ae3b2",
-    "cocuk-ve-ergen-terapisi": "photo-1503454537195-1dcabb73ffb9",
-    "online-terapi": "photo-1488521787991-ed7bbaae773c",
-  } as Record<string, string>,
-  testimonial: [
-    "photo-1545205597-3d9d02c29597",
-    "photo-1542596768-5d1d21f1cf98",
-    "photo-1529693662653-9d480530a697",
-  ],
+};
+
+// Site geneli görsel noktaları — API (panel > Görseller) kapalıysa fallback.
+// Anahtarlar backend site_images.img_key ile birebir.
+export const siteImageDefaults: Record<string, string> = {
+  homeHero: img.heroMain,
+  homeAbout: img.about,
+  aboutTop: img.about,
+  aboutSecond: "photo-1521791136064-7986c2920216",
+  ctaBanner: img.about,
 };

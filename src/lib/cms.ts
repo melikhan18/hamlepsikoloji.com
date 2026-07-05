@@ -5,6 +5,7 @@ import { team as localTeam, type Expert } from "@/data/team";
 import { services as localServices, type Service } from "@/data/services";
 import { faqGroups as localFaqGroups, type FaqGroup } from "@/data/faq";
 import { legalDocs as localLegalDocs, type LegalDoc } from "@/data/legal";
+import { siteImageDefaults } from "@/lib/images";
 import { site } from "@/lib/site";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081";
@@ -113,6 +114,27 @@ export async function getLegalDoc(slug: string): Promise<LegalDoc> {
     /* fall through */
   }
   return localLegalDocs.find((d) => d.slug === slug) ?? localLegalDocs[0];
+}
+
+/* ===== Site görselleri (hero, CTA vb. sabit noktalar) ===== */
+type SiteImageApi = { key: string; url?: string };
+
+export async function getSiteImages(): Promise<Record<string, string>> {
+  const map = { ...siteImageDefaults };
+  try {
+    const res = await fetch(`${API}/api/site-images`, OPTS);
+    if (res.ok) {
+      const data = (await res.json()) as SiteImageApi[];
+      if (Array.isArray(data)) {
+        for (const it of data) {
+          if (it.key && it.url) map[it.key] = it.url;
+        }
+      }
+    }
+  } catch {
+    /* fallback: varsayılanlar */
+  }
+  return map;
 }
 
 /* ===== Site ayarları (tekil) ===== */

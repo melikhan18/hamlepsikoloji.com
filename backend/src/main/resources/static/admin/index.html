@@ -187,6 +187,12 @@
     .st-new{background:#fde6cf;color:#8a5316}
     .st-contacted{background:#d7e9ff;color:#1f4d8a}
     .st-closed{background:#dbeadd;color:#2f6b3f}
+    /* İçe aktarma modalı */
+    .modal-back{position:fixed;inset:0;z-index:70;background:rgba(20,14,30,.5);display:flex;align-items:center;justify-content:center;padding:1rem}
+    .modal{background:var(--paper);border-radius:14px;box-shadow:var(--shadow);width:min(640px,100%);max-height:90vh;overflow:auto;padding:1.4rem}
+    .modal h3{font-family:Fraunces,serif;font-weight:500;font-size:1.15rem;margin:0 0 .3rem}
+    .modal textarea{min-height:220px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem}
+    .modal-foot{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:.9rem;flex-wrap:wrap}
 
     /* Toasts */
     .toasts{position:fixed;top:1rem;right:1rem;z-index:50;display:flex;flex-direction:column;gap:.55rem}
@@ -312,6 +318,60 @@
     }
     const autoGrow = e => { const el = e.target; el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; };
 
+    // Tüm yapay zeka araçları için blog içe aktarma prompt şablonu
+    const IMPORT_PROMPT = `Sen Hamle Psikoloji (İstanbul Üsküdar'da bir psikoloji kliniği) için Türkçe içerik üreten bir blog yazarı ve SEO uzmanısın. Aşağıda verilen KONU hakkında özgün, bilgilendirici ve güven veren bir blog yazısı yaz.
+
+KURALLAR
+- Dil: Türkçe. Ton: profesyonel, sıcak, kanıta dayalı. Bu bir bilgilendirme yazısıdır, tıbbi tavsiye değildir.
+- Uzunluk: 700-1100 kelime. En az 3 alt başlık (h2) ve en az bir madde listesi (ul) kullan.
+- Okuyucuya "siz" diye hitap et; klişe ve abartıdan kaçın.
+- İlk içerik bloğu bir giriş paragrafı (p) olmalı.
+- Görsel (image) bloğu EKLEME; görselleri panelden ben ekleyeceğim.
+- ÇIKTIYI YALNIZCA aşağıdaki JSON biçiminde ver. JSON dışında selamlama, açıklama veya markdown kod bloğu işareti EKLEME.
+
+ALANLAR
+- title: Yazı başlığı (en fazla ~60 karakter, çekici ve net)
+- excerpt: 150-160 karakterlik özet (kartlarda ve meta açıklamasında kullanılır)
+- category: Kısa kategori (örn: Kaygı, Depresyon, İlişkiler, Ebeveynlik, Online Terapi)
+- icon: Şunlardan tam olarak biri: leaf, screen, heart, child, person, spark, sun
+- seoTitle: SEO için özel başlık (opsiyonel, boş "" olabilir)
+- seoDescription: 150-160 karakterlik SEO meta açıklaması (opsiyonel)
+- content: İçerik blokları dizisi. Her blok şu üçünden biri olmalı:
+    { "p": "paragraf metni" }   (markdown desteklenir: **kalın**, *italik*, [metin](https://baglanti))
+    { "h2": "alt başlık" }
+    { "ul": ["madde 1", "madde 2", "madde 3"] }
+
+ÇIKTI BİÇİMİ (birebir bu yapıda, geçerli JSON):
+{
+  "title": "",
+  "excerpt": "",
+  "category": "",
+  "icon": "leaf",
+  "seoTitle": "",
+  "seoDescription": "",
+  "content": [
+    { "p": "" },
+    { "h2": "" },
+    { "p": "" },
+    { "ul": ["", ""] }
+  ]
+}
+
+KONU: [Buraya yazının konusunu yazın. Örnek: "Sınav kaygısıyla baş etmenin 7 yolu"]`;
+
+    // YZ çıktısındaki JSON'u ayrıştırır (``` işaretlerini ve fazladan metni toleranslı temizler)
+    function parseImport(text) {
+      let t = (text || "").trim();
+      t = t.replace(/^```[a-z]*\s*/i, "").replace(/\s*```$/i, "").trim();
+      const a = t.indexOf("{"), b = t.lastIndexOf("}");
+      if (a >= 0 && b > a) t = t.slice(a, b + 1);
+      let d;
+      try { d = JSON.parse(t); } catch (err) { return { error: "Geçersiz JSON: " + err.message }; }
+      if (!d || !d.title || !String(d.title).trim()) return { error: "JSON'da 'title' (başlık) alanı zorunlu." };
+      if (!Array.isArray(d.content)) d.content = [];
+      return { data: d };
+    }
+
     /* ---------- icons ---------- */
     const Ic = {
       blog: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>`,
@@ -329,6 +389,7 @@
       inbox: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 13h4l1.5 3h5L16 13h4"/><path d="M4 13V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7"/><path d="M4 13v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>`,
       doc: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>`,
       seo: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4v16h16"/><path d="M7 14l4-4 3 3 5-6"/></svg>`,
+      image: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-5 3 3 3-3 5 5"/></svg>`,
     };
 
     /* ---------- Toasts ---------- */
@@ -374,6 +435,7 @@
         { key: "services", label: "Hizmetler", icon: Ic.services, on: true },
         { key: "faq", label: "S.S.S.", icon: Ic.faq, on: true },
         { key: "legal", label: "Belgeler", icon: Ic.doc, on: true },
+        { key: "images", label: "Görseller", icon: Ic.image, on: true },
         { key: "seo", label: "SEO", icon: Ic.seo, on: true },
         { key: "settings", label: "Ayarlar", icon: Ic.settings, on: true },
       ];
@@ -390,8 +452,10 @@
     }
 
     /* ---------- Blog list ---------- */
-    function BlogList({ onNew, onEdit, toast }) {
+    function BlogList({ onNew, onEdit, onImport, toast }) {
       const [posts, setPosts] = useState(null); const [q, setQ] = useState("");
+      const [importing, setImporting] = useState(false);
+      const [impText, setImpText] = useState(""); const [impErr, setImpErr] = useState("");
       async function load() { const res = await api("/api/admin/posts"); if (res.ok) setPosts(await res.json()); else toast("err", "Yazılar yüklenemedi."); }
       useEffect(() => { load(); }, []);
       async function del(p) {
@@ -399,9 +463,43 @@
         const res = await api("/api/admin/posts/" + p.id, { method: "DELETE" });
         if (res.ok) { toast("ok", "Yazı silindi."); load(); } else toast("err", "Silinemedi.");
       }
+      function copyPrompt() {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(IMPORT_PROMPT).then(
+            () => toast("ok", "Prompt kopyalandı. Yapay zekaya yapıştırın."),
+            () => toast("err", "Kopyalanamadı; metni elle seçip kopyalayın.")
+          );
+        } else toast("err", "Tarayıcı kopyalamayı desteklemiyor.");
+      }
+      function doImport() {
+        const r = parseImport(impText);
+        if (r.error) { setImpErr(r.error); return; }
+        setImporting(false); setImpText(""); setImpErr("");
+        onImport(r.data);
+      }
       const filtered = (posts || []).filter(p => (p.title + " " + (p.category || "")).toLowerCase().includes(q.toLowerCase()));
       return html`<div>
-        <div class="page-head"><h1>Blog yazıları</h1><button class="btn" onClick=${onNew}>+ Yeni yazı</button></div>
+        ${importing && html`<div class="modal-back" onClick=${() => setImporting(false)}>
+          <div class="modal" onClick=${e => e.stopPropagation()}>
+            <h3>Yapay zeka ile içe aktar</h3>
+            <p class="muted" style=${{ fontSize: ".85rem", margin: ".2rem 0 .8rem" }}>1) "Prompt'u kopyala" ile şablonu al, ChatGPT / Claude / Gemini'ye yapıştır ve konuyu yaz. 2) Dönen JSON'u aşağıya yapıştırıp "İçe aktar"a bas — editör hazır dolar.</p>
+            <button class="btn-ghost btn-sm" onClick=${copyPrompt}>📋 Prompt'u kopyala</button>
+            <textarea style=${{ marginTop: ".7rem" }} placeholder="Yapay zekadan gelen JSON'u buraya yapıştırın…" value=${impText} onChange=${e => { setImpText(e.target.value); setImpErr(""); }}></textarea>
+            ${impErr && html`<p style=${{ color: "var(--danger)", fontSize: ".85rem", margin: ".4rem 0 0" }}>${impErr}</p>`}
+            <div class="modal-foot">
+              <span class="muted" style=${{ fontSize: ".78rem" }}>Kapak görselini içe aktardıktan sonra editörden eklersiniz.</span>
+              <div style=${{ display: "flex", gap: ".5rem" }}>
+                <button class="btn-ghost" onClick=${() => setImporting(false)}>İptal</button>
+                <button class="btn" onClick=${doImport}>İçe aktar</button>
+              </div>
+            </div>
+          </div>
+        </div>`}
+        <div class="page-head"><h1>Blog yazıları</h1>
+          <div style=${{ display: "flex", gap: ".5rem" }}>
+            <button class="btn-ghost" onClick=${() => { setImpText(""); setImpErr(""); setImporting(true); }}>⇩ Yapay zeka ile içe aktar</button>
+            <button class="btn" onClick=${onNew}>+ Yeni yazı</button>
+          </div></div>
         <div class="toolbar"><div class="search">${Ic.search}<input placeholder="Ara…" value=${q} onChange=${e => setQ(e.target.value)} /></div>
           <span class="muted" style=${{ fontSize: ".85rem" }}>${posts ? filtered.length + " yazı" : ""}</span></div>
         <div class="card" style=${{ overflow: "hidden" }}>
@@ -498,16 +596,18 @@
     }
 
     /* ---------- Blog editor ---------- */
-    function BlogEditor({ post, onDone, onCancel, toast }) {
+    function BlogEditor({ post, seed, onDone, onCancel, toast }) {
       const draftKey = "hamle:draft:" + (post ? post.id : "new");
       const init = () => {
-        if (!post) { try { const d = JSON.parse(localStorage.getItem(draftKey)); if (d && d.f) return d; } catch {} }
+        // İçe aktarılan (yapay zeka) veri varsa taslağı atla, onu doldur (yeni yazı olarak)
+        const src = post || seed;
+        if (!post && !seed) { try { const d = JSON.parse(localStorage.getItem(draftKey)); if (d && d.f) return d; } catch {} }
         return {
-          f: { slug: post?.slug || "", title: post?.title || "", excerpt: post?.excerpt || "",
-               date: post?.date || new Date().toISOString().slice(0, 10), category: post?.category || "",
-               icon: post?.icon || "leaf", cover: post?.cover || "", authorSlug: post?.authorSlug || "",
-               seoTitle: post?.seoTitle || "", seoDescription: post?.seoDescription || "" },
-          blocks: blocksFromApi(post?.content),
+          f: { slug: src?.slug || "", title: src?.title || "", excerpt: src?.excerpt || "",
+               date: src?.date || new Date().toISOString().slice(0, 10), category: src?.category || "",
+               icon: src?.icon || "leaf", cover: src?.cover || "", authorSlug: src?.authorSlug || "",
+               seoTitle: src?.seoTitle || "", seoDescription: src?.seoDescription || "" },
+          blocks: blocksFromApi(src?.content),
         };
       };
       const initial = init();
@@ -979,6 +1079,58 @@
       </div>`;
     }
 
+    /* ---------- Site görselleri ---------- */
+    function ImageCard({ item, toast, onSaved }) {
+      const [url, setUrl] = useState(item.url || "");
+      const [busy, setBusy] = useState(false);
+      const dirty = url !== (item.url || "");
+      async function save() {
+        setBusy(true);
+        const res = await api("/api/admin/site-images/" + item.id, { method: "PUT", body: JSON.stringify({ url }) });
+        setBusy(false);
+        if (res.ok) { toast("ok", `"${item.label}" güncellendi.`); onSaved(await res.json()); }
+        else toast("err", "Kaydedilemedi.");
+      }
+      return html`<div class="card card-pad side-card">
+        <h3 style=${{ marginBottom: ".25rem" }}>${item.label}</h3>
+        ${item.description && html`<p class="muted" style=${{ fontSize: ".8rem", margin: "0 0 .8rem" }}>${item.description}</p>`}
+        <${ImageInput} value=${url} onChange=${setUrl} toast=${toast} />
+        <div style=${{ display: "flex", justifyContent: "flex-end", marginTop: ".7rem" }}>
+          <button class="btn btn-sm" onClick=${save} disabled=${busy || !dirty}>${busy ? "Kaydediliyor…" : dirty ? "Kaydet" : "Kaydedildi"}</button>
+        </div>
+      </div>`;
+    }
+
+    // Görsel anahtarı → sayfa sekmesi eşlemesi (bilinmeyen anahtarlar "general"e düşer)
+    const IMG_PAGE = { homeHero: "home", homeAbout: "home", aboutTop: "about", aboutSecond: "about", ctaBanner: "general" };
+    const IMG_TABS = [
+      { key: "home", label: "Ana Sayfa", sub: "Ana sayfada görünen görseller." },
+      { key: "about", label: "Hakkımızda", sub: "Hakkımızda sayfasındaki görseller." },
+      { key: "general", label: "Genel", sub: "Birden fazla sayfada görünen ortak görseller (randevu bandı vb.)." },
+    ];
+
+    function ImagesPanel({ toast }) {
+      const [items, setItems] = useState(null);
+      const [tab, setTab] = useState("home");
+      async function load() { const res = await api("/api/admin/site-images"); if (res.ok) setItems(await res.json()); else toast("err", "Görseller yüklenemedi."); }
+      useEffect(() => { load(); }, []);
+      if (items === null) return html`<div class="empty">Yükleniyor…</div>`;
+      const active = IMG_TABS.find(t => t.key === tab) || IMG_TABS[0];
+      const filtered = items.filter(it => (IMG_PAGE[it.key] || "general") === tab);
+      return html`<div class="set-wrap">
+        <div class="page-head"><h1>Site görselleri</h1></div>
+        <p class="muted" style=${{ fontSize: ".88rem", margin: "-.6rem 0 1rem" }}>Blog kapakları yazı editöründen, uzman fotoğrafları Ekip bölümünden düzenlenir. Kaydedince site anında güncellenir.</p>
+        <div class="set-tabs">
+          ${IMG_TABS.map(t => html`<button key=${t.key} class="set-tab ${tab === t.key ? "on" : ""}" onClick=${() => setTab(t.key)}>${t.label}</button>`)}
+        </div>
+        <p class="muted" style=${{ fontSize: ".82rem", margin: "0 0 1rem" }}>${active.sub}</p>
+        ${filtered.length === 0 ? html`<div class="empty">Bu sayfada düzenlenebilir görsel yok.</div>`
+          : html`<div class="settings-grid">
+              ${filtered.map(it => html`<${ImageCard} key=${it.id} item=${it} toast=${toast} onSaved=${upd => setItems(a => a.map(x => x.id === upd.id ? upd : x))} />`)}
+            </div>`}
+      </div>`;
+    }
+
     /* ---------- SEO ---------- */
     function SeoForm({ toast }) {
       const [f, setF] = useState(null);
@@ -1182,8 +1334,9 @@
 
       const onNew = () => setView({ name: "edit", item: null });
       const onEdit = (x) => setView({ name: "edit", item: x });
+      const onImport = (data) => setView({ name: "edit", item: null, seed: data });
       const toList = () => setView({ name: "list" });
-      const listProps = { toast, onNew, onEdit };
+      const listProps = { toast, onNew, onEdit, onImport };
       const editing = view.name === "edit";
 
       const lists = {
@@ -1194,7 +1347,7 @@
         legal: html`<${LegalList} toast=${toast} onEdit=${onEdit} />`,
       };
       const editors = {
-        blog: html`<${BlogEditor} post=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
+        blog: html`<${BlogEditor} post=${view.item} seed=${view.seed} toast=${toast} onDone=${toList} onCancel=${toList} />`,
         team: html`<${ExpertEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
         services: html`<${ServiceEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
         faq: html`<${FaqEditor} item=${view.item} toast=${toast} onDone=${toList} onCancel=${toList} />`,
@@ -1204,6 +1357,7 @@
       let body;
       if (section === "settings") body = html`<div class="content"><${SettingsForm} toast=${toast} /></div>`;
       else if (section === "seo") body = html`<div class="content"><${SeoForm} toast=${toast} /></div>`;
+      else if (section === "images") body = html`<div class="content"><${ImagesPanel} toast=${toast} /></div>`;
       else if (section === "leads") body = html`<div class="content"><${LeadsList} toast=${toast} onCountChange=${refreshLeadCount} /></div>`;
       else if (editing) body = editors[section];
       else body = html`<div class="content">${lists[section]}</div>`;
