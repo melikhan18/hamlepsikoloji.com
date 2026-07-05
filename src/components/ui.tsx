@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { site } from "@/lib/site";
 import { u } from "@/lib/images";
-import { getSiteImages } from "@/lib/cms";
+import { getSiteImages, getSettings } from "@/lib/cms";
 
 export function Container({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <div className={`mx-auto max-w-[96rem] px-5 sm:px-8 lg:px-14 ${className}`}>{children}</div>;
@@ -127,6 +126,7 @@ export async function CTABanner({
   title?: React.ReactNode;
 }) {
   const siteImg = await getSiteImages();
+  const settings = await getSettings();
   return (
     <section className="bg-cream px-3 py-6 sm:px-4 sm:py-10">
       <div className="relative h-[26rem] w-full overflow-hidden rounded-[2rem] sm:h-[28rem]">
@@ -143,7 +143,7 @@ export async function CTABanner({
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button href="/iletisim">Randevu Al</Button>
               <a
-                href={`tel:${site.phone}`}
+                href={`tel:${settings.phone}`}
                 className="inline-flex items-center gap-2.5 rounded-pill bg-cream/90 px-5 py-3 text-sm font-semibold text-ink shadow-sm backdrop-blur transition-colors hover:bg-cream"
               >
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-soft text-teal">
@@ -151,7 +151,7 @@ export async function CTABanner({
                     <path d="M2 4.5C2 3.7 2.7 3 3.5 3H6l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v2.5c0 .8-.7 1.5-1.5 1.5A14.5 14.5 0 0 1 2 4.5z" />
                   </svg>
                 </span>
-                {site.phoneDisplay}
+                {settings.phoneDisplay}
               </a>
             </div>
           </div>

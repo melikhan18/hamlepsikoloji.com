@@ -5,7 +5,7 @@ import { ExpertCard, PostCard } from "@/components/Cards";
 import { Icon } from "@/components/Icon";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema, faqSchema, serviceSchema } from "@/lib/schema";
-import { getServices, getService, getExpertsForService, getPosts } from "@/lib/cms";
+import { getServices, getService, getExpertsForService, getPosts, getSettings } from "@/lib/cms";
 import { site } from "@/lib/site";
 
 export async function generateStaticParams() {
@@ -43,6 +43,7 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
 
   const experts = await getExpertsForService(service.slug);
   const posts = await getPosts();
+  const settings = await getSettings();
   const relatedPosts = posts.filter((p) => p.category.toLowerCase().includes(service.shortTitle.split(" ")[0].toLowerCase())).slice(0, 2);
 
   return (
@@ -128,7 +129,7 @@ export default async function ServiceDetail({ params }: { params: Promise<{ slug
             <div className="mt-5 flex flex-col gap-3">
               <Button href="/iletisim" variant="soft">Randevu Al</Button>
             </div>
-            <p className="mt-4 text-xs text-teal-soft">veya {site.phoneDisplay}</p>
+            <p className="mt-4 text-xs text-teal-soft">veya {settings.phoneDisplay}</p>
           </div>
         </aside>
       </Container>
