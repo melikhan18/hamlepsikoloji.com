@@ -36,5 +36,6 @@ sudo systemctl restart hamle-frontend
 
 echo ""
 echo "YAYIN TAMAM. Durum:"
-sudo systemctl status hamle-backend --no-pager | head -5 || true
-sudo systemctl status hamle-frontend --no-pager | head -5 || true
+# status için sudo gerekmez (salt-okunur)
+systemctl status hamle-backend --no-pager 2>/dev/null | head -5 || true
+systemctl status hamle-frontend --no-pager 2>/dev/null | head -5 || true
