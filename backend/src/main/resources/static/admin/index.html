@@ -197,6 +197,39 @@
     .modal textarea{min-height:220px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem}
     .modal-foot{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:.9rem;flex-wrap:wrap}
 
+    /* ===== Dashboard (mobil öncelikli) ===== */
+    .dash-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;margin-bottom:.9rem}
+    .kpi{background:var(--paper);border:1px solid var(--line2);border-radius:12px;box-shadow:var(--shadow);padding:.8rem .9rem;min-width:0}
+    .kpi-label{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+    .kpi-val{font-family:Fraunces,serif;font-size:1.65rem;line-height:1.25;color:var(--ink)}
+    .kpi-sub{font-size:.7rem;color:var(--muted)}
+    .kpi.hot{background:var(--plum);border-color:var(--plum)}
+    .kpi.hot .kpi-label{color:#cfc6dc}.kpi.hot .kpi-val{color:#fff}.kpi.hot .kpi-sub{color:#b9aecb}
+    .dash-grid{display:grid;grid-template-columns:1fr;gap:.9rem}
+    .dash-card{background:var(--paper);border:1px solid var(--line2);border-radius:12px;box-shadow:var(--shadow);padding:1rem 1.1rem;min-width:0}
+    .dash-card h3{font-family:Fraunces,serif;font-weight:500;font-size:1.02rem;margin:0 0 .75rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+    .dash-card h3 .sub{font-size:.7rem;color:var(--muted);font-family:Inter,sans-serif;font-weight:500}
+    .chart-svg{width:100%;height:auto;display:block}
+    .chart-x{display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);margin-top:.35rem}
+    .rank-row{display:flex;align-items:center;gap:.6rem;padding:.34rem 0;font-size:.85rem;min-width:0}
+    .rank-label{flex:0 0 44%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+    .rank-track{flex:1;background:#f1ece3;border-radius:99px;height:8px;overflow:hidden}
+    .rank-fill{height:100%;background:var(--plum3);border-radius:99px}
+    .rank-val{flex:0 0 auto;font-weight:600;font-size:.78rem;color:var(--muted);min-width:2.4rem;text-align:right}
+    .mini-lead{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.42rem 0;border-bottom:1px solid var(--line2);font-size:.86rem}
+    .mini-lead:last-child{border-bottom:none}
+    .mini-lead .who{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .mini-lead .when{color:var(--muted);font-size:.74rem;white-space:nowrap}
+    .dash-actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+    .dash-empty{color:var(--muted);font-size:.85rem;padding:.6rem 0}
+    .dash-note{font-size:.72rem;color:var(--muted);text-align:right;margin-top:.8rem}
+    @media(min-width:900px){
+      .dash-kpis{grid-template-columns:repeat(4,1fr);gap:.9rem}
+      .dash-grid{grid-template-columns:1fr 1fr}
+      .kpi{padding:1rem 1.2rem}
+      .kpi-val{font-size:2rem}
+    }
+
     /* Toasts */
     .toasts{position:fixed;top:1rem;right:1rem;z-index:50;display:flex;flex-direction:column;gap:.55rem}
     .toast{padding:.7rem 1rem;border-radius:11px;box-shadow:var(--shadow);font-size:.88rem;font-weight:500;min-width:220px;color:#fff;animation:slidein .2s ease}
@@ -393,6 +426,7 @@ KONU: [Buraya yazının konusunu yazın. Örnek: "Sınav kaygısıyla baş etmen
       doc: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>`,
       seo: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4v16h16"/><path d="M7 14l4-4 3 3 5-6"/></svg>`,
       image: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-5 3 3 3-3 5 5"/></svg>`,
+      dash: html`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="10" rx="1.5"/><rect x="13" y="3" width="8" height="6" rx="1.5"/><rect x="13" y="11" width="8" height="10" rx="1.5"/><rect x="3" y="15" width="8" height="6" rx="1.5"/></svg>`,
     };
 
     /* ---------- Toasts ---------- */
@@ -432,6 +466,7 @@ KONU: [Buraya yazının konusunu yazın. Örnek: "Sınav kaygısıyla baş etmen
     /* ---------- Sidebar ---------- */
     function Sidebar({ active, onSelect, onLogout, open, onClose, leadCount }) {
       const items = [
+        { key: "dashboard", label: "Panel", icon: Ic.dash, on: true },
         { key: "blog", label: "Blog", icon: Ic.blog, on: true },
         { key: "leads", label: "Talepler", icon: Ic.inbox, on: true, badge: leadCount },
         { key: "team", label: "Ekip", icon: Ic.team, on: true },
@@ -1316,10 +1351,142 @@ KONU: [Buraya yazının konusunu yazın. Örnek: "Sınav kaygısıyla baş etmen
       </div>`;
     }
 
+    /* ---------- Dashboard ---------- */
+    const TR_NAMES = {
+      "Organic Search": "Organik arama", "Direct": "Doğrudan", "Referral": "Yönlendirme",
+      "Organic Social": "Sosyal medya", "Paid Search": "Ücretli arama", "Organic Video": "Video",
+      "Email": "E-posta", "Unassigned": "Diğer", "Cross-network": "Çapraz ağ",
+      desktop: "Masaüstü", mobile: "Mobil", tablet: "Tablet",
+    };
+    const trName = n => TR_NAMES[n] || n;
+    // "20260701" veya "2026-07-01" → "01.07"
+    const fmtDay = d => !d ? "" : (d.includes("-") ? d.slice(8, 10) + "." + d.slice(5, 7) : d.slice(6, 8) + "." + d.slice(4, 6));
+
+    function AreaChart({ series }) {
+      const W = 300, H = 90;
+      if (!series || series.length < 2) return html`<div class="dash-empty">Henüz yeterli veri yok.</div>`;
+      const max = Math.max(...series.map(p => p.v), 1);
+      const step = W / (series.length - 1);
+      const pts = series.map((p, i) => [(i * step).toFixed(1), (H - 6 - (p.v / max) * (H - 14)).toFixed(1)]);
+      const line = pts.map((p, i) => (i ? "L" : "M") + p[0] + "," + p[1]).join(" ");
+      const area = line + " L" + W + "," + H + " L0," + H + " Z";
+      return html`<div>
+        <svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+          <path d=${area} fill="rgba(76,61,99,.13)"/>
+          <path d=${line} fill="none" stroke="#4c3d63" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        <div class="chart-x"><span>${fmtDay(series[0].d)}</span><span>tepe: ${max}</span><span>${fmtDay(series[series.length - 1].d)}</span></div>
+      </div>`;
+    }
+
+    function BarsChart({ series }) {
+      const W = 300, H = 90;
+      if (!series || !series.length) return html`<div class="dash-empty">Henüz veri yok.</div>`;
+      const max = Math.max(...series.map(p => p.v), 1);
+      const bw = W / series.length;
+      return html`<div>
+        <svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="0" y1=${H - 1} x2=${W} y2=${H - 1} stroke="#e8e0d4" stroke-width="1"/>
+          ${series.map((p, i) => {
+            const h = p.v ? Math.max(3, (p.v / max) * (H - 12)) : 0;
+            return html`<rect key=${i} x=${(i * bw + bw * 0.18).toFixed(1)} y=${(H - 1 - h).toFixed(1)} width=${(bw * 0.64).toFixed(1)} height=${h.toFixed(1)} rx="1.5" fill="#4c3d63" opacity="0.9"/>`;
+          })}
+        </svg>
+        <div class="chart-x"><span>${fmtDay(series[0].d)}</span><span>tepe: ${max}</span><span>${fmtDay(series[series.length - 1].d)}</span></div>
+      </div>`;
+    }
+
+    function RankList({ items, labelFn, suffix }) {
+      if (!items || !items.length) return html`<div class="dash-empty">Henüz veri yok.</div>`;
+      const max = Math.max(...items.map(i => i.value), 1);
+      return html`<div>
+        ${items.map((it, i) => html`<div key=${i} class="rank-row">
+          <span class="rank-label" title=${it.name}>${labelFn ? labelFn(it.name) : it.name}</span>
+          <div class="rank-track"><div class="rank-fill" style=${{ width: Math.max(4, (it.value / max) * 100) + "%" }}></div></div>
+          <span class="rank-val">${it.value}${suffix || ""}</span>
+        </div>`)}
+      </div>`;
+    }
+
+    function Dashboard({ toast, onGo, onNewPost }) {
+      const [stats, setStats] = useState(null);
+      const [ga, setGa] = useState(null);
+      useEffect(() => { (async () => {
+        try {
+          const [r1, r2] = await Promise.all([api("/api/admin/stats"), api("/api/admin/analytics")]);
+          if (r1.ok) setStats(await r1.json()); else toast("err", "İstatistikler yüklenemedi.");
+          setGa(r2.ok ? await r2.json() : { configured: false });
+        } catch { toast("err", "Panel verileri yüklenemedi."); }
+      })(); }, []);
+
+      if (!stats) return html`<div class="empty">Yükleniyor…</div>`;
+      const gaOn = ga && ga.configured;
+      const leadSeries = (stats.leadsDaily || []).map(p => ({ d: p.date, v: p.count }));
+      const userSeries = gaOn ? (ga.daily || []).map(p => ({ d: p.date, v: p.users })) : [];
+      const pct = items => {
+        const total = (items || []).reduce((s, x) => s + x.value, 0) || 1;
+        return (items || []).map(x => ({ name: x.name, value: Math.round((x.value / total) * 100) }));
+      };
+      const pathLabel = p => p === "/" ? "Ana sayfa" : p;
+      const postLabel = p => p.replace(/^\/blog\//, "");
+
+      return html`<div>
+        <div class="page-head"><h1>Panel</h1></div>
+
+        <div class="dash-kpis">
+          <div class="kpi hot"><div class="kpi-label">Yeni talep</div><div class="kpi-val">${stats.leadsNew}</div><div class="kpi-sub">yanıt bekliyor</div></div>
+          <div class="kpi"><div class="kpi-label">Talep (30 gün)</div><div class="kpi-val">${stats.leads30}</div><div class="kpi-sub">toplam ${stats.leadsTotal}</div></div>
+          <div class="kpi"><div class="kpi-label">Ziyaretçi</div><div class="kpi-val">${gaOn ? ga.users28 : "—"}</div><div class="kpi-sub">${gaOn ? "son 28 gün" : "GA bağlı değil"}</div></div>
+          <div class="kpi"><div class="kpi-label">Görüntüleme</div><div class="kpi-val">${gaOn ? ga.views28 : "—"}</div><div class="kpi-sub">${gaOn ? "son 28 gün · 7g: " + ga.users7 + " ziyaretçi" : "GA bağlı değil"}</div></div>
+        </div>
+
+        <div class="dash-grid">
+          ${gaOn
+            ? html`<div class="dash-card"><h3>Ziyaretçiler <span class="sub">son 28 gün</span></h3><${AreaChart} series=${userSeries} /></div>`
+            : html`<div class="dash-card"><h3>Google Analytics'i bağlayın</h3>
+                <p class="muted" style=${{ fontSize: ".85rem", margin: "0 0 .6rem" }}>${(ga && ga.error) || "Ziyaretçi grafikleri ve en çok okunan sayfalar için GA4 bağlantısı gerekli. Sunucuda servis hesabı anahtarı + GA_PROPERTY_ID tanımlanmalı."}</p>
+                <a class="btn-ghost btn-sm" href="https://analytics.google.com" target="_blank" rel="noopener">Analytics'i aç ↗</a>
+              </div>`}
+
+          <div class="dash-card"><h3>Talepler <span class="sub">son 30 gün</span></h3><${BarsChart} series=${leadSeries} /></div>
+
+          ${gaOn && html`<div class="dash-card"><h3>En çok görüntülenen sayfalar <span class="sub">28 gün</span></h3>
+            <${RankList} items=${ga.topPages} labelFn=${pathLabel} /></div>`}
+
+          ${gaOn && html`<div class="dash-card"><h3>En çok okunan yazılar <span class="sub">28 gün</span></h3>
+            <${RankList} items=${ga.topPosts} labelFn=${postLabel} /></div>`}
+
+          ${gaOn && html`<div class="dash-card"><h3>Trafik kaynakları <span class="sub">oturum %</span></h3>
+            <${RankList} items=${pct(ga.channels)} labelFn=${trName} suffix="%" />
+            <h3 style=${{ marginTop: "1rem" }}>Cihazlar <span class="sub">ziyaretçi %</span></h3>
+            <${RankList} items=${pct(ga.devices)} labelFn=${trName} suffix="%" /></div>`}
+
+          <div class="dash-card"><h3>Son talepler <button class="btn-ghost btn-sm" onClick=${() => onGo("leads")}>Tümü</button></h3>
+            ${(stats.recentLeads || []).length === 0 ? html`<div class="dash-empty">Henüz talep yok.</div>`
+              : (stats.recentLeads || []).map(l => html`<div key=${l.id} class="mini-lead">
+                  <span class="who"><b>${l.name}</b> ${l.service ? html`<span class="muted">· ${l.service}</span>` : ""}</span>
+                  <span style=${{ display: "flex", alignItems: "center", gap: ".45rem" }}>
+                    <span class="lead-st st-${l.status}">${LEAD_ST[l.status] || l.status}</span>
+                    <span class="when">${(l.createdAt || "").slice(5, 10).split("-").reverse().join(".")}</span>
+                  </span>
+                </div>`)}
+          </div>
+        </div>
+
+        <div class="dash-actions">
+          <button class="btn" onClick=${onNewPost}>+ Yeni yazı</button>
+          <button class="btn-ghost" onClick=${() => onGo("blog")}>Blog</button>
+          <button class="btn-ghost" onClick=${() => onGo("leads")}>Talepler</button>
+          <a class="btn-ghost" style=${{ textDecoration: "none" }} href="https://analytics.google.com" target="_blank" rel="noopener">Analytics ↗</a>
+        </div>
+        ${gaOn && html`<div class="dash-note">Analytics verileri ~1 saatte bir yenilenir · ${(ga.updatedAt || "").slice(11, 16)} itibarıyla</div>`}
+      </div>`;
+    }
+
     /* ---------- App ---------- */
     function App() {
       const [authed, setAuthed] = useState(!!localStorage.getItem("token"));
-      const [section, setSection] = useState("blog");
+      const [section, setSection] = useState("dashboard");
       const [view, setView] = useState({ name: "list" });
       const [navOpen, setNavOpen] = useState(false);
       const [leadCount, setLeadCount] = useState(0);
@@ -1358,7 +1525,8 @@ KONU: [Buraya yazının konusunu yazın. Örnek: "Sınav kaygısıyla baş etmen
       };
 
       let body;
-      if (section === "settings") body = html`<div class="content"><${SettingsForm} toast=${toast} /></div>`;
+      if (section === "dashboard") body = html`<div class="content"><${Dashboard} toast=${toast} onGo=${selectSection} onNewPost=${() => { setSection("blog"); setView({ name: "edit", item: null }); }} /></div>`;
+      else if (section === "settings") body = html`<div class="content"><${SettingsForm} toast=${toast} /></div>`;
       else if (section === "seo") body = html`<div class="content"><${SeoForm} toast=${toast} /></div>`;
       else if (section === "images") body = html`<div class="content"><${ImagesPanel} toast=${toast} /></div>`;
       else if (section === "leads") body = html`<div class="content"><${LeadsList} toast=${toast} onCountChange=${refreshLeadCount} /></div>`;

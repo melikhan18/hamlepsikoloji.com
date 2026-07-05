@@ -40,3 +40,7 @@ app:
     # url boşsa özellik pasif olur. secret, frontend REVALIDATE_SECRET ile AYNI olmalı.
     url: ${REVALIDATE_URL:http://localhost:3000/api/revalidate}
     secret: ${REVALIDATE_SECRET:hamle-revalidate-dev-secret-change-me}
+  ga:
+    # Google Analytics Data API (dashboard). İkisi de doluysa aktif olur.
+    property-id: ${GA_PROPERTY_ID:}
+    sa-key-path: ${GA_SA_KEY_PATH:}

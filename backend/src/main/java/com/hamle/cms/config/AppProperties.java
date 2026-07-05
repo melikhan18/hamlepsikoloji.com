@@ -14,6 +14,7 @@ public class AppProperties {
     private Cors cors = new Cors();
     private Uploads uploads = new Uploads();
     private Revalidate revalidate = new Revalidate();
+    private Ga ga = new Ga();
 
     @Getter
     @Setter
@@ -47,5 +48,14 @@ public class AppProperties {
     public static class Revalidate {
         private String url = "";
         private String secret = "";
+    }
+
+    @Getter
+    @Setter
+    public static class Ga {
+        /** GA4 mülk kimliği (sayısal, ör. 123456789 — ölçüm kimliği DEĞİL). */
+        private String propertyId = "";
+        /** Google servis hesabı JSON anahtarının dosya yolu. */
+        private String saKeyPath = "";
     }
 }
