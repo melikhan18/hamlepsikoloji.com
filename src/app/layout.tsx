@@ -10,6 +10,8 @@ import { organizationSchema, websiteSchema } from "@/lib/schema";
 import { getSettings } from "@/lib/cms";
 import { site } from "@/lib/site";
 
+const googleAdsId = "AW-11280098753";
+
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans-src",
@@ -75,6 +77,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="tr" className={`${inter.variable} ${fraunces.variable}`}>
+      <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
+          strategy="beforeInteractive"
+        />
+        <Script id="google-ads" strategy="beforeInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${googleAdsId}');`}
+        </Script>
+      </head>
       <body className="flex min-h-screen flex-col">
         {/* Google Tag Manager (noscript) */}
         {gtmId && (
