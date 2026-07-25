@@ -119,7 +119,7 @@ export function ContactForm({ phoneDisplay = site.phoneDisplay }: { phoneDisplay
         />
         <span>
           <Link href="/kvkk" className="text-teal underline underline-offset-2">KVKK Aydınlatma Metni</Link>
-          'ni okudum; bilgilerimin randevu amacıyla işlenmesini onaylıyorum.
+          &apos;ni okudum ve kişisel verilerimin işlenmesi hakkında bilgilendirildim.
         </span>
       </label>
 

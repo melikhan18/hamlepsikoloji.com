@@ -1,4 +1,4 @@
-// Merkezi site yapılandırması. [PLACEHOLDER] etiketli alanları gerçek bilgilerle güncelleyin.
+// Merkezi site yapılandırması. Kuruma özel iletişim bilgileri CMS üzerinden yönetilir.
 export const site = {
   name: "Hamle Psikoloji",
   shortName: "Hamle",
@@ -7,30 +7,27 @@ export const site = {
   url: "https://hamlepsikoloji.com",
   tagline: "İyi oluşa doğru ilk hamle",
   description:
-    "Hamle Psikoloji, İstanbul Üsküdar'da bireysel terapi, çift & aile terapisi, çocuk & ergen danışmanlığı ve online terapi hizmetleri sunan uzman psikoloji merkezidir.",
+    "Hamle Psikoloji; bireysel terapi, çift ve aile terapisi, çocuk ve ergen danışmanlığı ile online terapi alanlarında psikolojik destek sunar.",
 
-  // İletişim — [PLACEHOLDER]
-  phoneDisplay: "+90 (212) 000 00 00",
-  phone: "+902120000000",
-  whatsapp: "905000000000", // ülke kodu + numara, başında + ve boşluk olmadan
+  phoneDisplay: "",
+  phone: "",
+  whatsapp: "",
   email: "info@hamlepsikoloji.com",
 
-  // Adres — [PLACEHOLDER] gerçek adresi panelden (Ayarlar) girin
   address: {
-    street: "Mimar Sinan Mah. Örnek Cad. No: 1, Kat 3",
-    district: "Üsküdar",
+    street: "",
+    district: "",
     city: "İstanbul",
-    postalCode: "34664",
+    postalCode: "",
     country: "TR",
     get full() {
       return `${this.street}, ${this.district}/${this.city}`;
     },
   },
-  geo: { lat: 41.0225, lng: 29.0169 }, // [PLACEHOLDER] Üsküdar — gerçek ofis konumuyla güncelleyin
-  mapsQuery: "Hamle Psikoloji Üsküdar İstanbul",
+  geo: { lat: 0, lng: 0 },
+  mapsQuery: "",
   hours: "Pazartesi–Cumartesi 09:00–20:00",
 
-  // Sosyal medya — [PLACEHOLDER]
   social: {
     instagram: "https://instagram.com/hamlepsikoloji",
     linkedin: "https://www.linkedin.com/company/hamlepsikoloji",
@@ -38,10 +35,10 @@ export const site = {
   },
 
   // SEO & Analytics varsayılanları — SEO panelinden geçersiz kılınabilir
-  areaServed: "Üsküdar", // öne çıkan hizmet bölgesi (ilçe)
-  seoTitle: "Hamle Psikoloji — Üsküdar Psikolog & Psikolojik Danışmanlık",
+  areaServed: "İstanbul",
+  seoTitle: "Hamle Psikoloji — Psikolog & Psikolojik Danışmanlık",
   keywords:
-    "üsküdar psikolog, psikolog üsküdar, üsküdar psikolojik danışmanlık, üsküdar terapi, psikolog istanbul, online terapi, çift terapisi, bireysel terapi, çocuk psikoloğu, Hamle Psikoloji",
+    "psikolog istanbul, psikolojik danışmanlık, online terapi, çift terapisi, bireysel terapi, çocuk psikoloğu, Hamle Psikoloji",
   googleVerification: "",
   ga4Id: "",
   gtmId: "",

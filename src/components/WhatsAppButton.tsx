@@ -1,6 +1,7 @@
 import { whatsappLink, site } from "@/lib/site";
 
 export function WhatsAppButton({ whatsapp = site.whatsapp }: { whatsapp?: string }) {
+  if (!whatsapp) return null;
   return (
     <a
       href={whatsappLink(undefined, whatsapp)}

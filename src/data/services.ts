@@ -121,7 +121,7 @@ export const services: Service[] = [
     pitch:
       "Neredeyseniz orada. Görüntülü, güvenli ve esnek görüşmelerle, evinizin konforunda uzman desteğine kolayca ulaşırsınız.",
     summary:
-      "Online terapi; yüz yüze terapiyle aynı etkinlikte, görüntülü görüşme üzerinden yürütülen güvenli bir danışmanlık biçimidir. Türkiye'nin ve dünyanın her yerinden, evinizin konforunda uzman psikologlarla görüşebilirsiniz.",
+      "Online terapi, uygun durumlarda görüntülü görüşme üzerinden yürütülebilen bir danışmanlık biçimidir. Bulunduğunuz yerden görüşmeye katılabilir; sizin için uygun olup olmadığını ön görüşmede uzmanla birlikte değerlendirebilirsiniz.",
     forWho: [
       "Yoğun çalışma temposu nedeniyle zaman bulmakta zorlananlar",
       "Şehir dışında veya yurt dışında yaşayanlar",
@@ -138,7 +138,7 @@ export const services: Service[] = [
     faqs: [
       { q: "Online terapi yüz yüze kadar etkili mi?", a: "Araştırmalar, kaygı, depresyon ve ilişki sorunları gibi pek çok alanda online terapinin yüz yüze terapiyle karşılaştırılabilir sonuçlar verdiğini göstermektedir." },
       { q: "Hangi uygulamayı kullanıyorsunuz?", a: "Görüşmeler güvenli, uçtan uca şifreli görüntülü görüşme araçlarıyla yapılır. Ayrı bir uygulama indirmeniz çoğu zaman gerekmez." },
-      { q: "Ödeme nasıl yapılıyor?", a: "Randevu onayının ardından güvenli ödeme bağlantısı paylaşılır. Detaylar için iletişime geçebilirsiniz." },
+      { q: "Ödeme nasıl yapılıyor?", a: "Güncel ücret ve ödeme seçenekleri randevu öncesinde açıkça paylaşılır. Ayrıntılar için iletişime geçebilirsiniz." },
     ],
   },
 ];

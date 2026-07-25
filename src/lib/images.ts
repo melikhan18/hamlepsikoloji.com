@@ -1,5 +1,4 @@
-// Merkezi görsel kaynağı. [PLACEHOLDER] — şu an Unsplash kullanılıyor.
-// Gerçek fotoğraflar eklenince yalnızca buradaki URL'leri değiştirmeniz yeterli.
+// Merkezi görsel kaynağı. CMS görselleri yoksa lisanslı Unsplash görselleri kullanılır.
 const base = "https://images.unsplash.com";
 const opt = "auto=format&fit=crop&q=80";
 

@@ -38,7 +38,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Ödeme nasıl yapılıyor?",
-        a: "Yüz yüze görüşmelerde seans sonunda; online görüşmelerde ise randevu onayının ardından paylaşılan güvenli ödeme bağlantısıyla ödeme yapabilirsiniz.",
+        a: "Güncel seans ücreti ve kullanılabilen ödeme yöntemleri randevu oluşturulmadan önce sizinle paylaşılır.",
       },
     ],
   },

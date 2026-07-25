@@ -30,13 +30,22 @@ export default async function TeamPage() {
         </div>
       </Container>
       <Container className="pb-16 pt-10">
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-12">
-          {team.map((e) => (
-            <div key={e.slug} className="w-full max-w-xs">
-              <ExpertCard expert={e} />
-            </div>
-          ))}
-        </div>
+        {team.length > 0 ? (
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-12">
+            {team.map((e) => (
+              <div key={e.slug} className="w-full max-w-xs">
+                <ExpertCard expert={e} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mx-auto max-w-2xl rounded-3xl border border-line bg-white/70 p-8 text-center">
+            <h2 className="text-2xl text-ink">Size uygun desteği birlikte belirleyelim</h2>
+            <p className="mt-3 leading-relaxed text-muted">
+              Uzman yönlendirmesi ve güncel randevu bilgisi için bizimle iletişime geçebilirsiniz.
+            </p>
+          </div>
+        )}
       </Container>
       <CTABanner />
       <JsonLd

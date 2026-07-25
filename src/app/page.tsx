@@ -4,7 +4,6 @@ import { Container, Button, Eyebrow } from "@/components/ui";
 import { ServiceCard, FeaturedExpertCard } from "@/components/Cards";
 import { PostCarousel } from "@/components/PostCarousel";
 import { Illustration } from "@/components/Illustrations";
-import { Testimonials } from "@/components/Testimonials";
 import { getPosts, getServices, getExperts, getSiteImages } from "@/lib/cms";
 import { benefits, focusGroups, expectations, aboutIntro, aboutAccordion } from "@/data/home";
 import { Icon } from "@/components/Icon";
@@ -41,7 +40,7 @@ export default async function HomePage() {
         <Container className="relative">
           <div className="mx-auto flex min-h-[calc(100vh-88px)] max-w-xl flex-col justify-center text-center lg:mx-0 lg:min-h-[calc(100vh-96px)] lg:w-[46%]">
             <p className="font-serif text-2xl text-ink sm:text-[1.7rem]">
-              İstanbul'da uzman psikoloji <em>merkeziniz.</em>
+              İstanbul&apos;da psikolojik danışmanlık <em>merkeziniz.</em>
             </p>
 
             <div className="mx-auto mt-5 flex items-center gap-4">
@@ -264,40 +263,23 @@ export default async function HomePage() {
         </Container>
       </section>
 
-      {/* ===== EKİP ===== */}
-      <Container className="py-16 sm:py-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl text-ink sm:text-4xl">
-            Sizi dinleyecek <em>uzmanlar</em>
-          </h2>
-          <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-            Doğru uzmanla başlamak, iyileşmenin ilk adımı.
-          </p>
-        </div>
-        <div className="mx-auto mt-14 grid max-w-6xl gap-8">
-          {team.map((e, i) => (
-            <FeaturedExpertCard key={e.slug} expert={e} reverse={i % 2 === 1} />
-          ))}
-        </div>
-      </Container>
-
-      {/* ===== DANIŞAN HİKAYELERİ ===== */}
-      <section className="bg-cream py-16 sm:py-24">
-        <Container>
+      {team.length > 0 && (
+        <Container className="py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl text-ink sm:text-4xl">
-              Danışanlarımız <em>anlatıyor</em>
+              Sizi dinleyecek <em>uzmanlar</em>
             </h2>
             <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-              Dönüşüm hikâyeleri.
+              Doğru uzmanla başlamak, iyileşmenin ilk adımı.
             </p>
           </div>
+          <div className="mx-auto mt-14 grid max-w-6xl gap-8">
+            {team.map((e, i) => (
+              <FeaturedExpertCard key={e.slug} expert={e} reverse={i % 2 === 1} />
+            ))}
+          </div>
         </Container>
-        {/* tam genişlik carousel */}
-        <div className="mt-14">
-          <Testimonials />
-        </div>
-      </section>
+      )}
 
       {/* ===== BLOG ===== */}
       <section className="py-16 sm:py-24">

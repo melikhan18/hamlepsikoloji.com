@@ -142,7 +142,7 @@ export async function CTABanner({
             <h2 className="text-3xl leading-tight text-ink sm:text-4xl">{title}</h2>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button href="/iletisim">Randevu Al</Button>
-              <a
+              {settings.phone && <a
                 href={`tel:${settings.phone}`}
                 className="inline-flex items-center gap-2.5 rounded-pill bg-cream/90 px-5 py-3 text-sm font-semibold text-ink shadow-sm backdrop-blur transition-colors hover:bg-cream"
               >
@@ -152,7 +152,7 @@ export async function CTABanner({
                   </svg>
                 </span>
                 {settings.phoneDisplay}
-              </a>
+              </a>}
             </div>
           </div>
         </div>

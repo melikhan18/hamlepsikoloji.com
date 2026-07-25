@@ -40,13 +40,23 @@ export async function getPost(slug: string): Promise<Post | undefined> {
 }
 
 /* ===== Ekip (uzmanlar) ===== */
+function isPublishableExpert(expert: Expert): boolean {
+  const content = [
+    expert.name,
+    expert.slug,
+    ...(expert.education || []),
+    ...(expert.bio || []),
+  ].join(" ");
+  return !/uzman isim|uzman-bir|uzman-iki|\[placeholder\]|örnek biyografi/i.test(content);
+}
+
 export async function getExperts(): Promise<Expert[]> {
   try {
     const res = await fetch(`${API}/api/experts`, OPTS);
     if (!res.ok) return localTeam;
     const data = (await res.json()) as Expert[];
     if (!Array.isArray(data) || data.length === 0) return localTeam;
-    return data;
+    return data.filter(isPublishableExpert);
   } catch {
     return localTeam;
   }
@@ -55,7 +65,10 @@ export async function getExperts(): Promise<Expert[]> {
 export async function getExpert(slug: string): Promise<Expert | undefined> {
   try {
     const res = await fetch(`${API}/api/experts/${slug}`, OPTS);
-    if (res.ok) return (await res.json()) as Expert;
+    if (res.ok) {
+      const expert = (await res.json()) as Expert;
+      return isPublishableExpert(expert) ? expert : undefined;
+    }
   } catch {
     /* fall through */
   }
@@ -153,8 +166,12 @@ type SettingsApi = {
 };
 
 function mergeSettings(d: SettingsApi): typeof site {
+  const clean = (value?: string) => {
+    if (!value) return "";
+    return /000 00 00|000000000|500000000|örnek cad/i.test(value) ? "" : value;
+  };
   const address = {
-    street: d.addressStreet || site.address.street,
+    street: clean(d.addressStreet) || site.address.street,
     district: d.addressDistrict || site.address.district,
     city: d.addressCity || site.address.city,
     postalCode: d.addressPostalCode || site.address.postalCode,
@@ -165,9 +182,9 @@ function mergeSettings(d: SettingsApi): typeof site {
   };
   return {
     ...site,
-    phoneDisplay: d.phoneDisplay || site.phoneDisplay,
-    phone: d.phone || site.phone,
-    whatsapp: d.whatsapp || site.whatsapp,
+    phoneDisplay: clean(d.phoneDisplay) || site.phoneDisplay,
+    phone: clean(d.phone) || site.phone,
+    whatsapp: clean(d.whatsapp) || site.whatsapp,
     email: d.email || site.email,
     hours: d.hours || site.hours,
     mapsQuery: d.mapsQuery || site.mapsQuery,

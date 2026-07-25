@@ -11,33 +11,42 @@ export const legalDocs: LegalDoc[] = [
     slug: "kvkk",
     title: "KVKK Aydınlatma Metni",
     intro:
-      "6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında, veri sorumlusu sıfatıyla kişisel verilerinizin işlenmesine ilişkin sizi bilgilendirmek isteriz.",
+      "Bu metin, web sitesi ve iletişim kanalları üzerinden paylaşılan kişisel verilerin 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında nasıl işlendiği hakkında bilgi verir.",
     sections: [
-      { h: "İşlenen veriler", p: "Ad-soyad, iletişim bilgileri ve randevu talebinizle paylaştığınız bilgiler, yalnızca hizmet sunumu amacıyla işlenir." },
-      { h: "İşleme amaçları", p: "Verileriniz; randevu oluşturma, iletişim kurma ve hizmetin yürütülmesi amaçlarıyla işlenir." },
-      { h: "Haklarınız", p: "KVKK madde 11 kapsamında verilerinize erişme, düzeltme, silme ve işlenmesine itiraz etme haklarına sahipsiniz." },
+      { h: "Veri sorumlusu", p: "Kişisel verileriniz, Hamle Psikoloji Danışmanlık Merkezi tarafından veri sorumlusu sıfatıyla işlenir. Güncel iletişim bilgileri bu sayfanın sonunda yer alır." },
+      { h: "İşlenen veri kategorileri", p: "İletişim formu veya diğer iletişim kanalları kullanıldığında kimlik bilgisi (ad ve soyad), iletişim bilgisi (telefon ve e-posta), talep/randevu bilgisi, işlem güvenliği kayıtları ve sizin ayrıca paylaşmayı seçtiğiniz mesaj içeriği işlenebilir. İletişim formuna sağlık geçmişi veya ayrıntılı özel nitelikli kişisel veri yazmamanızı öneririz." },
+      { h: "İşleme amaçları", p: "Veriler; talebinizi almak ve yanıtlamak, uygun iletişim ve randevu sürecini yürütmek, hizmet güvenliğini sağlamak, hukuki yükümlülükleri yerine getirmek ve olası uyuşmazlıklarda hakları korumak amaçlarıyla sınırlı olarak işlenir." },
+      { h: "Toplama yöntemi ve hukuki sebepler", p: "Veriler web formu, telefon, e-posta veya WhatsApp üzerinden elektronik olarak toplanır. İşleme faaliyeti, KVKK madde 5/2 kapsamındaki sözleşmenin kurulması veya ifasıyla doğrudan ilgili olma, veri sorumlusunun hukuki yükümlülüğü ve temel haklarınıza zarar vermemek kaydıyla meşru menfaat sebeplerine dayanabilir. Açık rıza gereken ayrı bir faaliyet varsa rızanız ayrıca istenir." },
+      { h: "Aktarım", p: "Veriler; barındırma, iletişim, güvenlik ve teknik destek hizmeti sağlayan tedarikçilere yalnızca hizmetin gerektirdiği ölçüde, yetkili kamu kurumlarına ise hukuki zorunluluk bulunması hâlinde aktarılabilir. WhatsApp veya Google hizmetlerini tercih etmeniz, ilgili sağlayıcının kendi koşulları kapsamında yurt dışında veri işlemesine yol açabilir." },
+      { h: "Saklama ve güvenlik", p: "Veriler yalnızca işleme amacı ve ilgili mevzuatın gerektirdiği süre boyunca saklanır; süre sonunda silinir, yok edilir veya anonim hâle getirilir. Yetkisiz erişim, kayıp ve kötüye kullanıma karşı uygun idari ve teknik tedbirler uygulanır." },
+      { h: "Haklarınız ve başvuru", p: "KVKK madde 11 kapsamında verilerinizin işlenip işlenmediğini öğrenme, bilgi isteme, amacına uygun kullanılıp kullanılmadığını öğrenme, aktarılan kişileri bilme, düzeltme, silme veya yok etme isteme, otomatik analiz sonucuna itiraz etme ve zararın giderilmesini talep etme haklarına sahipsiniz. Kimliğinizi doğrulamaya yarayan bilgiler ve talebinizle birlikte aşağıdaki iletişim kanallarından başvurabilirsiniz." },
     ],
   },
   {
     slug: "gizlilik",
     title: "Gizlilik Politikası",
     intro:
-      "Bu gizlilik politikası, web sitemizi kullanırken bilgilerinizin nasıl toplandığını, kullanıldığını ve korunduğunu açıklar.",
+      "Bu politika, Hamle Psikoloji web sitesini ve iletişim kanallarını kullandığınızda gizliliğinizi nasıl koruduğumuzu açıklar.",
     sections: [
-      { h: "Toplanan bilgiler", p: "İletişim formu aracılığıyla paylaştığınız bilgiler ve site kullanımına ilişkin anonim analitik veriler toplanabilir." },
-      { h: "Bilgilerin kullanımı", p: "Bilgileriniz yalnızca size hizmet sunmak, taleplerinizi yanıtlamak ve siteyi iyileştirmek için kullanılır; üçüncü taraflarla pazarlama amacıyla paylaşılmaz." },
-      { h: "Görüşme gizliliği", p: "Terapi görüşmelerinizin içeriği meslek etiği ve gizlilik ilkeleri kapsamında korunur." },
+      { h: "Toplanan bilgiler", p: "Doğrudan paylaştığınız iletişim ve talep bilgileri ile güvenlik kayıtları işlenebilir. İsteğe bağlı analitik ve reklam teknolojileri, yalnızca çerez tercih merkezinde izin vermeniz hâlinde etkinleştirilir." },
+      { h: "Kullanım amaçları", p: "Bilgiler talepleri yanıtlamak, randevu iletişimini yürütmek, site güvenliğini sağlamak, kullanıcı deneyimini geliştirmek ve izin verilmişse reklam performansını ölçmek için kullanılır." },
+      { h: "Üçüncü taraf hizmetleri", p: "Site altyapısı, e-posta, WhatsApp ve izin vermeniz hâlinde Google Analytics, Google Ads veya Google Tag Manager gibi hizmetlerden yararlanılabilir. Bu sağlayıcıların işlediği veriler kendi gizlilik koşullarına da tabidir." },
+      { h: "Görüşme gizliliği", p: "Psikolojik danışmanlık görüşmelerinin içeriği mesleki etik, gizlilik yükümlülükleri ve uygulanabilir mevzuat çerçevesinde korunur. Kanuni bildirim yükümlülükleri ve ciddi güvenlik riskleri gibi hukuken zorunlu istisnalar saklıdır." },
+      { h: "Tercihleriniz", p: "İsteğe bağlı çerezleri kabul etmek zorunda değilsiniz. Sayfanın altındaki “Çerez Tercihleri” bağlantısıyla seçiminizi dilediğiniz zaman değiştirebilirsiniz." },
     ],
   },
   {
     slug: "cerez-politikasi",
     title: "Çerez Politikası",
     intro:
-      "Web sitemiz, deneyiminizi iyileştirmek ve site kullanımını analiz etmek için çerezler kullanabilir.",
+      "Bu politika, sitede kullanılan zorunlu teknolojiler ile izninize bağlı analitik ve reklam teknolojilerini açıklar.",
     sections: [
       { h: "Çerez nedir?", p: "Çerezler, ziyaret ettiğiniz sitelerin cihazınıza kaydettiği küçük metin dosyalarıdır." },
-      { h: "Kullandığımız çerezler", p: "Zorunlu çerezler sitenin çalışması için gereklidir; analitik çerezler ise ziyaretçi davranışını anonim olarak ölçmemize yardımcı olur." },
-      { h: "Çerez tercihleri", p: "Tarayıcı ayarlarınızdan çerezleri her zaman yönetebilir veya silebilirsiniz." },
+      { h: "Zorunlu teknolojiler", p: "Sitenin güvenli ve düzgün çalışması ile çerez seçiminizin cihazınızda saklanması için gereklidir. Çerez tercihi tarayıcınızın yerel depolama alanında “hamle-cookie-consent-v1” anahtarıyla saklanır ve üçüncü taraflara gönderilmez." },
+      { h: "Analitik", p: "CMS ayarlarında etkinleştirilmişse Google Analytics, yalnızca analitik izni verdiğinizde site kullanımını ölçmek amacıyla yüklenir. Google tarafından oluşturulabilecek tanımlayıcıların adı ve süresi Google yapılandırmasına göre değişebilir." },
+      { h: "Reklam ve ölçüm", p: "Google Ads etiketi (AW-11280098753), yalnızca reklam ve ölçüm izni verdiğinizde dönüşüm ve reklam performansı ölçümü amacıyla yüklenir. Bu kullanım Google tarafından birinci veya üçüncü taraf tanımlayıcıların oluşturulmasına ve verilerin yurt dışında işlenmesine yol açabilir." },
+      { h: "Google Tag Manager", p: "CMS üzerinden bir Google Tag Manager kapsayıcısı tanımlanmışsa, kapsayıcı yalnızca analitik ile reklam kategorilerinin ikisine de izin verdiğinizde yüklenir. Kapsayıcı kendi başına çerez değildir; yüklediği etiketler çerez kullanabilir." },
+      { h: "Tercih ve rızanın geri alınması", p: "İsteğe bağlı kategoriler varsayılan olarak kapalıdır. İlk ziyaretinizde tümünü kabul edebilir, reddedebilir veya ayrı ayrı seçebilirsiniz. Seçiminizi sayfanın altındaki “Çerez Tercihleri” bağlantısından dilediğiniz zaman değiştirebilirsiniz. Tarayıcı ayarlarınızdan mevcut çerezleri ayrıca silebilirsiniz." },
     ],
   },
 ];

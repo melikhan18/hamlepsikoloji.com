@@ -51,14 +51,11 @@ export function Header({ whatsapp = site.whatsapp }: { whatsapp?: string }) {
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
-            <a
-              href={waLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-pill px-4 py-2.5 text-sm font-medium text-teal transition-colors hover:bg-teal-soft"
-            >
-              WhatsApp
-            </a>
+            {whatsapp && (
+              <a href={waLink} target="_blank" rel="noopener noreferrer" className="rounded-pill px-4 py-2.5 text-sm font-medium text-teal transition-colors hover:bg-teal-soft">
+                WhatsApp
+              </a>
+            )}
             <Link
               href="/iletisim"
               className="rounded-pill bg-teal px-6 py-3 text-sm font-semibold text-cream transition-colors hover:bg-teal-dark"
@@ -108,14 +105,11 @@ export function Header({ whatsapp = site.whatsapp }: { whatsapp?: string }) {
               >
                 Randevu Al
               </Link>
-              <a
-                href={waLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 rounded-pill border border-teal/30 px-5 py-3 text-center text-sm font-semibold text-teal"
-              >
-                WhatsApp
-              </a>
+              {whatsapp && (
+                <a href={waLink} target="_blank" rel="noopener noreferrer" className="flex-1 rounded-pill border border-teal/30 px-5 py-3 text-center text-sm font-semibold text-teal">
+                  WhatsApp
+                </a>
+              )}
             </div>
           </nav>
         </div>

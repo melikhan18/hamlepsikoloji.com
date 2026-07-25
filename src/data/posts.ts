@@ -13,7 +13,7 @@ export type Post = {
   seoDescription?: string; // opsiyonel meta açıklaması (boşsa excerpt kullanılır)
 };
 
-// [PLACEHOLDER] taslak yazılar — SEO için başlangıç içerikleri. Düzenleyip çoğaltabilirsiniz.
+// CMS erişilemezse gösterilen editoryal başlangıç içerikleri.
 export const posts: Post[] = [
   {
     slug: "kaygiyla-bas-etmenin-yollari",
@@ -37,7 +37,7 @@ export const posts: Post[] = [
     slug: "online-terapi-rehberi",
     title: "Online Terapi Nedir? Bilmeniz Gereken Her Şey",
     excerpt:
-      "Online terapi, yüz yüze terapiyle aynı etkinlikte güvenli bir destek biçimi. Nasıl işlediğini, kimler için uygun olduğunu ve nelere dikkat edilmesi gerektiğini açıklıyoruz.",
+      "Online terapinin nasıl işlediğini, kimler için uygun olabileceğini ve görüşme öncesinde nelere dikkat edilmesi gerektiğini açıklıyoruz.",
     date: "2026-05-15",
     authorSlug: "uzman-iki",
     category: "Online Terapi",

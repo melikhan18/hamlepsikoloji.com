@@ -62,7 +62,12 @@ export default async function ContactPage() {
       external: true,
       icon: <MethodIcon d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" extra={<circle cx="12" cy="10" r="2.5" />} />,
     },
-  ];
+  ].filter((method) => {
+    if (method.label === "Telefon") return Boolean(s.phone);
+    if (method.label === "WhatsApp") return Boolean(s.whatsapp);
+    if (method.label === "Adres") return Boolean(s.address.street && s.mapsQuery);
+    return Boolean(method.value);
+  });
 
   return (
     <>
@@ -120,21 +125,21 @@ export default async function ContactPage() {
           <div className="rounded-3xl bg-white p-7 card-soft sm:p-9">
             <h3 className="font-serif text-xl text-ink">Çalışma saatleri &amp; adres</h3>
             <ul className="mt-5 space-y-3 text-sm text-ink/90">
-              <li className="flex items-start gap-3">
+              {s.address.street && <li className="flex items-start gap-3">
                 <MethodIcon d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" extra={<circle cx="12" cy="10" r="2.5" />} />
                 <span>{s.address.full}</span>
-              </li>
+              </li>}
               <li className="flex items-center gap-3">
                 <MethodIcon d="M12 7v5l3 2" extra={<circle cx="12" cy="12" r="9" />} />
                 <span>{s.hours}</span>
               </li>
             </ul>
             <p className="mt-5 text-xs text-muted">
-              Acil durumlarda lütfen 112'yi veya en yakın sağlık kuruluşunu arayın.
+              Acil durumlarda lütfen 112&apos;yi veya en yakın sağlık kuruluşunu arayın.
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-3xl card-soft">
+          {s.mapsQuery && <div className="overflow-hidden rounded-3xl card-soft">
             <iframe
               title="Hamle Psikoloji konum"
               src={mapSrc}
@@ -142,7 +147,7 @@ export default async function ContactPage() {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-          </div>
+          </div>}
         </div>
       </Container>
 

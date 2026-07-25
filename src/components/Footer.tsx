@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { CookiePreferencesButton } from "@/components/ConsentManager";
 
 const quickLinks = [
   { label: "Hakkımızda", href: "/hakkimizda" },
@@ -57,14 +58,14 @@ export function Footer({ settings = site }: { settings?: typeof site }) {
           <div>
             <h3 className="font-serif text-lg text-cream">İletişime geçin</h3>
             <ul className="mt-5 space-y-3.5 text-sm">
-              <li className="flex items-center gap-3">
+              {settings.phone && <li className="flex items-center gap-3">
                 <Glyph d="M2 4.5C2 3.7 2.7 3 3.5 3H6l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v2.5c0 .8-.7 1.5-1.5 1.5A14.5 14.5 0 0 1 2 4.5z" />
                 <a href={`tel:${settings.phone}`} className="transition-colors hover:text-cream">{settings.phoneDisplay}</a>
-              </li>
-              <li className="flex items-start gap-3">
+              </li>}
+              {settings.address.street && <li className="flex items-start gap-3">
                 <span className="mt-0.5"><Glyph d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" extra={<circle cx="12" cy="10" r="2.5" />} /></span>
                 <span>{settings.address.full}</span>
-              </li>
+              </li>}
               <li className="flex items-center gap-3">
                 <Glyph d="M3 6h18v12H3z" extra={<path d="M3 7l9 6 9-6" />} />
                 <a href={`mailto:${settings.email}`} className="transition-colors hover:text-cream">{settings.email}</a>
@@ -127,6 +128,8 @@ export function Footer({ settings = site }: { settings?: typeof site }) {
             <Link href="/gizlilik" className="transition-colors hover:text-cream">Gizlilik</Link>
             <span aria-hidden>·</span>
             <Link href="/cerez-politikasi" className="transition-colors hover:text-cream">Çerez</Link>
+            <span aria-hidden>·</span>
+            <CookiePreferencesButton />
           </div>
         </div>
       </div>

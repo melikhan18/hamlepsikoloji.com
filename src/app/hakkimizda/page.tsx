@@ -31,7 +31,7 @@ const methods = [
 const values = [
   {
     title: "Size olan sözümüz",
-    text: "Sizi yüceltme, yönlendirme ve güçlendirme konusundaki bağlılığımız sarsılmaz. En iyi halinize ulaşmanız için buradayız. Doğru uzmanı seçmek, iyileşme yolculuğunuzun önemli bir parçası; bu yüzden sizi, kendine özgü zorluklarınızı anlayan ve gerçekten kim olduğunuzla rezonansa giren bir uzmanla özenle eşleştiririz. Uyum tam oturmazsa, sorunsuz yeniden eşleştirme sürecimiz konforunuzu ve güveninizi her zaman ön planda tutar.",
+    text: "İlk görüşmede ihtiyaçlarınızı ve beklentilerinizi anlamaya odaklanırız. Uygun çalışma alanına sahip bir uzmanla görüşebilmeniz için güncel uzmanlık ve randevu bilgilerini açıkça paylaşırız. Sürece ilişkin sorularınızı görüşme öncesinde iletebilirsiniz.",
   },
   {
     title: "Vizyonumuz",
@@ -71,7 +71,7 @@ export default async function AboutPage() {
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-4xl text-ink sm:text-5xl">Hakkımızda</h1>
           <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-            İstanbul'da uzman psikoloji merkeziniz.
+            İstanbul&apos;da psikolojik danışmanlık merkeziniz.
           </p>
         </div>
       </Container>
@@ -93,7 +93,7 @@ export default async function AboutPage() {
               İsmimizdeki “hamle”, kişinin kendi iyiliği için attığı o ilk, cesur adımı temsil eder.
             </p>
             <p>
-              İstanbul'daki merkezimizde ve online olarak; bireysel terapi, çift &amp; aile terapisi,
+              İstanbul&apos;daki merkezimizde ve online olarak; bireysel terapi, çift &amp; aile terapisi,
               çocuk &amp; ergen danışmanlığı alanlarında, alanında deneyimli ve lisanslı psikologlarla
               hizmet veriyoruz. Amacımız; her danışanın kendini güvende hissettiği, yargılanmadığı ve
               kalıcı değişim yaratabildiği bir alan oluşturmaktır.

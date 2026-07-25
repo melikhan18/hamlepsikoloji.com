@@ -1,4 +1,4 @@
-// Ana sayfa bölümleri için içerik. [PLACEHOLDER] metinleri düzenleyebilirsiniz.
+// Ana sayfa bölümleri için içerik.
 
 export const benefits = [
   { pre: "Yükten", em: "kurtul", desc: "Olumsuz örüntülerden sıyrılın, yönünüzde netlik bulun.", illo: "unstuck" },
@@ -36,14 +36,14 @@ export const founderQuote =
   "Amacımız sizi sürekli terapide tutmak değil; kendi ayaklarınızın üzerinde durup yola devam edebilmeniz için yanınızda olmak.";
 
 export const aboutIntro = [
-  "Uzmanlarımız, tıpkı sizin gibi yükü uzun süre tek başına taşımaktan yorulmuş insanlara yıllardır destek oluyor. Herkese uyan tek bir yöntem yerine, gerçekten ihtiyaç duyduğunuza göre uyarlanmış, kanıta dayalı yaklaşımlar kullanıyoruz.",
+  "Her insanın ihtiyacı ve yaşam deneyimi farklıdır. Bu nedenle süreç, ilk görüşmede değerlendirilen ihtiyaçlara ve birlikte belirlenen hedeflere göre kişiye özel olarak planlanır.",
   "İster yüz yüze ister evinizin konforundan, ister bireysel ister çift terapisi olsun; size en uygun olduğunuz noktada buluşmak için buradayız.",
 ];
 
 export const aboutAccordion = [
   {
     q: "Biz kimiz?",
-    a: "Hamle Psikoloji; İstanbul merkezli, alanında deneyimli ve lisanslı psikologlardan oluşan bir psikoloji merkezidir. İsmimizdeki “hamle”, kişinin kendi iyiliği için attığı o ilk, cesur adımı temsil eder.",
+    a: "Hamle Psikoloji, İstanbul merkezli bir psikolojik danışmanlık merkezidir. İsmimizdeki “hamle”, kişinin kendi iyiliği için attığı o ilk, cesur adımı temsil eder.",
   },
   {
     q: "Yargısız bir alan",
@@ -51,7 +51,7 @@ export const aboutAccordion = [
   },
   {
     q: "Terapiye yaklaşımımız",
-    a: "BDT, EMDR, şema ve oyun terapisi gibi etkinliği kanıtlanmış yöntemleri, kişiye özel bir planla birlikte kullanırız. Hedef, geçici rahatlama değil; kalıcı ve sağlıklı baş etme becerileridir.",
+    a: "Uygulanacak yaklaşım; başvuru nedeni, ihtiyaçlar ve ilgili uzmanın eğitim ve yetkinlikleri doğrultusunda belirlenir. Sürecin hedefleri ilk görüşmelerde birlikte netleştirilir.",
   },
 ];
 
@@ -61,43 +61,3 @@ export const expectations = [
   { n: "03", pre: "İlk", em: "seans", illo: "session", desc: "Tanışma ve değerlendirmeyle güvenli bir başlangıç yapın." },
   { n: "04", pre: "Birlikte", em: "yol almak", illo: "journey", desc: "Kanıta dayalı yöntemlerle, kendi hızınızda ilerleyin." },
 ] as const;
-
-// [PLACEHOLDER] Anonimleştirilmiş danışan görüşleri
-export const testimonials = [
-  {
-    quote:
-      "İlk adımı atmak en zoruydu. Burada yargılanmadan dinlendiğimi hissettim ve hayatımda gerçek bir değişim oldu.",
-    name: "D.K.",
-    role: "Bireysel terapi",
-  },
-  {
-    quote:
-      "Eşimle yıllardır konuşamadığımız konuları nihayet sağlıklı bir şekilde konuşabilir hâle geldik. Bağımız güçlendi.",
-    name: "S. & M.",
-    role: "Çift terapisi",
-  },
-  {
-    quote:
-      "Çocuğumun okula uyum sürecinde aldığımız destek çok değerliydi. Hem ona hem bize rehberlik edildi.",
-    name: "E.A.",
-    role: "Çocuk & ergen",
-  },
-  {
-    quote:
-      "Yoğun tempomda yüz yüze gelmek zordu; online görüşmeler hayatımı kolaylaştırdı, üstelik aynı derecede etkiliydi.",
-    name: "B.Y.",
-    role: "Online terapi",
-  },
-  {
-    quote:
-      "Panik ataklarımla baş etmeyi öğrendim. Artık nöbet geldiğinde ne yapacağımı biliyorum ve çok daha güçlüyüm.",
-    name: "C.T.",
-    role: "Kaygı",
-  },
-  {
-    quote:
-      "Kaybımın yasını tutmama yardımcı oldular. İlk kez duygularımı bastırmadan, güvenle ifade edebildim.",
-    name: "N.Ö.",
-    role: "Yas & kayıp",
-  },
-];

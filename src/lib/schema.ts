@@ -10,7 +10,7 @@ export function organizationSchema(s: typeof site = site) {
     legalName: s.legalName,
     url: s.url,
     description: s.description,
-    telephone: s.phone,
+    ...(s.phone ? { telephone: s.phone } : {}),
     email: s.email,
     image: `${s.url}/icon.svg`,
     logo: {
@@ -21,19 +21,19 @@ export function organizationSchema(s: typeof site = site) {
     },
     priceRange: "₺₺",
     currenciesAccepted: "TRY",
-    address: {
+    ...(s.address.street ? { address: {
       "@type": "PostalAddress",
       streetAddress: s.address.street,
       addressLocality: s.address.district,
       addressRegion: s.address.city,
       postalCode: s.address.postalCode,
       addressCountry: s.address.country,
-    },
-    geo: {
+    }} : {}),
+    ...(s.geo.lat && s.geo.lng ? { geo: {
       "@type": "GeoCoordinates",
       latitude: s.geo.lat,
       longitude: s.geo.lng,
-    },
+    }} : {}),
     areaServed: [
       ...(s.areaServed ? [{ "@type": "AdministrativeArea", name: s.areaServed }] : []),
       { "@type": "City", name: s.address.city },
@@ -41,7 +41,7 @@ export function organizationSchema(s: typeof site = site) {
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
-      telephone: s.phone,
+      ...(s.phone ? { telephone: s.phone } : {}),
       email: s.email,
       availableLanguage: ["Turkish"],
     },

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
-import { getLegalDoc } from "@/lib/cms";
+import { getLegalDoc, getSettings } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Gizlilik Politikası",
@@ -10,6 +10,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const doc = await getLegalDoc("gizlilik");
-  return <LegalPage title={doc.title} slug={doc.slug} intro={doc.intro} sections={doc.sections} />;
+  const [doc, settings] = await Promise.all([getLegalDoc("gizlilik"), getSettings()]);
+  return <LegalPage title={doc.title} slug={doc.slug} intro={doc.intro} sections={doc.sections} contact={{ legalName: settings.legalName, email: settings.email, address: settings.address.full }} />;
 }
