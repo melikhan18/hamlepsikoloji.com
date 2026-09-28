@@ -77,6 +77,25 @@ export default async function HomePage() {
         </Container>
       </section>
 
+      {/* ===== UZMANLAR ===== */}
+      {team.length > 0 && (
+        <Container className="py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl text-ink sm:text-4xl">
+              Sizi dinleyecek <em>uzmanlar</em>
+            </h2>
+            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+              Doğru uzmanla başlamak, iyileşmenin ilk adımı.
+            </p>
+          </div>
+          <div className="mx-auto mt-14 grid max-w-6xl gap-8">
+            {team.map((e, i) => (
+              <FeaturedExpertCard key={e.slug} expert={e} reverse={i % 2 === 1} />
+            ))}
+          </div>
+        </Container>
+      )}
+
       {/* ===== KAZANIMLAR ===== */}
       <section className="bg-cream">
         <Container className="py-16 sm:py-24">
@@ -262,24 +281,6 @@ export default async function HomePage() {
           </div>
         </Container>
       </section>
-
-      {team.length > 0 && (
-        <Container className="py-16 sm:py-24">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl text-ink sm:text-4xl">
-              Sizi dinleyecek <em>uzmanlar</em>
-            </h2>
-            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-              Doğru uzmanla başlamak, iyileşmenin ilk adımı.
-            </p>
-          </div>
-          <div className="mx-auto mt-14 grid max-w-6xl gap-8">
-            {team.map((e, i) => (
-              <FeaturedExpertCard key={e.slug} expert={e} reverse={i % 2 === 1} />
-            ))}
-          </div>
-        </Container>
-      )}
 
       {/* ===== BLOG ===== */}
       <section className="py-16 sm:py-24">
