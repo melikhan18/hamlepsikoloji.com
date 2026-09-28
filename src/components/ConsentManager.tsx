@@ -45,33 +45,51 @@ function loadScript(id: string, src: string) {
   document.head.appendChild(script);
 }
 
-function applyGoogleConsent(consent: Consent, { googleAdsId, ga4Id, gtmId }: Props) {
+function ensureGtag() {
   window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function gtag(...args: unknown[]) {
-    window.dataLayer.push(args);
-  };
+  if (!window.gtag) {
+    // gtag.js, dataLayer'a dizi değil `arguments` nesnesi bekler — dizi push edilirse
+    // komutlar sessizce yok sayılır.
+    window.gtag = function gtag() {
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer.push(arguments);
+    } as (...args: unknown[]) => void;
+  }
+}
 
-  window.gtag("consent", "update", {
+// Gelişmiş Consent Mode: etiketler her ziyaretçide sayfayla birlikte yüklenir,
+// izin verilene dek "reddedildi" varsayılanıyla ÇEREZSİZ sinyal gönderir
+// (Google bu sinyallerle dönüşüm modellemesi yapar). Çerez/kimlik kullanımı
+// ancak ilgili kategoriye izin verilince başlar.
+function initGoogleTags({ googleAdsId, ga4Id, gtmId }: Props) {
+  ensureGtag();
+  window.gtag!("consent", "default", {
+    analytics_storage: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    // Kayıtlı izin varsa hemen ardından gelen "update"i beklemesi için kısa pencere
+    wait_for_update: 500,
+  });
+  window.gtag!("js", new Date());
+  const tagId = googleAdsId || ga4Id;
+  if (tagId) loadScript("google-tag", `https://www.googletagmanager.com/gtag/js?id=${tagId}`);
+  if (ga4Id) window.gtag!("config", ga4Id);
+  window.gtag!("config", googleAdsId);
+  if (gtmId && !document.getElementById("google-tag-manager")) {
+    window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+    loadScript("google-tag-manager", `https://www.googletagmanager.com/gtm.js?id=${gtmId}`);
+  }
+}
+
+function applyGoogleConsent(consent: Consent) {
+  ensureGtag();
+  window.gtag!("consent", "update", {
     analytics_storage: consent.analytics ? "granted" : "denied",
     ad_storage: consent.marketing ? "granted" : "denied",
     ad_user_data: consent.marketing ? "granted" : "denied",
     ad_personalization: consent.marketing ? "granted" : "denied",
   });
-
-  const tagId = consent.marketing ? googleAdsId : consent.analytics ? ga4Id : undefined;
-  if (tagId) {
-    loadScript("google-tag", `https://www.googletagmanager.com/gtag/js?id=${tagId}`);
-    window.gtag("js", new Date());
-  }
-  if (consent.analytics && ga4Id) window.gtag("config", ga4Id);
-  if (consent.marketing) window.gtag("config", googleAdsId);
-
-  // GTM kapsayıcısının hangi kategoride etiket içerdiği dışarıdan bilinemez.
-  // Bu nedenle yalnızca iki isteğe bağlı kategori de kabul edildiğinde yüklenir.
-  if (consent.analytics && consent.marketing && gtmId && !document.getElementById("google-tag-manager")) {
-    window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
-    loadScript("google-tag-manager", `https://www.googletagmanager.com/gtm.js?id=${gtmId}`);
-  }
 }
 
 export function ConsentManager(props: Props) {
@@ -82,9 +100,10 @@ export function ConsentManager(props: Props) {
   const [draft, setDraft] = useState<Consent>({ analytics: false, marketing: false });
 
   useEffect(() => {
+    initGoogleTags({ googleAdsId, ga4Id, gtmId });
     const initial = readConsent();
     if (initial) {
-      applyGoogleConsent(initial, { googleAdsId, ga4Id, gtmId });
+      applyGoogleConsent(initial);
     }
     queueMicrotask(() => {
       setSaved(initial);
@@ -106,7 +125,7 @@ export function ConsentManager(props: Props) {
     setSaved(consent);
     setDraft(consent);
     setPreferencesOpen(false);
-    applyGoogleConsent(consent, props);
+    applyGoogleConsent(consent);
   };
 
   if (!ready) return null;
@@ -123,7 +142,7 @@ export function ConsentManager(props: Props) {
           <h2 className="text-xl text-ink">Gizlilik tercihleriniz</h2>
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
             Siteyi çalıştırmak için zorunlu teknolojileri kullanıyoruz. Analitik ve reklam
-            teknolojileri yalnızca izin verirseniz etkinleşir. Ayrıntılar için{" "}
+            çerezleri yalnızca izin verirseniz kullanılır. Ayrıntılar için{" "}
             <Link href="/cerez-politikasi" className="font-semibold text-teal underline">
               Çerez Politikası
             </Link>
