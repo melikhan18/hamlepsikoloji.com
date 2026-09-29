@@ -49,6 +49,8 @@ public class SiteSettings {
     private String ga4Id;
     @Column(name = "gtm_id")
     private String gtmId;
+    @Column(name = "google_ads_id")
+    private String googleAdsId;
 
     // Yerel SEO (konum) — string olarak saklanır, şemada sayıya çevrilir
     @Column(name = "geo_lat")

@@ -14,7 +14,7 @@ public class SettingsMapper {
                 s.getHours(), s.getMapsQuery(),
                 s.getSocialInstagram(), s.getSocialLinkedin(), s.getSocialYoutube(),
                 s.getSiteTitle(), s.getMetaDescription(), s.getKeywords(),
-                s.getGoogleVerification(), s.getGa4Id(), s.getGtmId(),
+                s.getGoogleVerification(), s.getGa4Id(), s.getGtmId(), s.getGoogleAdsId(),
                 s.getGeoLat(), s.getGeoLng(), s.getAreaServed()
         );
     }
@@ -40,6 +40,7 @@ public class SettingsMapper {
         s.setGoogleVerification(r.googleVerification());
         s.setGa4Id(r.ga4Id());
         s.setGtmId(r.gtmId());
+        s.setGoogleAdsId(r.googleAdsId());
         s.setGeoLat(r.geoLat());
         s.setGeoLng(r.geoLng());
         s.setAreaServed(r.areaServed());

@@ -11,8 +11,9 @@ type Consent = {
   marketing: boolean;
 };
 
+// Tüm kimlikler admin panelden gelir ve isteğe bağlıdır; boş olan etiket yüklenmez.
 type Props = {
-  googleAdsId: string;
+  googleAdsId?: string;
   ga4Id?: string;
   gtmId?: string;
 };
@@ -75,7 +76,7 @@ function initGoogleTags({ googleAdsId, ga4Id, gtmId }: Props) {
   const tagId = googleAdsId || ga4Id;
   if (tagId) loadScript("google-tag", `https://www.googletagmanager.com/gtag/js?id=${tagId}`);
   if (ga4Id) window.gtag!("config", ga4Id);
-  window.gtag!("config", googleAdsId);
+  if (googleAdsId) window.gtag!("config", googleAdsId);
   if (gtmId && !document.getElementById("google-tag-manager")) {
     window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
     loadScript("google-tag-manager", `https://www.googletagmanager.com/gtm.js?id=${gtmId}`);

@@ -24,6 +24,7 @@ public class SettingsDtos {
             String googleVerification,
             String ga4Id,
             String gtmId,
+            String googleAdsId,
             String geoLat,
             String geoLng,
             String areaServed

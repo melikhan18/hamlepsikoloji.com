@@ -1206,7 +1206,8 @@ KONU: [Buraya yazının konusunu yazın. Örnek: "Sınav kaygısıyla baş etmen
         analytics: html`<div>
           ${F("Google site doğrulama kodu", "googleVerification", "google-site-verification içeriği")}
           <div class="set-row">${F("Google Analytics 4", "ga4Id", "G-XXXXXXXXXX")}${F("Google Tag Manager", "gtmId", "GTM-XXXXXXX")}</div>
-          <div class="set-note">Analytics çerezi kullanırsanız KVKK için çerez onay banner'ı önerilir.</div>
+          ${F("Google Ads etiketi", "googleAdsId", "AW-XXXXXXXXXX")}
+          <div class="set-note">Alanların hepsi isteğe bağlıdır; boş bırakılan etiket sitede yüklenmez. Etiketler çerez onay banner'ına bağlı (Consent Mode) çalışır.</div>
         </div>`,
       };
       return html`<div class="set-wrap">

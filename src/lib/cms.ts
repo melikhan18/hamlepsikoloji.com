@@ -161,7 +161,7 @@ type SettingsApi = {
   hours?: string; mapsQuery?: string;
   socialInstagram?: string; socialLinkedin?: string; socialYoutube?: string;
   siteTitle?: string; metaDescription?: string; keywords?: string;
-  googleVerification?: string; ga4Id?: string; gtmId?: string;
+  googleVerification?: string; ga4Id?: string; gtmId?: string; googleAdsId?: string;
   geoLat?: string; geoLng?: string; areaServed?: string;
 };
 
@@ -199,8 +199,10 @@ function mergeSettings(d: SettingsApi): typeof site {
     description: d.metaDescription || site.description,
     keywords: d.keywords || site.keywords,
     googleVerification: d.googleVerification || site.googleVerification,
-    ga4Id: d.ga4Id || site.ga4Id,
-    gtmId: d.gtmId || site.gtmId,
+    // Etiket kimlikleri isteğe bağlı: boş/yalnız boşluk → "" → ilgili etiket yüklenmez
+    ga4Id: d.ga4Id?.trim() || site.ga4Id,
+    gtmId: d.gtmId?.trim() || site.gtmId,
+    googleAdsId: d.googleAdsId?.trim() || site.googleAdsId,
     // Yerel SEO — geo string olarak gelir, sayıya çevrilir
     geo: {
       lat: d.geoLat && !isNaN(Number(d.geoLat)) ? Number(d.geoLat) : site.geo.lat,

@@ -42,6 +42,7 @@ export const site = {
   googleVerification: "",
   ga4Id: "",
   gtmId: "",
+  googleAdsId: "",
 };
 
 export const nav = [

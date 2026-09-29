@@ -10,8 +10,6 @@ import { getSettings } from "@/lib/cms";
 import { site } from "@/lib/site";
 import { ConsentManager } from "@/components/ConsentManager";
 
-const googleAdsId = "AW-11280098753";
-
 const inter = Inter({
   subsets: ["latin", "latin-ext"],
   variable: "--font-sans-src",
@@ -73,7 +71,7 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSettings();
-  const { ga4Id, gtmId } = settings;
+  const { ga4Id, gtmId, googleAdsId } = settings;
 
   return (
     <html lang="tr" className={`${inter.variable} ${fraunces.variable}`}>
